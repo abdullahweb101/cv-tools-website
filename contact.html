@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Contact Us | CV Tools</title>
   <meta name="description" content="Contact CV Tools for questions, feedback, suggestions or help with our online CV Maker and PDF tools.">
   <meta name="robots" content="index, follow">
@@ -11,6 +12,7 @@
 
   <style>
     * { box-sizing: border-box; }
+
     body {
       margin: 0;
       font-family: Arial, sans-serif;
@@ -18,6 +20,7 @@
       color: #172033;
       line-height: 1.8;
     }
+
     header {
       padding: 18px 7%;
       border-bottom: 1px solid #e5e9f0;
@@ -27,33 +30,53 @@
       flex-wrap: wrap;
       gap: 12px;
     }
+
     .logo {
       font-size: 23px;
       font-weight: 800;
       text-decoration: none;
       color: #172033;
     }
+
     .logo span { color: #3563e9; }
-    nav { display: flex; gap: 22px; flex-wrap: wrap; }
+
+    nav {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+    }
+
     nav a {
       color: #475269;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
     }
+
     nav a:hover { color: #3563e9; }
+
     main {
       max-width: 850px;
       margin: 65px auto;
       padding: 0 22px;
     }
+
     h1 {
       font-size: clamp(32px, 5vw, 44px);
       line-height: 1.2;
       margin-bottom: 15px;
     }
-    h2 { font-size: 22px; margin-top: 35px; }
-    p { color: #59667c; font-size: 16px; }
+
+    h2 {
+      font-size: 22px;
+      margin-top: 35px;
+    }
+
+    p {
+      color: #59667c;
+      font-size: 16px;
+    }
+
     .contact-box {
       margin-top: 30px;
       padding: 25px;
@@ -61,6 +84,20 @@
       border: 1px solid #e5e9f0;
       border-radius: 10px;
     }
+
+    .contact-email {
+      display: inline-block;
+      color: #3563e9;
+      font-weight: 700;
+      font-size: 17px;
+      text-decoration: none;
+      overflow-wrap: anywhere;
+    }
+
+    .contact-email:hover {
+      text-decoration: underline;
+    }
+
     footer {
       background: #172033;
       color: #c4ccda;
@@ -68,14 +105,19 @@
       padding: 25px;
       font-size: 13px;
     }
+
     footer a {
       color: #fff;
       text-decoration: none;
       margin: 0 8px;
     }
+
     @media(max-width:600px) {
       header { justify-content: center; }
-      nav { justify-content: center; gap: 14px; }
+      nav {
+        justify-content: center;
+        gap: 14px;
+      }
       main { margin: 40px auto; }
     }
   </style>
@@ -85,6 +127,7 @@
 
 <header>
   <a class="logo" href="index.html">CV <span>Tools</span></a>
+
   <nav>
     <a href="index.html">Home</a>
     <a href="cv-maker.html">CV Maker</a>
@@ -105,22 +148,29 @@
 
   <div class="contact-box">
     <h2>How Can We Help?</h2>
-    <p>
-      You can contact us about:
-    </p>
+
+    <p>You can contact us about:</p>
+
     <ul>
       <li>Problems using the CV Maker.</li>
       <li>PDF Scanner or PDF Tools issues.</li>
       <li>Suggestions for new features.</li>
       <li>Website feedback and general questions.</li>
     </ul>
+
     <p>
-      Our contact email address will be provided here.
-      Please check this page again for contact information.
+      For questions, feedback or support, email us at:
+    </p>
+
+    <p>
+      <a class="contact-email" href="mailto:roman3212@icloud.com">
+        roman3212@icloud.com
+      </a>
     </p>
   </div>
 
   <h2>Before Contacting Us</h2>
+
   <p>
     Please describe the issue clearly and mention which tool
     you were using. Do not send passwords, sensitive personal
@@ -130,6 +180,7 @@
 
 <footer>
   <p>© 2026 CV Tools. All rights reserved.</p>
+
   <p>
     <a href="index.html">Home</a>
     <a href="about.html">About Us</a>
