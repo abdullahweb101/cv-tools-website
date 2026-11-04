@@ -775,16 +775,24 @@ function updatePreview(){
  references.forEach(item=>addTextEntry(refList,item,"name",["role","contact"],null));
  $("reference-section").style.display=references.length?"":"none";
 
- const hasLinks=renderLinks();
- const isSidebar=selectedTemplate.includes("layout-sidebar");
- $("main-heading").style.display=isSidebar?"none":"block";
- $("resume-top").style.display=isSidebar?"none":"block";
- $("skills-main-section").style.display=skills.length&&!isSidebar?"":"none";
- $("languages-main-section").style.display=languages.length&&!isSidebar?"":"none";
- $("links-main-section").style.display=hasLinks&&!isSidebar?"":"none";
 
- const resume=$("resume");
- resume.className="resume "+selectedTemplate;
+const hasLinks=renderLinks();
+const isSidebar=selectedTemplate.includes("layout-sidebar");
+const isCorporate=selectedTemplate==="layout-corporate";
+
+// Sidebar layouts mein sidebar show hoga.
+// Baaki layouts mein normal top header show hoga.
+$("main-heading").style.display="none";
+$("resume-top").style.display=isSidebar?"none":"block";
+
+// Main content aur sidebar ki visibility
+$("skills-main-section").style.display=skills.length&&!isSidebar?"":"none";
+$("languages-main-section").style.display=languages.length&&!isSidebar?"":"none";
+$("p-links-main").style.display=hasLinks&&!isSidebar?"":"none";
+
+const resume=$("resume");
+resume.className="resume "+selectedTemplate;
+
  const accent=get("accent")||"#245bd5";
  resume.style.setProperty("--accent",accent);
  const current=templates.find(t=>t.id===selectedTemplate);
