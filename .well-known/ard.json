@@ -1,0 +1,22 @@
+{
+  "name": "CV Tools Website",
+  "description": "Free online tools for creating professional CVs, scanning documents, and managing PDF files.",
+  "resources": [
+    {
+      "name": "Home",
+      "url": "https://cv-tools-website.pages.dev/"
+    },
+    {
+      "name": "CV Maker",
+      "url": "https://cv-tools-website.pages.dev/cv-maker.html"
+    },
+    {
+      "name": "PDF Scanner",
+      "url": "https://cv-tools-website.pages.dev/pdf-scanner.html"
+    },
+    {
+      "name": "PDF Tools",
+      "url": "https://cv-tools-website.pages.dev/pdf-tools.html"
+    }
+  ]
+}
