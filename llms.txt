@@ -1,0 +1,18 @@
+
+# CV Tools Website
+
+> Free online tools to create professional CVs, scan documents, and manage PDF files.
+
+## Available Tools
+
+- [CV Maker](https://cv-tools-website.pages.dev/cv-maker.html): Create a professional CV online.
+- [PDF Scanner](https://cv-tools-website.pages.dev/pdf-scanner.html): Scan images and convert them into PDF documents.
+- [PDF Tools](https://cv-tools-website.pages.dev/pdf-tools.html): Merge, split, rotate, extract, and organize PDF pages.
+
+## Website Information
+
+- [Home](https://cv-tools-website.pages.dev/)
+- [About Us](https://cv-tools-website.pages.dev/about.html)
+- [Contact Us](https://cv-tools-website.pages.dev/contact.html)
+- [Privacy Policy](https://cv-tools-website.pages.dev/privacy-policy.html)
+- [Terms and Conditions](https://cv-tools-website.pages.dev/terms-and-conditions.html)
