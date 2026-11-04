@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Free Professional CV Maker</title>
-<meta name="description" content="Create a professional CV with 15 resume layouts, profile photo, work experience, education and PDF download.">
+<meta name="description" content="Create a professional CV with 15 layouts, work experience, education, skills, languages, certifications, projects and PDF download.">
 
 <style>
 *{box-sizing:border-box}
@@ -42,6 +42,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 .add-button{width:100%;margin:2px 0 12px}
 .save-note{font-size:12px;color:#32815b;margin:12px 0 0}
 .help-note{font-size:12px;color:#718096;line-height:1.5}
+.small-hint{font-size:11px;color:#718096;margin:5px 0 12px;line-height:1.5}
 
 /* Template selector */
 .template-gallery{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
@@ -58,7 +59,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 .mini.clean .mini-side{display:none}
 .mini.clean{display:block}
 
-/* Preview stage */
+/* CV preview */
 .preview-label{margin-bottom:12px}
 .preview-wrap{background:#e3e8f0;padding:14px;border-radius:10px;overflow:auto}
 .resume{
@@ -70,8 +71,8 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 .resume h1{font-size:29px;line-height:1.15;margin:0 0 7px;color:var(--accent)}
 .resume h3{font-size:12px;letter-spacing:.8px;text-transform:uppercase;color:var(--accent);border-bottom:1px solid #d7deea;padding-bottom:7px;margin:23px 0 10px}
 .resume p{font-size:12px;line-height:1.6;white-space:pre-line;margin:5px 0}
-.resume .contact{font-size:10px;line-height:1.8;color:#64748b}
-.resume .entry{margin:12px 0 16px;break-inside:avoid}
+.resume .contact{font-size:10px;line-height:1.8;color:#64748b;overflow-wrap:anywhere}
+.resume .entry{margin:12px 0 16px;break-inside:avoid;page-break-inside:avoid}
 .resume .entry strong{font-size:12px}
 .resume .entry small{display:block;color:#68758b;font-size:10px;margin-top:4px}
 .resume .entry p{font-size:11px}
@@ -87,27 +88,30 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 .sidebar-profile img{width:112px;height:112px;object-fit:cover;border-radius:50%;border:3px solid #ffffff99}
 .sidebar-name{display:none;color:#fff;text-align:center;font-size:19px;font-weight:700;line-height:1.25;margin:8px 0 5px}
 .sidebar-job{display:none;color:#ffffffd9;text-align:center;font-size:11px;margin-bottom:20px}
-.sidebar-contact,.sidebar-skills{font-size:10px;line-height:1.7;overflow-wrap:anywhere}
-.sidebar-contact h3,.sidebar-skills h3{color:#fff!important;border-color:#ffffff66!important;margin:19px 0 8px}
-.sidebar-contact p,.sidebar-skills .skills{color:#fff!important;font-size:10px}
+.sidebar-contact,.sidebar-skills,.sidebar-languages,.sidebar-links{font-size:10px;line-height:1.7;overflow-wrap:anywhere}
+.sidebar-contact h3,.sidebar-skills h3,.sidebar-languages h3,.sidebar-links h3{color:#fff!important;border-color:#ffffff66!important;margin:19px 0 8px}
+.sidebar-contact p,.sidebar-skills .skills,.sidebar-languages .skills,.sidebar-links .skills{color:#fff!important;font-size:10px}
 .main-contact{display:block}
 #main-heading{display:block}
+.resume a{color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
+.resume .sidebar-links a{color:#fff;text-decoration:underline}
 
-/* 1-9: Sidebar family */
+/* 1-9 Sidebar layouts */
 .layout-sidebar{padding:0}
 .layout-sidebar .resume-grid{
  display:grid;grid-template-columns:32% minmax(0,68%);
  gap:0;align-items:stretch;min-height:950px;
 }
 .layout-sidebar .resume-sidebar{
- display:block;background:var(--side);color:#fff;
- padding:28px 17px;min-width:0;
+ display:block;background:var(--side);color:#fff;padding:28px 17px;min-width:0;
 }
 .layout-sidebar .resume-main{padding:32px 27px;min-width:0}
 .layout-sidebar .sidebar-profile,.layout-sidebar .sidebar-name,.layout-sidebar .sidebar-job{display:block}
 .layout-sidebar #main-heading{display:none!important}
 .layout-sidebar .main-contact{display:none!important}
-.layout-sidebar #skills-main-section{display:none!important}
+.layout-sidebar #skills-main-section,
+.layout-sidebar #languages-main-section,
+.layout-sidebar #links-main-section{display:none!important}
 .layout-sidebar .resume-sidebar h3{color:#fff;border-color:#ffffff66}
 .layout-sidebar .resume-sidebar p,.layout-sidebar .resume-sidebar .skills{color:#fff}
 .layout-sidebar h1{font-size:25px}
@@ -124,42 +128,42 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 .layout-sidebar.compact-side .resume-main{padding:28px 22px}
 .layout-sidebar.compact-side .sidebar-profile img{width:85px;height:85px}
 
-/* 10 Corporate */
+/* Corporate */
 .layout-corporate .resume-top{background:var(--side);color:#fff;padding:27px;margin:-34px -34px 25px}
 .layout-corporate .resume-top h1{color:#fff}
 .layout-corporate .resume-top .contact{color:#fff}
 .layout-corporate .resume-top .profile{display:block}
 .layout-corporate .name-line{display:none}
 
-/* 11 Executive */
+/* Executive */
 .layout-executive{border-top:12px solid var(--side)}
 .layout-executive h1{text-transform:uppercase;letter-spacing:2px;font-size:28px}
 .layout-executive .resume-header{border-bottom:2px solid var(--side);padding-bottom:20px}
 .layout-executive h3{border-bottom:2px solid var(--side);letter-spacing:1.5px}
 
-/* 12 Classic */
+/* Classic */
 .layout-classic{font-family:Georgia,serif}
 .layout-classic h1{font-family:Georgia,serif;text-align:center;color:#222}
 .layout-classic .resume-header{display:block;text-align:center}
 .layout-classic .contact{text-align:center}
 .layout-classic h3{font-family:Georgia,serif;color:#333;border-bottom:1px solid #333;text-align:center}
 
-/* 13 Minimal */
+/* Minimal */
 .layout-minimal{padding:45px}
 .layout-minimal h1{font-size:35px;color:#111;letter-spacing:-1px}
 .layout-minimal h3{color:#111;border:0;border-top:2px solid #111;padding-top:10px}
 .layout-minimal .name-line{display:none}
 
-/* 14 Timeline */
+/* Timeline */
 .layout-timeline .entry{border-left:3px solid var(--accent);padding-left:14px;margin-left:5px}
 .layout-timeline h3{border:0;border-left:4px solid var(--accent);padding-left:10px}
 
-/* 15 Creative */
+/* Creative */
 .layout-creative{border-top:14px solid var(--accent)}
 .layout-creative h1{font-size:35px}
 .layout-creative h3{background:var(--accent);color:#fff;padding:8px 10px;border:0}
 
-/* Responsive editor and preview */
+/* Responsive */
 @media(max-width:900px){
  .workspace{grid-template-columns:1fr}
  .preview-wrap{max-width:100%}
@@ -181,7 +185,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
  .layout-sidebar .sidebar-job{font-size:9px}
 }
 
-/* PDF / print */
+/* PDF */
 @media print{
  @page{size:A4;margin:0}
  html,body{margin:0!important;padding:0!important;background:#fff!important}
@@ -189,12 +193,14 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
  .container{max-width:none;margin:0;padding:0}
  .workspace{display:block}
  .preview-wrap{padding:0;margin:0;background:#fff;overflow:visible}
- .resume{width:210mm;min-height:297mm;margin:0;box-shadow:none;print-color-adjust:exact;-webkit-print-color-adjust:exact}
+ .resume{width:210mm;min-height:297mm;margin:0;box-shadow:none;overflow:visible;print-color-adjust:exact;-webkit-print-color-adjust:exact}
  .layout-sidebar .resume-grid{display:grid!important;grid-template-columns:32% 68%!important;min-height:297mm}
  .layout-sidebar .resume-sidebar{display:block!important}
- .layout-sidebar #main-heading,.layout-sidebar #skills-main-section{display:none!important}
+ .layout-sidebar #main-heading,.layout-sidebar #skills-main-section,
+ .layout-sidebar #languages-main-section,.layout-sidebar #links-main-section{display:none!important}
  .layout-sidebar .main-contact{display:none!important}
- .resume .entry{break-inside:avoid}
+ .resume h3{break-after:avoid;page-break-after:avoid}
+ .resume .entry{break-inside:avoid;page-break-inside:avoid}
 }
 </style>
 </head>
@@ -216,6 +222,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
    <div class="field">
     <label for="photo">Profile Photo</label>
     <input type="file" id="photo" accept="image/*">
+    <p class="small-hint">Choose a clear professional photo. Maximum size: 2 MB.</p>
    </div>
    <div class="field">
     <label for="name">Full Name</label>
@@ -244,6 +251,16 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
     <textarea id="summary" placeholder="Write a short introduction about yourself..."></textarea>
    </div>
 
+   <h3 class="section-title">Professional Links</h3>
+   <div class="field">
+    <label for="linkedin">LinkedIn Profile URL</label>
+    <input id="linkedin" type="url" placeholder="https://www.linkedin.com/in/yourname">
+   </div>
+   <div class="field">
+    <label for="website">Portfolio / Personal Website</label>
+    <input id="website" type="url" placeholder="https://yourwebsite.com">
+   </div>
+
    <h3 class="section-title">Work Experience</h3>
    <div id="work-list"></div>
    <button type="button" class="secondary add-button" onclick="addWork()">+ Add Another Experience</button>
@@ -257,6 +274,22 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
     <label for="skills">Skills (separate with commas)</label>
     <textarea id="skills" placeholder="Communication, Microsoft Office, Teamwork"></textarea>
    </div>
+
+   <h3 class="section-title">Languages</h3>
+   <div id="language-list"></div>
+   <button type="button" class="secondary add-button" onclick="addLanguage()">+ Add Language</button>
+
+   <h3 class="section-title">Certifications</h3>
+   <div id="certification-list"></div>
+   <button type="button" class="secondary add-button" onclick="addCertification()">+ Add Certification</button>
+
+   <h3 class="section-title">Projects / Portfolio</h3>
+   <div id="project-list"></div>
+   <button type="button" class="secondary add-button" onclick="addProject()">+ Add Project</button>
+
+   <h3 class="section-title">References</h3>
+   <div id="reference-list"></div>
+   <button type="button" class="secondary add-button" onclick="addReference()">+ Add Reference</button>
 
    <h3 class="section-title">Choose Your CV Layout</h3>
    <div class="template-gallery" id="template-gallery"></div>
@@ -272,7 +305,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
     <button type="button" class="danger" onclick="clearForm()">Clear Form</button>
    </div>
    <p class="save-note" id="save-status">Your changes are saved automatically in this browser.</p>
-   <p class="help-note">For best PDF colours, enable Background graphics in the print settings and choose A4 paper.</p>
+   <p class="help-note">For best PDF colours, enable Background graphics in print settings and choose A4 paper.</p>
   </section>
 
   <section>
@@ -286,6 +319,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
         <h1 id="p-name">Your Name</h1>
         <div id="p-job">Professional Title</div>
         <div class="contact" id="p-contact">Email | Phone | Location</div>
+        <div class="contact" id="p-links-top"></div>
        </div>
       </div>
      </div>
@@ -295,13 +329,22 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
        <div class="sidebar-profile"><img id="p-photo-side" alt="Profile photo"></div>
        <div class="sidebar-name" id="p-name-side">Your Name</div>
        <div class="sidebar-job" id="p-job-side">Professional Title</div>
-       <div class="sidebar-contact">
+
+       <div class="sidebar-contact" id="sidebar-contact-section">
         <h3>Contact</h3>
         <p id="p-contact-side">Email | Phone | Location</p>
        </div>
-       <div class="sidebar-skills">
+       <div class="sidebar-links" id="sidebar-links-section">
+        <h3>Professional Links</h3>
+        <div class="skills" id="p-links-side"></div>
+       </div>
+       <div class="sidebar-skills" id="sidebar-skills-section">
         <h3>Skills</h3>
         <div class="skills" id="p-skills-side"></div>
+       </div>
+       <div class="sidebar-languages" id="sidebar-languages-section">
+        <h3>Languages</h3>
+        <div class="skills" id="p-languages-side"></div>
        </div>
       </aside>
 
@@ -310,6 +353,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
         <h1 id="p-name-main">Your Name</h1>
         <div id="p-job-main">Professional Title</div>
         <div class="contact main-contact" id="p-contact-main">Email | Phone | Location</div>
+        <div class="contact" id="p-links-main"></div>
         <div class="name-line"></div>
        </div>
 
@@ -329,6 +373,22 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
         <h3>Skills</h3>
         <div class="skills" id="p-skills"></div>
        </section>
+       <section id="languages-main-section">
+        <h3>Languages</h3>
+        <div id="p-languages-main"></div>
+       </section>
+       <section id="certification-section">
+        <h3>Certifications</h3>
+        <div id="p-certification-list"></div>
+       </section>
+       <section id="project-section">
+        <h3>Projects</h3>
+        <div id="p-project-list"></div>
+       </section>
+       <section id="reference-section">
+        <h3>References</h3>
+        <div id="p-reference-list"></div>
+       </section>
       </main>
      </div>
     </article>
@@ -340,7 +400,7 @@ button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
 <footer style="text-align:center;padding:25px;color:#718096;font-size:12px">© 2026 CV Tools. Free Online CV Maker.</footer>
 
 <script>
-// Roman Urdu: Yahan tamam 15 CV designs ki settings hain.
+// Roman Urdu: Yahan tamam 15 CV layouts define hain.
 const templates=[
  {id:"layout-sidebar",name:"01 Modern Blue",color:"#245bd5"},
  {id:"layout-sidebar green",name:"02 Elegant Green",color:"#17634e"},
@@ -364,7 +424,7 @@ let photoData="";
 const $=id=>document.getElementById(id);
 const gallery=$("template-gallery");
 
-// Template gallery buttons
+// Template gallery
 templates.forEach((item,index)=>{
  const button=document.createElement("button");
  button.type="button";
@@ -386,90 +446,141 @@ templates.forEach((item,index)=>{
  gallery.appendChild(button);
 });
 
-// Roman Urdu: Work aur education ke input boxes yahan bante hain.
-function makeInput(label,placeholder,field){
+// Safe form field creator
+function makeInput(label,placeholder,field,type="text"){
  const wrap=document.createElement("div");
  wrap.className="field";
  const lab=document.createElement("label");
  lab.textContent=label;
  const input=document.createElement("input");
+ input.type=type;
  input.placeholder=placeholder;
  input.dataset.field=field;
  wrap.append(lab,input);
  return wrap;
 }
-
-function addWork(data={}){
+function makeTextarea(label,placeholder,field){
+ const wrap=document.createElement("div");
+ wrap.className="field";
+ const lab=document.createElement("label");
+ lab.textContent=label;
+ const input=document.createElement("textarea");
+ input.placeholder=placeholder;
+ input.dataset.field=field;
+ wrap.append(lab,input);
+ return wrap;
+}
+function makeEntryShell(type,titleText){
  const box=document.createElement("div");
  box.className="entry-form";
- box.dataset.entry="work";
+ box.dataset.entry=type;
  const top=document.createElement("div");
  top.className="entry-form-top";
  const title=document.createElement("strong");
- title.textContent="Work Experience";
+ title.textContent=titleText;
  const remove=document.createElement("button");
  remove.type="button";
  remove.className="danger";
  remove.textContent="Remove";
  remove.addEventListener("click",()=>removeEntry(box));
  top.append(title,remove);
-
- const detailsWrap=document.createElement("div");
- detailsWrap.className="field";
- const lab=document.createElement("label");
- lab.textContent="Responsibilities / Achievements";
- const details=document.createElement("textarea");
- details.dataset.field="details";
- details.placeholder="Describe your responsibilities and achievements...";
- detailsWrap.append(lab,details);
-
- box.append(
-  top,
-  makeInput("Job Title","e.g. Sales Assistant","title")
- );
+ box.appendChild(top);
+ return box;
+}
+function makeRow(...fields){
  const row=document.createElement("div");
  row.className="two";
- row.append(
-  makeInput("Company","Company name","company"),
-  makeInput("Duration","2022 - 2025","duration")
- );
- box.append(row,detailsWrap);
- $("work-list").appendChild(box);
- fillEntry(box,data);
- renumberEntries("work");
+ fields.forEach(field=>row.appendChild(field));
+ return row;
 }
 
-function addEducation(data={}){
- const box=document.createElement("div");
- box.className="entry-form";
- box.dataset.entry="education";
- const top=document.createElement("div");
- top.className="entry-form-top";
- const title=document.createElement("strong");
- title.textContent="Education";
- const remove=document.createElement("button");
- remove.type="button";
- remove.className="danger";
- remove.textContent="Remove";
- remove.addEventListener("click",()=>removeEntry(box));
- top.append(title,remove);
-
- const row=document.createElement("div");
- row.className="two";
- row.append(
-  makeInput("Institute","School or university","institute"),
-  makeInput("Year","2020 - 2024","year")
- );
+// Work experience
+function addWork(data={}){
+ const box=makeEntryShell("work","Work Experience");
  box.append(
-  top,
+  makeInput("Job Title","e.g. Sales Assistant","title"),
+  makeRow(
+   makeInput("Company","Company name","company"),
+   makeInput("Duration","2022 - 2025","duration")
+  ),
+  makeTextarea("Responsibilities / Achievements","Describe your responsibilities and achievements...","details")
+ );
+ $("work-list").appendChild(box);
+ fillEntry(box,data);
+ renumberEntries("work","Work Experience");
+}
+
+// Education
+function addEducation(data={}){
+ const box=makeEntryShell("education","Education");
+ box.append(
   makeInput("Degree / Qualification","e.g. Bachelor's Degree","degree"),
-  row
+  makeRow(
+   makeInput("Institute","School or university","institute"),
+   makeInput("Year","2020 - 2024","year")
+  )
  );
  $("education-list").appendChild(box);
  fillEntry(box,data);
- renumberEntries("education");
+ renumberEntries("education","Education");
 }
 
+// Languages
+function addLanguage(data={}){
+ const box=makeEntryShell("language","Language");
+ box.append(
+  makeRow(
+   makeInput("Language","e.g. English","language"),
+   makeInput("Proficiency","e.g. Fluent / Intermediate","level")
+  )
+ );
+ $("language-list").appendChild(box);
+ fillEntry(box,data);
+ renumberEntries("language","Language");
+}
+
+// Certifications
+function addCertification(data={}){
+ const box=makeEntryShell("certification","Certification");
+ box.append(
+  makeInput("Certificate Name","e.g. Google Digital Marketing","name"),
+  makeRow(
+   makeInput("Issuing Organization","e.g. Google","issuer"),
+   makeInput("Year","e.g. 2025","year")
+  )
+ );
+ $("certification-list").appendChild(box);
+ fillEntry(box,data);
+ renumberEntries("certification","Certification");
+}
+
+// Projects
+function addProject(data={}){
+ const box=makeEntryShell("project","Project");
+ box.append(
+  makeInput("Project Name","e.g. Personal Portfolio Website","name"),
+  makeInput("Project Link (optional)","https://example.com","link","url"),
+  makeTextarea("Project Description","Describe what you created and your contribution...","details")
+ );
+ $("project-list").appendChild(box);
+ fillEntry(box,data);
+ renumberEntries("project","Project");
+}
+
+// References
+function addReference(data={}){
+ const box=makeEntryShell("reference","Reference");
+ box.append(
+  makeInput("Full Name","Reference person's name","name"),
+  makeInput("Designation / Relationship","e.g. Manager / Professor","role"),
+  makeInput("Email or Phone","Contact details","contact")
+ );
+ $("reference-list").appendChild(box);
+ fillEntry(box,data);
+ renumberEntries("reference","Reference");
+}
+
+// Shared entry helpers
 function fillEntry(box,data){
  box.querySelectorAll("[data-field]").forEach(input=>{
   input.value=data[input.dataset.field]||"";
@@ -479,22 +590,22 @@ function fillEntry(box,data){
   });
  });
 }
-
-function renumberEntries(type){
+function renumberEntries(type,label){
  document.querySelectorAll(`[data-entry="${type}"]`).forEach((box,index)=>{
-  box.querySelector("strong").textContent=
-   (type==="work"?"Work Experience ":"Education ")+(index+1);
+  box.querySelector("strong").textContent=label+" "+(index+1);
  });
 }
-
 function removeEntry(box){
- box.remove();
  const type=box.dataset.entry;
- renumberEntries(type);
+ box.remove();
+ const labels={
+  work:"Work Experience",education:"Education",language:"Language",
+  certification:"Certification",project:"Project",reference:"Reference"
+ };
+ renumberEntries(type,labels[type]);
  updatePreview();
  saveData();
 }
-
 function getEntries(type){
  return [...document.querySelectorAll(`[data-entry="${type}"]`)].map(box=>{
   const item={};
@@ -504,8 +615,68 @@ function getEntries(type){
   return item;
  });
 }
+function hasAny(item){
+ return Object.values(item).some(value=>String(value||"").trim());
+}
 
-// Roman Urdu: User ki details CV preview mein update hoti hain.
+// Preview helpers
+function addTextEntry(container,item,titleField,metaFields,descriptionField){
+ const entry=document.createElement("div");
+ entry.className="entry";
+ const title=document.createElement("strong");
+ title.textContent=item[titleField]||"";
+ entry.appendChild(title);
+ const meta=metaFields.map(field=>item[field]).filter(Boolean).join(" | ");
+ if(meta){
+  const small=document.createElement("small");
+  small.textContent=meta;
+  entry.appendChild(small);
+ }
+ if(descriptionField&&item[descriptionField]){
+  const p=document.createElement("p");
+  p.textContent=item[descriptionField];
+  entry.appendChild(p);
+ }
+ container.appendChild(entry);
+}
+function makeLink(label,url){
+ const link=document.createElement("a");
+ link.textContent=label;
+ link.href=url;
+ link.target="_blank";
+ link.rel="noopener noreferrer";
+ return link;
+}
+function safeWebUrl(value){
+ if(!value)return "";
+ try{
+  const parsed=new URL(value);
+  return ["http:","https:"].includes(parsed.protocol)?parsed.href:"";
+ }catch(error){return "";}
+}
+function renderLinks(){
+ const linkedin=safeWebUrl($("linkedin").value.trim());
+ const website=safeWebUrl($("website").value.trim());
+ const top=$("p-links-top");
+ const main=$("p-links-main");
+ const side=$("p-links-side");
+ top.replaceChildren();main.replaceChildren();side.replaceChildren();
+
+ const items=[];
+ if(linkedin)items.push({label:"LinkedIn",url:linkedin});
+ if(website)items.push({label:"Portfolio / Website",url:website});
+
+ items.forEach((item,index)=>{
+  if(index){top.append(document.createTextNode(" | "));main.append(document.createTextNode(" | "));side.append(document.createElement("br"));}
+  top.appendChild(makeLink(item.label,item.url));
+  main.appendChild(makeLink(item.label,item.url));
+  side.appendChild(makeLink(item.label,item.url));
+ });
+ $("sidebar-links-section").style.display=items.length?"":"none";
+ return items.length>0;
+}
+
+// Main preview update
 function updatePreview(){
  const get=id=>$(id).value.trim();
  const name=get("name")||"Your Name";
@@ -519,55 +690,88 @@ function updatePreview(){
  $("p-summary").textContent=get("summary");
  $("summary-section").style.display=get("summary")?"":"none";
 
- const work=getEntries("work");
+ const work=getEntries("work").filter(hasAny);
  const workList=$("p-work-list");
  workList.replaceChildren();
- work.forEach(item=>{
-  if(!Object.values(item).some(Boolean))return;
-  const entry=document.createElement("div");
-  entry.className="entry";
-  const strong=document.createElement("strong");
-  strong.textContent=item.title||"Position";
-  const small=document.createElement("small");
-  small.textContent=[item.company,item.duration].filter(Boolean).join(" | ");
-  const p=document.createElement("p");
-  p.textContent=item.details||"";
-  entry.append(strong,small,p);
-  workList.appendChild(entry);
- });
- $("work-section").style.display=workList.children.length?"":"none";
+ work.forEach(item=>addTextEntry(workList,item,"title",["company","duration"],"details"));
+ $("work-section").style.display=work.length?"":"none";
 
- const education=getEntries("education");
+ const education=getEntries("education").filter(hasAny);
  const educationList=$("p-education-list");
  educationList.replaceChildren();
- education.forEach(item=>{
-  if(!Object.values(item).some(Boolean))return;
-  const entry=document.createElement("div");
-  entry.className="entry";
-  const strong=document.createElement("strong");
-  strong.textContent=item.degree||"Qualification";
-  const small=document.createElement("small");
-  small.textContent=[item.institute,item.year].filter(Boolean).join(" | ");
-  entry.append(strong,small);
-  educationList.appendChild(entry);
- });
- $("education-section").style.display=educationList.children.length?"":"none";
+ education.forEach(item=>addTextEntry(educationList,item,"degree",["institute","year"],null));
+ $("education-section").style.display=education.length?"":"none";
 
  const skills=get("skills").split(",").map(s=>s.trim()).filter(Boolean);
  $("p-skills").textContent=skills.join(" • ");
  $("p-skills-side").textContent=skills.join(" • ");
+ $("sidebar-skills-section").style.display=skills.length?"":"none";
  $("skills-main-section").style.display=skills.length?"":"none";
 
+ const languages=getEntries("language").filter(hasAny);
+ const langSide=$("p-languages-side");
+ const langMain=$("p-languages-main");
+ langSide.replaceChildren();langMain.replaceChildren();
+ languages.forEach(item=>{
+  const text=[item.language,item.level].filter(Boolean).join(" — ");
+  const sideLine=document.createElement("div");
+  sideLine.textContent=text;
+  langSide.appendChild(sideLine);
+  const mainLine=document.createElement("p");
+  mainLine.textContent=text;
+  langMain.appendChild(mainLine);
+ });
+ $("sidebar-languages-section").style.display=languages.length?"":"none";
+ $("languages-main-section").style.display=languages.length?"":"none";
+
+ const certifications=getEntries("certification").filter(hasAny);
+ const certList=$("p-certification-list");
+ certList.replaceChildren();
+ certifications.forEach(item=>addTextEntry(certList,item,"name",["issuer","year"],null));
+ $("certification-section").style.display=certifications.length?"":"none";
+
+ const projects=getEntries("project").filter(hasAny);
+ const projectList=$("p-project-list");
+ projectList.replaceChildren();
+ projects.forEach(item=>{
+  const entry=document.createElement("div");
+  entry.className="entry";
+  const title=document.createElement("strong");
+  title.textContent=item.name||"Project";
+  entry.appendChild(title);
+  const url=safeWebUrl(item.link);
+  if(url){
+   const p=document.createElement("p");
+   p.appendChild(makeLink("View Project",url));
+   entry.appendChild(p);
+  }
+  if(item.details){
+   const p=document.createElement("p");
+   p.textContent=item.details;
+   entry.appendChild(p);
+  }
+  projectList.appendChild(entry);
+ });
+ $("project-section").style.display=projects.length?"":"none";
+
+ const references=getEntries("reference").filter(hasAny);
+ const refList=$("p-reference-list");
+ refList.replaceChildren();
+ references.forEach(item=>addTextEntry(refList,item,"name",["role","contact"],null));
+ $("reference-section").style.display=references.length?"":"none";
+
+ const hasLinks=renderLinks();
  const isSidebar=selectedTemplate.includes("layout-sidebar");
  $("main-heading").style.display=isSidebar?"none":"block";
  $("resume-top").style.display=isSidebar?"none":"block";
  $("skills-main-section").style.display=skills.length&&!isSidebar?"":"none";
+ $("languages-main-section").style.display=languages.length&&!isSidebar?"":"none";
+ $("links-main-section").style.display=hasLinks&&!isSidebar?"":"none";
 
  const resume=$("resume");
  resume.className="resume "+selectedTemplate;
  const accent=get("accent")||"#245bd5";
  resume.style.setProperty("--accent",accent);
- // Sidebar templates use their own colour; colour picker controls highlights.
  const current=templates.find(t=>t.id===selectedTemplate);
  resume.style.setProperty("--side",current?current.color:accent);
 
@@ -576,7 +780,7 @@ function updatePreview(){
  });
 }
 
-// Photo upload: image limit 2 MB.
+// Photo upload
 function showPhoto(){
  ["p-photo-top","p-photo-side"].forEach(id=>{
   const img=$(id);
@@ -589,7 +793,6 @@ function showPhoto(){
   }
  });
 }
-
 $("photo").addEventListener("change",function(){
  const file=this.files[0];
  if(!file)return;
@@ -612,40 +815,60 @@ $("photo").addEventListener("change",function(){
  reader.readAsDataURL(file);
 });
 
-// Roman Urdu: CV isi browser mein save aur restore hoti hai.
-function saveData(){
+// Save all details locally
+function collectData(){
  const data={};
- ["name","email","phone","address","job","summary","skills","accent"].forEach(id=>{
+ ["name","email","phone","address","job","summary","skills","accent","linkedin","website"].forEach(id=>{
   data[id]=$(id).value;
  });
  data.work=getEntries("work");
  data.education=getEntries("education");
+ data.languages=getEntries("language");
+ data.certifications=getEntries("certification");
+ data.projects=getEntries("project");
+ data.references=getEntries("reference");
  data.photo=photoData;
  data.template=selectedTemplate;
+ return data;
+}
+function saveData(){
  try{
-  localStorage.setItem("cvToolsSavedCV4",JSON.stringify(data));
+  localStorage.setItem("cvToolsSavedCV5",JSON.stringify(collectData()));
   $("save-status").textContent="CV saved automatically in this browser.";
  }catch(error){
-  $("save-status").textContent="Unable to save. Please use a smaller profile photo.";
+  $("save-status").textContent="Unable to save. Try a smaller profile photo.";
  }
 }
 
+// Load V5 first, then V4/V3/older saved CV
 function loadData(){
  try{
-  // New save first, then older versions if available.
-  const saved=localStorage.getItem("cvToolsSavedCV4")
+  const saved=localStorage.getItem("cvToolsSavedCV5")
+   ||localStorage.getItem("cvToolsSavedCV4")
    ||localStorage.getItem("cvToolsSavedCV3")
    ||localStorage.getItem("cvToolsSavedCV");
   if(!saved)return;
   const data=JSON.parse(saved);
-  ["name","email","phone","address","job","summary","skills","accent"].forEach(id=>{
+
+  ["name","email","phone","address","job","summary","skills","accent","linkedin","website"].forEach(id=>{
    if(data[id]!==undefined)$(id).value=data[id];
   });
   if(data.accent)$("accent").value=data.accent;
-  $("work-list").replaceChildren();
-  $("education-list").replaceChildren();
+
+  const types=["work","education","language","certification","project","reference"];
+  const lists={
+   work:"work-list",education:"education-list",language:"language-list",
+   certification:"certification-list",project:"project-list",reference:"reference-list"
+  };
+  types.forEach(type=>$(lists[type]).replaceChildren());
+
   (data.work||[]).forEach(addWork);
   (data.education||[]).forEach(addEducation);
+  (data.languages||[]).forEach(addLanguage);
+  (data.certifications||[]).forEach(addCertification);
+  (data.projects||[]).forEach(addProject);
+  (data.references||[]).forEach(addReference);
+
   selectedTemplate=templates.some(t=>t.id===data.template)?data.template:"layout-sidebar";
   photoData=data.photo||"";
   showPhoto();
@@ -654,8 +877,8 @@ function loadData(){
  }
 }
 
-// Main fields update live.
-["name","email","phone","address","job","summary","skills","accent"].forEach(id=>{
+// Main profile fields update preview and save
+["name","email","phone","address","job","summary","skills","accent","linkedin","website"].forEach(id=>{
  $(id).addEventListener("input",()=>{
   updatePreview();
   saveData();
@@ -664,19 +887,22 @@ function loadData(){
 
 function clearForm(){
  if(!confirm("Are you sure you want to clear all CV details?"))return;
- ["name","email","phone","address","job","summary","skills"].forEach(id=>$(id).value="");
+ ["name","email","phone","address","job","summary","skills","linkedin","website"].forEach(id=>$(id).value="");
  $("accent").value="#245bd5";
- $("work-list").replaceChildren();
- $("education-list").replaceChildren();
+ ["work","education","language","certification","project","reference"].forEach(type=>{
+  const ids={
+   work:"work-list",education:"education-list",language:"language-list",
+   certification:"certification-list",project:"project-list",reference:"reference-list"
+  };
+  $(ids[type]).replaceChildren();
+ });
  $("photo").value="";
  photoData="";
  selectedTemplate="layout-sidebar";
  addWork();
  addEducation();
  showPhoto();
- localStorage.removeItem("cvToolsSavedCV4");
- localStorage.removeItem("cvToolsSavedCV3");
- localStorage.removeItem("cvToolsSavedCV");
+ ["cvToolsSavedCV5","cvToolsSavedCV4","cvToolsSavedCV3","cvToolsSavedCV"].forEach(key=>localStorage.removeItem(key));
  updatePreview();
  $("save-status").textContent="Form cleared.";
 }
