@@ -1,112 +1,729 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Free CV Maker & PDF Tools</title>
-  <meta name="description" content="Create professional CVs online and use free PDF tools to manage your documents.">
+
+  <title>CV Tools - Free Online CV Maker & PDF Tools</title>
+
+  <meta name="description" content="Create professional CVs, scan documents and manage PDF files with free online tools. No registration required.">
+
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="canonical" href="https://cv-tools-website.pages.dev/">
+
   <style>
-    * { box-sizing: border-box; }
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f5f7fb;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #ffffff;
       color: #172033;
+      line-height: 1.6;
     }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Navigation */
     header {
-      background: white;
-      padding: 22px 7%;
-      border-bottom: 1px solid #e5e9f0;
-      font-size: 23px;
-      font-weight: bold;
+      width: 100%;
+      background: #ffffff;
+      border-bottom: 1px solid #e9edf3;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
-    main {
-      max-width: 1100px;
+
+    .navbar {
+      max-width: 1180px;
       margin: auto;
-      padding: 65px 22px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
     }
+
+    .logo {
+      font-size: 23px;
+      font-weight: 800;
+      color: #172033;
+      letter-spacing: -0.7px;
+    }
+
+    .logo span {
+      color: #3563e9;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-links a {
+      font-size: 14px;
+      font-weight: 600;
+      color: #475269;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: #3563e9;
+    }
+
+    /* Main page width */
+    .container {
+      width: 100%;
+      max-width: 1180px;
+      margin: auto;
+      padding-left: 24px;
+      padding-right: 24px;
+    }
+
+    /* Hero section */
     .hero {
       text-align: center;
-      padding: 35px 0 55px;
+      padding: 95px 20px 85px;
+      background: #f7f9ff;
     }
+
+    .hero-label {
+      display: inline-block;
+      padding: 7px 15px;
+      background: #e9efff;
+      color: #3563e9;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 22px;
+    }
+
     .hero h1 {
-      font-size: clamp(34px, 5vw, 52px);
-      margin-bottom: 18px;
+      max-width: 850px;
+      margin: auto auto 20px;
+      font-size: clamp(36px, 5vw, 58px);
+      line-height: 1.12;
+      letter-spacing: -1.8px;
+      color: #172033;
     }
+
     .hero p {
-      color: #647087;
+      max-width: 700px;
+      margin: auto;
+      color: #657087;
       font-size: 18px;
-      line-height: 1.7;
-      max-width: 680px;
+      line-height: 1.8;
+    }
+
+    .hero-button {
+      display: inline-block;
+      margin-top: 30px;
+      padding: 14px 27px;
+      background: #3563e9;
+      color: white;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 700;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .hero-button:hover {
+      background: #244dc5;
+      transform: translateY(-2px);
+    }
+
+    /* Section headings */
+    .section {
+      padding-top: 80px;
+      padding-bottom: 80px;
+    }
+
+    .section-heading {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 45px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(28px, 4vw, 38px);
+      line-height: 1.2;
+      margin-bottom: 13px;
+      color: #172033;
+    }
+
+    .section-heading p {
+      color: #68748a;
+      font-size: 16px;
+    }
+
+    /* Tool cards */
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+
+    .tool-card {
+      border: 1px solid #e5eaf2;
+      border-radius: 13px;
+      padding: 30px;
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 12px 35px rgba(20, 35, 70, 0.08);
+    }
+
+    .tool-icon {
+      width: 55px;
+      height: 55px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: #edf2ff;
+      color: #3563e9;
+      font-size: 26px;
+      margin-bottom: 22px;
+    }
+
+    .tool-card h3 {
+      font-size: 21px;
+      margin-bottom: 12px;
+      color: #172033;
+    }
+
+    .tool-card p {
+      color: #68748a;
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .tool-button {
+      display: inline-block;
+      padding: 11px 20px;
+      background: #3563e9;
+      color: white;
+      border-radius: 7px;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.2s;
+    }
+
+    .tool-button:hover {
+      background: #244dc5;
+    }
+
+    /* Benefits section */
+    .benefits-section {
+      background: #f7f9fc;
+    }
+
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 35px;
+    }
+
+    .benefit h3 {
+      font-size: 19px;
+      margin-bottom: 10px;
+      color: #172033;
+    }
+
+    .benefit p {
+      color: #68748a;
+      font-size: 15px;
+      line-height: 1.8;
+    }
+
+    .benefit-icon {
+      font-size: 25px;
+      margin-bottom: 13px;
+    }
+
+    /* How it works */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 30px;
+      text-align: center;
+    }
+
+    .step-number {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #eaf0ff;
+      color: #3563e9;
+      border-radius: 50%;
+      font-size: 18px;
+      font-weight: 800;
+      margin: 0 auto 17px;
+    }
+
+    .step h3 {
+      margin-bottom: 9px;
+      font-size: 18px;
+    }
+
+    .step p {
+      color: #68748a;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    /* FAQ */
+    .faq-section {
+      background: #f7f9fc;
+    }
+
+    .faq-list {
+      max-width: 800px;
       margin: auto;
     }
-    .tools {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 22px;
+
+    .faq-item {
+      padding: 22px 0;
+      border-bottom: 1px solid #e1e6ef;
     }
-    .tool {
-      background: white;
-      border: 1px solid #e5e9f0;
-      border-radius: 15px;
-      padding: 28px;
+
+    .faq-item h3 {
+      font-size: 17px;
+      margin-bottom: 9px;
+      color: #172033;
     }
-    .tool h2 { margin-top: 0; }
-    .tool p {
-      color: #647087;
-      line-height: 1.7;
+
+    .faq-item p {
+      font-size: 15px;
+      line-height: 1.8;
+      color: #68748a;
     }
-    .status {
-      display: inline-block;
-      margin-top: 12px;
-      color: #2457d6;
-      font-weight: bold;
-    }
+
+    /* Footer */
     footer {
+      background: #172033;
+      color: #ffffff;
+      padding: 45px 24px 25px;
+    }
+
+    .footer-content {
+      max-width: 1180px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 35px;
+      flex-wrap: wrap;
+    }
+
+    .footer-brand {
+      max-width: 400px;
+    }
+
+    .footer-brand h2 {
+      font-size: 23px;
+      margin-bottom: 12px;
+    }
+
+    .footer-brand p {
+      color: #b7c0d0;
+      font-size: 14px;
+      line-height: 1.8;
+    }
+
+    .footer-links h3 {
+      font-size: 16px;
+      margin-bottom: 13px;
+    }
+
+    .footer-links a {
+      display: block;
+      color: #b7c0d0;
+      font-size: 14px;
+      margin-bottom: 9px;
+    }
+
+    .footer-links a:hover {
+      color: #ffffff;
+    }
+
+    .copyright {
+      max-width: 1180px;
+      margin: 35px auto 0;
+      padding-top: 20px;
+      border-top: 1px solid #354057;
+      color: #aeb8c9;
       text-align: center;
-      padding: 30px;
-      color: #758096;
+      font-size: 13px;
+    }
+
+    /* Tablet and mobile */
+    @media (max-width: 850px) {
+      .tools-grid,
+      .benefits-grid,
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .hero {
+        padding-top: 75px;
+        padding-bottom: 70px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .navbar {
+        padding: 15px 18px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-links {
+        gap: 19px;
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+
+      .nav-links a {
+        font-size: 13px;
+      }
+
+      .hero {
+        padding: 65px 18px;
+      }
+
+      .hero h1 {
+        letter-spacing: -1px;
+      }
+
+      .hero p {
+        font-size: 16px;
+      }
+
+      .container {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .section {
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+
+      .tools-grid,
+      .benefits-grid,
+      .steps-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tool-card {
+        padding: 25px;
+      }
+
+      .footer-content {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
+
 <body>
 
-  <header>CV Tools</header>
+  <!-- Website navigation -->
+  <header>
+    <nav class="navbar">
+      <a href="index.html" class="logo">CV <span>Tools</span></a>
+
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="#tools">Our Tools</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQs</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main introduction -->
+  <section class="hero">
+    <div class="hero-label">Free Online Productivity Tools</div>
+
+    <h1>Simple Tools to Create CVs and Manage PDF Documents</h1>
+
+    <p>
+      Create professional resumes, scan your documents and manage PDF files
+      with easy-to-use online tools. Get your work done without complicated
+      software or unnecessary steps.
+    </p>
+
+    <a href="#tools" class="hero-button">Explore Free Tools</a>
+  </section>
 
   <main>
-    <section class="hero">
-      <h1>Create Your Professional CV Online</h1>
-      <p>
-        Build a professional CV, prepare scanned documents,
-        and manage your PDF files with simple online tools.
-      </p>
+
+    <!-- Available tools -->
+    <section class="section container" id="tools">
+
+      <div class="section-heading">
+        <h2>Explore Our Free Online Tools</h2>
+        <p>
+          Choose a tool and get started. Our simple online utilities
+          help you create and manage important documents.
+        </p>
+      </div>
+
+      <div class="tools-grid">
+
+        <article class="tool-card">
+          <div class="tool-icon">📄</div>
+
+          <h3>Free CV Maker</h3>
+
+          <p>
+            Create a professional CV with customizable templates,
+            personal details, work experience, education and skills.
+            Download your finished resume as a PDF.
+          </p>
+
+          <a href="cv-maker.html" class="tool-button">Open CV Maker</a>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-icon">📷</div>
+
+          <h3>PDF Scanner</h3>
+
+          <p>
+            Turn photos and scanned documents into PDF files.
+            Capture pages with your camera, crop images, adjust filters
+            and organize your scanned documents.
+          </p>
+
+          <a href="pdf-scanner.html" class="tool-button">Open PDF Scanner</a>
+        </article>
+
+        <article class="tool-card">
+          <div class="tool-icon">🗂️</div>
+
+          <h3>PDF Tools</h3>
+
+          <p>
+            Manage your PDF documents with useful features.
+            Merge multiple PDFs, extract pages, split files,
+            rotate pages and organize documents.
+          </p>
+
+          <a href="pdf-tools.html" class="tool-button">Open PDF Tools</a>
+        </article>
+
+      </div>
     </section>
 
-    <section class="tools">
-      <article class="tool">
-        <h2>CV Maker</h2>
-        <p>Create a professional resume using attractive templates
-        and download it as a PDF.</p>
-        <span class="status">Coming Soon</span>
-      </article>
+    <!-- Benefits -->
+    <section class="benefits-section">
+      <div class="section container">
 
-      <article class="tool">
-        <h2>PDF Scanner</h2>
-        <p>Scan documents using your camera or upload images
-        and turn them into PDF files.</p>
-        <span class="status">Coming Soon</span>
-      </article>
+        <div class="section-heading">
+          <h2>Why Use CV Tools?</h2>
+          <p>
+            Practical online utilities designed to make everyday
+            document tasks easier.
+          </p>
+        </div>
 
-      <article class="tool">
-        <h2>PDF Tools</h2>
-        <p>Merge, split, rotate and manage your PDF documents
-        in one place.</p>
-        <span class="status">Coming Soon</span>
-      </article>
+        <div class="benefits-grid">
+
+          <div class="benefit">
+            <div class="benefit-icon">⚡</div>
+            <h3>Easy to Use</h3>
+            <p>
+              Simple interfaces help you complete common document
+              tasks without complicated software.
+            </p>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">🌐</div>
+            <h3>Works Online</h3>
+            <p>
+              Open the tools in a modern web browser on your
+              computer, tablet or mobile device.
+            </p>
+          </div>
+
+          <div class="benefit">
+            <div class="benefit-icon">🔒</div>
+            <h3>Browser-Based Processing</h3>
+            <p>
+              Our current tools process documents directly in your
+              browser rather than requiring a document upload to our server.
+            </p>
+          </div>
+
+        </div>
+      </div>
     </section>
+
+    <!-- How it works -->
+    <section class="section container" id="how-it-works">
+
+      <div class="section-heading">
+        <h2>How It Works</h2>
+        <p>
+          Start using our online tools in just a few simple steps.
+        </p>
+      </div>
+
+      <div class="steps-grid">
+
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Choose a Tool</h3>
+          <p>
+            Select the CV Maker, PDF Scanner or PDF Tools
+            according to your needs.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Add Your Information</h3>
+          <p>
+            Enter your details, upload documents or select
+            the PDF files you want to manage.
+          </p>
+        </div>
+
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Create and Download</h3>
+          <p>
+            Complete your task and download your generated
+            CV or PDF document.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Frequently asked questions -->
+    <section class="faq-section" id="faq">
+      <div class="section container">
+
+        <div class="section-heading">
+          <h2>Frequently Asked Questions</h2>
+          <p>
+            Find answers to common questions about our online tools.
+          </p>
+        </div>
+
+        <div class="faq-list">
+
+          <div class="faq-item">
+            <h3>Are the tools free to use?</h3>
+            <p>
+              Yes. The tools available on this website are currently
+              provided free of charge.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I create a CV online?</h3>
+            <p>
+              Yes. Use our CV Maker to enter your personal information,
+              add your experience and education, choose a template
+              and download your CV as a PDF.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I convert photos into a PDF?</h3>
+            <p>
+              Yes. Our PDF Scanner lets you upload images or capture
+              documents with your camera and create a PDF file.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>What can I do with the PDF Tools?</h3>
+            <p>
+              You can merge PDF files, extract selected pages,
+              split documents, rotate pages and organize PDF files.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Do I need to install any software?</h3>
+            <p>
+              No. You can access the tools directly through a
+              supported web browser without installing a desktop application.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
   </main>
 
-  <footer>© 2026 CV Tools. All rights reserved.</footer>
+  <!-- Website footer -->
+  <footer>
+
+    <div class="footer-content">
+
+      <div class="footer-brand">
+        <h2>CV Tools</h2>
+        <p>
+          Free online tools to create professional CVs,
+          scan documents and manage PDF files with ease.
+        </p>
+      </div>
+
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <a href="index.html">Home</a>
+        <a href="cv-maker.html">CV Maker</a>
+        <a href="pdf-scanner.html">PDF Scanner</a>
+        <a href="pdf-tools.html">PDF Tools</a>
+      </div>
+
+      <div class="footer-links">
+        <h3>Website</h3>
+        <a href="#tools">Our Tools</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#faq">FAQs</a>
+      </div>
+
+    </div>
+
+    <div class="copyright">
+      © 2026 CV Tools. All rights reserved.
+    </div>
+
+  </footer>
 
 </body>
 </html>
