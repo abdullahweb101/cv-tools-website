@@ -3,10 +3,11 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#f5f7fc">
-<title>PDF Scanner - Scan Documents Online</title>
-<meta name="description" content="Scan documents using your camera or upload images. Crop, enhance, reorder and convert scans into PDF files online.">
+<title>PDF Scanner - Scan, Edit & Convert Documents</title>
+<meta name="description" content="Scan documents online, crop pages, apply photo filters, adjust brightness and contrast, extract text and download PDF files.">
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
@@ -27,7 +28,6 @@ main{max-width:1100px;margin:35px auto;padding:0 18px}
 .actions{display:flex;gap:10px;flex-wrap:wrap}
 button,.upload-label{border:0;border-radius:8px;padding:11px 16px;font-weight:700;font-size:13px;cursor:pointer;background:#edf2ff;color:#2457d6;display:inline-flex;align-items:center;justify-content:center;gap:6px}
 button.primary{background:#2457e6;color:#fff}
-button.dark{background:#26344d;color:white}
 button.danger{background:#fff0f0;color:#d73535}
 button:disabled{opacity:.45;cursor:not-allowed}
 .upload-label{background:#2457e6;color:#fff}
@@ -36,7 +36,7 @@ input[type=file]{display:none}
 video{width:100%;max-height:430px;background:#111;border-radius:10px;object-fit:contain}
 .camera-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
 .settings{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-.setting label{display:block;font-size:12px;font-weight:700;color:#586780;margin-bottom:7px}
+.setting label,.adjustment label{display:block;font-size:12px;font-weight:700;color:#586780;margin-bottom:7px}
 select,input[type=text]{width:100%;padding:11px;border:1px solid #dce2ed;border-radius:8px;background:#fff;color:#172238}
 .pages-head{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:15px}
 .pages-head h2{margin:0}
@@ -54,6 +54,10 @@ select,input[type=text]{width:100%;padding:11px;border:1px solid #dce2ed;border-
 .progress div{height:100%;width:0;background:#2457e6;transition:width .2s}
 .status{font-size:13px;color:#64728a;margin-top:10px;line-height:1.5}
 .ocr-output{display:none;width:100%;min-height:150px;margin-top:12px;padding:12px;border:1px solid #dce2ed;border-radius:8px;font-family:Arial;line-height:1.5}
+.adjustment-panel{display:none;background:#f7f9fd;padding:12px;border-radius:9px;margin-top:10px}
+.adjustment{margin:12px 0}
+.adjustment input{width:100%;accent-color:#2457e6}
+.adjustment-line{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:#64728a}
 .modal{display:none;position:fixed;inset:0;background:#101827dd;z-index:1000;align-items:center;justify-content:center;padding:15px}
 .modal-content{background:#fff;border-radius:13px;padding:18px;width:min(850px,100%);max-height:95vh;overflow:auto}
 .modal-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px}
@@ -81,7 +85,7 @@ footer{text-align:center;color:#8792a6;font-size:12px;padding:25px}
 <main>
 <section class="intro">
 <h1>PDF Document Scanner</h1>
-<p>Scan documents, crop pages, enhance images and create professional PDF files.</p>
+<p>Scan, crop, enhance, edit and convert your documents into PDF files.</p>
 </section>
 
 <section class="panel">
@@ -91,7 +95,6 @@ footer{text-align:center;color:#8792a6;font-size:12px;padding:25px}
 <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
 <button class="primary" id="openCamera">📷 Open Camera</button>
 </div>
-
 <div class="camera-box" id="cameraBox">
 <video id="video" autoplay playsinline></video>
 <div class="camera-actions">
@@ -136,11 +139,60 @@ footer{text-align:center;color:#8792a6;font-size:12px;padding:25px}
 </div>
 <div class="empty" id="empty">No pages added yet. Upload images or use your camera.</div>
 <div class="page-list" id="pageList"></div>
-<p class="status">Tip: Drag and drop pages to change their order. Use the page buttons to crop, rotate, filter or remove a page.</p>
+<p class="status">Drag pages to reorder them. Each page has its own crop, rotation and filter settings.</p>
 </section>
 
 <section class="panel">
-<h2>4. Create Your PDF</h2>
+<h2>4. Image Filters & Adjustments</h2>
+<p class="status">Select a page below to edit its filters and image appearance.</p>
+<div class="setting">
+<label for="editPage">Choose Page</label>
+<select id="editPage">
+<option value="">Select a page first</option>
+</select>
+</div>
+
+<div id="filterEditor" class="adjustment-panel">
+<div class="setting">
+<label for="filterSelect">Choose Filter</label>
+<select id="filterSelect">
+<option value="original">Original</option>
+<option value="bw">Black & White</option>
+<option value="gray">Grayscale</option>
+<option value="enhanced">Enhanced Document</option>
+<option value="contrast">High Contrast</option>
+<option value="bright">Bright</option>
+<option value="soft">Soft</option>
+<option value="vintage">Vintage</option>
+<option value="warm">Warm</option>
+<option value="cool">Cool</option>
+<option value="dark">Dark</option>
+</select>
+</div>
+
+<div class="adjustment">
+<div class="adjustment-line"><label for="brightness">Brightness</label><span id="brightnessValue">100%</span></div>
+<input type="range" id="brightness" min="50" max="160" value="100">
+</div>
+
+<div class="adjustment">
+<div class="adjustment-line"><label for="contrast">Contrast</label><span id="contrastValue">100%</span></div>
+<input type="range" id="contrast" min="50" max="200" value="100">
+</div>
+
+<div class="adjustment">
+<div class="adjustment-line"><label for="saturation">Saturation</label><span id="saturationValue">100%</span></div>
+<input type="range" id="saturation" min="0" max="200" value="100">
+</div>
+
+<div class="actions">
+<button class="primary" id="resetAdjustments">Reset Adjustments</button>
+</div>
+</div>
+</section>
+
+<section class="panel">
+<h2>5. Create Your PDF</h2>
 <div class="bottom-actions">
 <button class="primary" id="createPdf">Create & Download PDF</button>
 <button id="ocrAll">Extract Text (OCR)</button>
@@ -156,7 +208,6 @@ footer{text-align:center;color:#8792a6;font-size:12px;padding:25px}
 
 <footer>© 2026 CV Tools. All rights reserved.</footer>
 
-<!-- Crop Editor -->
 <div class="modal" id="cropModal">
 <div class="modal-content">
 <div class="modal-top">
@@ -174,84 +225,116 @@ footer{text-align:center;color:#8792a6;font-size:12px;padding:25px}
 </div>
 
 <script>
-const $ = id => document.getElementById(id);
+const $=id=>document.getElementById(id);
 
-let pages = [];
-let cameraStream = null;
-let facingMode = "environment";
-let cropper = null;
-let cropPageId = null;
-let sortable = null;
-let nextId = 1;
+let pages=[];
+let cameraStream=null;
+let facingMode="environment";
+let cropper=null;
+let cropPageId=null;
+let sortable=null;
+let nextId=1;
+let ocrCurrentPage=1;
 
-const fileInput = $("fileInput");
-const pageList = $("pageList");
-const video = $("video");
+const video=$("video");
 
 function setStatus(message){
-  $("status").textContent = message;
+  $("status").textContent=message;
 }
 
 function setProgress(value){
-  $("progress").style.display = "block";
-  $("progressBar").style.width = Math.max(0,Math.min(100,value))+"%";
+  $("progress").style.display="block";
+  $("progressBar").style.width=Math.max(0,Math.min(100,value))+"%";
 }
 
 function hideProgress(){
-  $("progress").style.display = "none";
-  $("progressBar").style.width = "0%";
+  $("progress").style.display="none";
+  $("progressBar").style.width="0%";
 }
 
 function makePage(src,name){
   return {
     id:nextId++,
     src,
-    name:name || "Scanned Page",
+    name:name||"Scanned Page",
     rotation:0,
-    filter:"original"
+    filter:"original",
+    brightness:100,
+    contrast:100,
+    saturation:100
   };
 }
 
 function fileToDataURL(file){
   return new Promise((resolve,reject)=>{
-    const reader = new FileReader();
-    reader.onload = ()=>resolve(reader.result);
-    reader.onerror = reject;
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
     reader.readAsDataURL(file);
   });
 }
 
-fileInput.addEventListener("change",async e=>{
-  const files = Array.from(e.target.files || []);
-  if(!files.length)return;
-
+/* Upload images */
+$("fileInput").addEventListener("change",async e=>{
+  const files=Array.from(e.target.files||[]);
   for(const file of files){
-    if(!file.type.startsWith("image/")){
-      alert(file.name+" is not a supported image.");
-      continue;
-    }
     if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-      alert("Please use JPG, PNG or WebP images.");
+      alert(file.name+" is not supported. Use JPG, PNG or WebP.");
       continue;
     }
-    if(file.size > 15*1024*1024){
+    if(file.size>15*1024*1024){
       alert(file.name+" is larger than 15 MB.");
       continue;
     }
     try{
-      const src = await fileToDataURL(file);
+      const src=await fileToDataURL(file);
       pages.push(makePage(src,file.name));
     }catch(err){
       alert("Could not read "+file.name);
     }
   }
-
-  fileInput.value="";
+  e.target.value="";
   renderPages();
 });
 
+/* Filter definitions */
+const filterNames={
+  original:"Original",
+  bw:"Black & White",
+  gray:"Grayscale",
+  enhanced:"Enhanced Document",
+  contrast:"High Contrast",
+  bright:"Bright",
+  soft:"Soft",
+  vintage:"Vintage",
+  warm:"Warm",
+  cool:"Cool",
+  dark:"Dark"
+};
+
+function filterCss(page){
+  const presets={
+    original:"",
+    bw:"grayscale(1) contrast(1.5)",
+    gray:"grayscale(1)",
+    enhanced:"grayscale(1) contrast(1.35) brightness(1.08)",
+    contrast:"contrast(1.65)",
+    bright:"brightness(1.25)",
+    soft:"brightness(1.08) contrast(.88) saturate(.9)",
+    vintage:"sepia(.55) contrast(.9) saturate(.8)",
+    warm:"sepia(.25) saturate(1.35)",
+    cool:"hue-rotate(12deg) saturate(.9)",
+    dark:"brightness(.78) contrast(1.15)"
+  };
+  return (presets[page.filter]||"")+
+    " brightness("+page.brightness+"%)"+
+    " contrast("+page.contrast+"%)"+
+    " saturate("+page.saturation+"%)";
+}
+
 function renderPages(){
-  pageList.innerHTML="";
+  const list=$("pageList");
+  list.innerHTML="";
   $("empty").style.display=pages.length?"none":"block";
 
   pages.forEach((page,index)=>{
@@ -266,7 +349,7 @@ function renderPages(){
     img.src=page.src;
     img.alt="Scanned page "+(index+1);
     img.style.transform="rotate("+page.rotation+"deg)";
-    img.style.filter=filterCss(page.filter);
+    img.style.filter=filterCss(page);
     preview.appendChild(img);
 
     const name=document.createElement("div");
@@ -280,7 +363,7 @@ function renderPages(){
       ["↶","Rotate left",()=>rotatePage(page.id,-90)],
       ["↷","Rotate right",()=>rotatePage(page.id,90)],
       ["Crop","Crop page",()=>openCrop(page.id)],
-      ["Filter","Change filter",()=>changeFilter(page.id)],
+      ["Edit","Edit filters",()=>selectEditPage(page.id)],
       ["↑","Move up",()=>movePage(index,-1)],
       ["↓","Move down",()=>movePage(index,1)],
       ["×","Remove page",()=>removePage(page.id)]
@@ -296,17 +379,18 @@ function renderPages(){
     });
 
     card.append(preview,name,tools);
-    pageList.appendChild(card);
+    list.appendChild(card);
   });
 
-  if(sortable)sortable.destroy();
+  updateEditPageOptions();
 
+  if(sortable)sortable.destroy();
   if(window.Sortable){
-    sortable=new Sortable(pageList,{
+    sortable=new Sortable(list,{
       animation:150,
       draggable:".page-item",
       onEnd:()=>{
-        const ids=Array.from(pageList.children).map(el=>Number(el.dataset.id));
+        const ids=Array.from(list.children).map(el=>Number(el.dataset.id));
         pages=ids.map(id=>pages.find(p=>p.id===id)).filter(Boolean);
         renderPages();
       }
@@ -314,13 +398,94 @@ function renderPages(){
   }
 }
 
-function filterCss(filter){
-  if(filter==="bw")return "grayscale(1) contrast(1.35)";
-  if(filter==="gray")return "grayscale(1)";
-  if(filter==="enhanced")return "contrast(1.25) brightness(1.08) saturate(.75)";
-  return "none";
+function updateEditPageOptions(){
+  const select=$("editPage");
+  const oldValue=select.value;
+  select.innerHTML='<option value="">Select a page</option>';
+
+  pages.forEach((page,index)=>{
+    const option=document.createElement("option");
+    option.value=page.id;
+    option.textContent="Page "+(index+1)+" - "+page.name;
+    select.appendChild(option);
+  });
+
+  if(pages.some(p=>String(p.id)===oldValue)){
+    select.value=oldValue;
+  }else if(pages.length){
+    select.value=String(pages[0].id);
+  }
+
+  loadEditor();
 }
 
+/* Page editing */
+function selectEditPage(id){
+  $("editPage").value=String(id);
+  loadEditor();
+  $("filterEditor").scrollIntoView({behavior:"smooth",block:"center"});
+}
+
+function loadEditor(){
+  const page=pages.find(p=>String(p.id)===$("editPage").value);
+  $("filterEditor").style.display=page?"block":"none";
+  if(!page)return;
+
+  $("filterSelect").value=page.filter;
+  $("brightness").value=page.brightness;
+  $("contrast").value=page.contrast;
+  $("saturation").value=page.saturation;
+  updateSliderLabels();
+}
+
+$("editPage").addEventListener("change",loadEditor);
+
+function updateSliderLabels(){
+  $("brightnessValue").textContent=$("brightness").value+"%";
+  $("contrastValue").textContent=$("contrast").value+"%";
+  $("saturationValue").textContent=$("saturation").value+"%";
+}
+
+function updateSelectedPage(){
+  const page=pages.find(p=>String(p.id)===$("editPage").value);
+  if(!page)return;
+
+  page.filter=$("filterSelect").value;
+  page.brightness=Number($("brightness").value);
+  page.contrast=Number($("contrast").value);
+  page.saturation=Number($("saturation").value);
+
+  updateSliderLabels();
+  updatePagePreview(page.id);
+}
+
+function updatePagePreview(id){
+  const page=pages.find(p=>p.id===id);
+  if(!page)return;
+  const card=Array.from(pageList.children).find(el=>Number(el.dataset.id)===id);
+  const img=card?.querySelector(".preview img");
+  if(img)img.style.filter=filterCss(page);
+}
+
+$("filterSelect").addEventListener("change",updateSelectedPage);
+["brightness","contrast","saturation"].forEach(id=>{
+  $(id).addEventListener("input",updateSelectedPage);
+});
+
+$("resetAdjustments").addEventListener("click",()=>{
+  const page=pages.find(p=>String(p.id)===$("editPage").value);
+  if(!page)return;
+
+  page.filter="original";
+  page.brightness=100;
+  page.contrast=100;
+  page.saturation=100;
+  loadEditor();
+  updatePagePreview(page.id);
+  setStatus("Image adjustments reset.");
+});
+
+/* Rotation, moving and removing */
 function rotatePage(id,angle){
   const page=pages.find(p=>p.id===id);
   if(!page)return;
@@ -351,22 +516,6 @@ $("removeAll").addEventListener("click",()=>{
   }
 });
 
-function changeFilter(id){
-  const page=pages.find(p=>p.id===id);
-  if(!page)return;
-  const options=["original","bw","gray","enhanced"];
-  const names={
-    original:"Original",
-    bw:"Black & White",
-    gray:"Grayscale",
-    enhanced:"Enhanced"
-  };
-  const current=options.indexOf(page.filter);
-  page.filter=options[(current+1)%options.length];
-  renderPages();
-  setStatus("Page filter: "+names[page.filter]);
-}
-
 /* Camera */
 async function startCamera(){
   try{
@@ -392,7 +541,7 @@ function stopCamera(){
 }
 
 $("openCamera").addEventListener("click",()=>{
-  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
     alert("Camera is not supported in this browser.");
     return;
   }
@@ -407,16 +556,16 @@ $("switchCamera").addEventListener("click",()=>{
 });
 
 $("capture").addEventListener("click",()=>{
-  if(!cameraStream || !video.videoWidth)return;
+  if(!cameraStream||!video.videoWidth)return;
   const canvas=document.createElement("canvas");
   canvas.width=video.videoWidth;
   canvas.height=video.videoHeight;
   canvas.getContext("2d").drawImage(video,0,0);
-  pages.push(makePage(canvas.toDataURL("image/jpeg",0.94),"Camera Scan "+(pages.length+1)));
+  pages.push(makePage(canvas.toDataURL("image/jpeg",.94),"Camera Scan "+(pages.length+1)));
   renderPages();
 });
 
-/* Crop editor */
+/* Crop */
 function openCrop(id){
   const page=pages.find(p=>p.id===id);
   if(!page)return;
@@ -432,7 +581,7 @@ function openCrop(id){
     if(cropper)cropper.destroy();
     cropper=new Cropper($("cropImage"),{
       viewMode:1,
-      autoCropArea:0.9,
+      autoCropArea:.9,
       responsive:true,
       background:false,
       movable:true,
@@ -451,10 +600,7 @@ function closeCrop(){
 }
 
 $("closeCrop").addEventListener("click",closeCrop);
-
-$("resetCrop").addEventListener("click",()=>{
-  if(cropper)cropper.reset();
-});
+$("resetCrop").addEventListener("click",()=>{if(cropper)cropper.reset()});
 
 $("applyCrop").addEventListener("click",()=>{
   if(!cropper)return;
@@ -473,14 +619,14 @@ $("applyCrop").addEventListener("click",()=>{
     return;
   }
 
-  page.src=canvas.toDataURL("image/jpeg",0.95);
+  page.src=canvas.toDataURL("image/jpeg",.95);
   page.rotation=0;
   closeCrop();
   renderPages();
   setStatus("Crop applied successfully.");
 });
 
-/* Prepare image, rotation and filters */
+/* Prepare image with rotation and selected filter */
 function loadImage(src){
   return new Promise((resolve,reject)=>{
     const img=new Image();
@@ -512,13 +658,24 @@ async function pageToCanvas(page,qualityMode){
   ctx.translate(canvas.width/2,canvas.height/2);
   ctx.rotate(angle*Math.PI/180);
 
-  if(page.filter==="bw"){
-    ctx.filter="grayscale(1) contrast(1.35)";
-  }else if(page.filter==="gray"){
-    ctx.filter="grayscale(1)";
-  }else if(page.filter==="enhanced"){
-    ctx.filter="contrast(1.25) brightness(1.08) saturate(.75)";
-  }
+  const filters={
+    original:"",
+    bw:"grayscale(1) contrast(1.5)",
+    gray:"grayscale(1)",
+    enhanced:"grayscale(1) contrast(1.35) brightness(1.08)",
+    contrast:"contrast(1.65)",
+    bright:"brightness(1.25)",
+    soft:"brightness(1.08) contrast(.88) saturate(.9)",
+    vintage:"sepia(.55) contrast(.9) saturate(.8)",
+    warm:"sepia(.25) saturate(1.35)",
+    cool:"hue-rotate(12deg) saturate(.9)",
+    dark:"brightness(.78) contrast(1.15)"
+  };
+
+  ctx.filter=(filters[page.filter]||"")+
+    " brightness("+page.brightness+"%)"+
+    " contrast("+page.contrast+"%)"+
+    " saturate("+page.saturation+"%)";
 
   ctx.drawImage(img,-width/2,-height/2,width,height);
   ctx.filter="none";
@@ -532,8 +689,8 @@ $("createPdf").addEventListener("click",async()=>{
     return;
   }
 
-  if(!window.jspdf || !window.jspdf.jsPDF){
-    alert("PDF library did not load. Please refresh the page and try again.");
+  if(!window.jspdf||!window.jspdf.jsPDF){
+    alert("PDF library did not load. Refresh the page and try again.");
     return;
   }
 
@@ -546,39 +703,34 @@ $("createPdf").addEventListener("click",async()=>{
     const {jsPDF}=window.jspdf;
     const size=$("paperSize").value;
     const quality=$("quality").value;
-    const orientation="portrait";
-
-    const compression=quality==="high"?0.96:quality==="balanced"?0.82:0.62;
+    const compression=quality==="high"?.96:quality==="balanced"?.82:.62;
     let doc=null;
 
     for(let i=0;i<pages.length;i++){
       const canvas=await pageToCanvas(pages[i],quality);
       const imageData=canvas.toDataURL("image/jpeg",compression);
 
-      let pageFormat=size;
-      let pageOrientation=orientation;
+      let format=size;
+      let orientation="portrait";
 
       if(size==="fit"){
-        pageFormat=[
-          canvas.width*72/96,
-          canvas.height*72/96
-        ];
-        pageOrientation=canvas.width>canvas.height?"landscape":"portrait";
+        format=[canvas.width*72/96,canvas.height*72/96];
+        orientation=canvas.width>canvas.height?"landscape":"portrait";
       }else if(size==="letter"){
-        pageFormat="letter";
+        format="letter";
       }else{
-        pageFormat="a4";
+        format="a4";
       }
 
       if(!doc){
         doc=new jsPDF({
-          orientation:pageOrientation,
+          orientation,
           unit:"pt",
-          format:pageFormat,
+          format,
           compress:true
         });
       }else{
-        doc.addPage(pageFormat,pageOrientation);
+        doc.addPage(format,orientation);
       }
 
       const pageWidth=doc.internal.pageSize.getWidth();
@@ -593,10 +745,16 @@ $("createPdf").addEventListener("click",async()=>{
         drawHeight=canvas.height*ratio;
       }
 
-      const x=(pageWidth-drawWidth)/2;
-      const y=(pageHeight-drawHeight)/2;
-
-      doc.addImage(imageData,"JPEG",x,y,drawWidth,drawHeight,undefined,"FAST");
+      doc.addImage(
+        imageData,
+        "JPEG",
+        (pageWidth-drawWidth)/2,
+        (pageHeight-drawHeight)/2,
+        drawWidth,
+        drawHeight,
+        undefined,
+        "FAST"
+      );
 
       setProgress(((i+1)/pages.length)*100);
       setStatus("Creating PDF: "+(i+1)+" of "+pages.length+" pages...");
@@ -611,7 +769,7 @@ $("createPdf").addEventListener("click",async()=>{
     setStatus("Your PDF is ready. Check your Downloads folder.");
   }catch(err){
     console.error(err);
-    alert("PDF could not be created. Please try again with smaller images.");
+    alert("PDF could not be created. Try again with smaller images.");
     setStatus("There was a problem creating your PDF.");
   }finally{
     btn.disabled=false;
@@ -619,7 +777,7 @@ $("createPdf").addEventListener("click",async()=>{
   }
 });
 
-/* OCR */
+/* OCR - English */
 $("ocrAll").addEventListener("click",async()=>{
   if(!pages.length){
     alert("Please add images before extracting text.");
@@ -627,7 +785,7 @@ $("ocrAll").addEventListener("click",async()=>{
   }
 
   if(!window.Tesseract){
-    alert("OCR library could not load. Please refresh and try again.");
+    alert("OCR library could not load. Refresh and try again.");
     return;
   }
 
@@ -638,13 +796,15 @@ $("ocrAll").addEventListener("click",async()=>{
   $("ocrOutput").value="";
   setProgress(1);
 
+  let worker;
+
   try{
     setStatus("Loading English text recognition...");
-    const worker=await Tesseract.createWorker("eng",1,{
+    worker=await Tesseract.createWorker("eng",1,{
       logger:m=>{
         if(m.status==="recognizing text"){
-          const pagePart=(pages.length?((ocrCurrentPage-1)/pages.length):0);
-          setProgress((pagePart+(m.progress/pages.length))*100);
+          const part=(ocrCurrentPage-1+m.progress)/pages.length;
+          setProgress(part*100);
           setStatus("Recognizing text on page "+ocrCurrentPage+" of "+pages.length+"...");
         }
       }
@@ -659,8 +819,6 @@ $("ocrAll").addEventListener("click",async()=>{
       allText+="--- Page "+(i+1)+" ---\n"+result.data.text.trim()+"\n\n";
     }
 
-    await worker.terminate();
-
     $("ocrOutput").value=allText.trim();
     $("ocrActions").style.display="flex";
     setStatus("Text extraction completed. You can copy the recognized text.");
@@ -669,12 +827,11 @@ $("ocrAll").addEventListener("click",async()=>{
     setStatus("OCR could not complete. Please try again.");
     alert("Text recognition failed. Check your internet connection and try again.");
   }finally{
+    if(worker)await worker.terminate();
     btn.disabled=false;
     setTimeout(hideProgress,1200);
   }
 });
-
-let ocrCurrentPage=1;
 
 $("copyText").addEventListener("click",async()=>{
   const text=$("ocrOutput").value;
@@ -691,9 +848,7 @@ $("copyText").addEventListener("click",async()=>{
 });
 
 window.addEventListener("beforeunload",stopCamera);
-
 renderPages();
 </script>
-
 </body>
 </html>
