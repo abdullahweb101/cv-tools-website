@@ -1,22 +1,34 @@
 {
-  "name": "CV Tools Website",
-  "description": "Free online tools for creating professional CVs, scanning documents, and managing PDF files.",
-  "resources": [
+  "entries": [
     {
-      "name": "Home",
-      "url": "https://cv-tools-website.pages.dev/"
+      "identifier": "urn:air:cv-tools-website.pages.dev:tool:cv-maker",
+      "displayName": "Free Online CV Maker",
+      "type": "text/html",
+      "url": "https://cv-tools-website.pages.dev/cv-maker.html",
+      "representativeQueries": [
+        "Create a professional CV online for free",
+        "Make a resume for my first job"
+      ]
     },
     {
-      "name": "CV Maker",
-      "url": "https://cv-tools-website.pages.dev/cv-maker.html"
+      "identifier": "urn:air:cv-tools-website.pages.dev:tool:pdf-scanner",
+      "displayName": "Online PDF Scanner",
+      "type": "text/html",
+      "url": "https://cv-tools-website.pages.dev/pdf-scanner.html",
+      "representativeQueries": [
+        "Scan documents and convert images to PDF",
+        "Create a PDF from phone camera photos"
+      ]
     },
     {
-      "name": "PDF Scanner",
-      "url": "https://cv-tools-website.pages.dev/pdf-scanner.html"
-    },
-    {
-      "name": "PDF Tools",
-      "url": "https://cv-tools-website.pages.dev/pdf-tools.html"
+      "identifier": "urn:air:cv-tools-website.pages.dev:tool:pdf-tools",
+      "displayName": "Online PDF Tools",
+      "type": "text/html",
+      "url": "https://cv-tools-website.pages.dev/pdf-tools.html",
+      "representativeQueries": [
+        "Merge multiple PDF files online",
+        "Split and extract pages from PDF files"
+      ]
     }
   ]
 }
