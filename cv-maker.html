@@ -85,12 +85,39 @@ button:focus,input:focus,textarea:focus,select:focus{outline:2px solid #9ab8ff;o
 .resume .sidebar-contact strong{color:white}
 .resume .main-contact{display:block}
 
-/* Sidebar templates 1-7 */
-.layout-sidebar{padding:0;display:grid;grid-template-columns:32% 68%}
-.layout-sidebar .resume-sidebar{display:block;background:var(--side);color:white;padding:28px 18px;min-width:0}
-.layout-sidebar .resume-main{padding:32px 27px}
+
+/* Sidebar templates 1-9: Proper full-height two-column CV */
+.layout-sidebar{
+    padding:0;
+    display:block;
+    min-height:950px;
+}
+
+.layout-sidebar .resume-grid{
+    display:grid;
+    grid-template-columns:32% 68%;
+    gap:0;
+    align-items:stretch;
+    min-height:950px;
+}
+
+.layout-sidebar .resume-sidebar{
+    display:block;
+    background:var(--side);
+    color:white;
+    padding:28px 18px;
+    min-width:0;
+    min-height:100%;
+}
+
+.layout-sidebar .resume-main{
+    padding:32px 27px;
+    min-width:0;
+}
+
 .layout-sidebar .sidebar-profile{display:block}
-.layout-sidebar .sidebar-name,.layout-sidebar .sidebar-job{display:block}
+.layout-sidebar .sidebar-name,
+.layout-sidebar .sidebar-job{display:block}
 .layout-sidebar .main-contact{display:none}
 .layout-sidebar .resume-sidebar h3{color:white;border-color:#ffffff66}
 .layout-sidebar .resume-sidebar .skills{color:white}
@@ -99,9 +126,14 @@ button:focus,input:focus,textarea:focus,select:focus{outline:2px solid #9ab8ff;o
 .layout-sidebar .resume-sidebar .sidebar-contact h3{margin-top:22px}
 .layout-sidebar .resume-sidebar .sidebar-skills h3{margin-top:22px}
 .layout-sidebar .resume-sidebar .sidebar-skills .skills{color:white}
-.layout-sidebar .resume-sidebar .sidebar-skills .skill-item{border-bottom:1px solid #ffffff35;padding:4px 0}
+.layout-sidebar .resume-sidebar .sidebar-skills .skill-item{
+    border-bottom:1px solid #ffffff35;
+    padding:4px 0;
+}
 .layout-sidebar .name-line{background:var(--accent)}
 .layout-sidebar h1{font-size:27px}
+.layout-sidebar #main-heading{display:none!important}
+.layout-sidebar #skills-main-section{display:none!important}
 
 /* Sidebar variations */
 .layout-sidebar.green{--side:#17634e}
@@ -183,8 +215,10 @@ button:focus,input:focus,textarea:focus,select:focus{outline:2px solid #9ab8ff;o
  .container{padding:0 12px}
  .template-gallery{grid-template-columns:repeat(3,minmax(0,1fr))}
  .resume{padding:22px}
- .layout-sidebar{grid-template-columns:30% 70%}
- .layout-sidebar .resume-sidebar{padding:17px 10px}
+.layout-sidebar .resume-grid{
+    grid-template-columns:32% 68%;
+    min-height:950px;
+} .layout-sidebar .resume-sidebar{padding:17px 10px}
  .layout-sidebar .resume-main{padding:22px 15px}
  .layout-sidebar .sidebar-profile img{width:75px;height:75px}
  .layout-sidebar h1{font-size:21px}
@@ -199,8 +233,11 @@ button:focus,input:focus,textarea:focus,select:focus{outline:2px solid #9ab8ff;o
  .workspace{display:block}
  .preview-wrap{padding:0;background:white;overflow:visible}
  .resume{box-shadow:none;width:100%;min-height:0;print-color-adjust:exact;-webkit-print-color-adjust:exact}
- .layout-sidebar{grid-template-columns:32% 68%}
- .layout-sidebar .resume-sidebar{display:block!important}
+.layout-sidebar .resume-grid{
+    display:grid!important;
+    grid-template-columns:32% 68%!important;
+    min-height:950px;
+} .layout-sidebar .resume-sidebar{display:block!important}
  .layout-split .resume-grid{grid-template-columns:35% 65%}
  .resume .entry{break-inside:avoid}
  @page{size:A4;margin:0}
@@ -529,12 +566,16 @@ document.getElementById("education-section").style.display=educationList.childre
 const skills=get("skills").split(",").map(s=>s.trim()).filter(Boolean);
 document.getElementById("p-skills").textContent=skills.join(" • ")||"";
 document.getElementById("p-skills-side").textContent=skills.join(" • ")||"";
-document.getElementById("skills-main-section").style.display=skills.length?"":"none";
-
 const isSidebar=selectedTemplate.includes("layout-sidebar");
-document.getElementById("main-heading").style.display=isSidebar?"block":"none";
-document.getElementById("resume-top").style.display=isSidebar?"none":"block";
 
+document.getElementById("skills-main-section").style.display=
+    skills.length && !isSidebar ? "" : "none";
+
+document.getElementById("main-heading").style.display=
+    isSidebar ? "none" : "block";
+
+document.getElementById("resume-top").style.display=
+    isSidebar ? "none" : "block";
 const resume=document.getElementById("resume");
 resume.className="resume "+selectedTemplate;
 resume.style.setProperty("--accent",get("accent")||"#245bd5");
