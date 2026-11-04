@@ -649,21 +649,15 @@ function makeLink(label,url){
 }
 function safeWebUrl(value){
  if(!value)return "";
-
  value=value.trim();
-
- // Agar user https:// nahi likhta to automatically add karo
  if(!/^https?:\/\//i.test(value)){
   value="https://"+value;
  }
-
  try{
   const parsed=new URL(value);
-
   if(!["http:","https:"].includes(parsed.protocol)){
    return "";
   }
-
   return parsed.href;
  }catch(error){
   return "";
@@ -689,6 +683,32 @@ function renderLinks(){
  });
  $("sidebar-links-section").style.display=items.length?"":"none";
  return items.length>0;
+}
+
+// Photo display control
+// Roman Urdu: Photo na ho to image aur sidebar ka photo wrapper dono hide honge.
+function showPhoto(){
+ const hasPhoto=Boolean(photoData);
+
+ ["p-photo-top","p-photo-side"].forEach(id=>{
+  const img=$(id);
+
+  if(hasPhoto){
+   img.src=photoData;
+   img.style.display="block";
+  }else{
+   img.removeAttribute("src");
+   img.style.display="none";
+  }
+ });
+
+ // Sidebar layout mein photo wrapper sirf photo upload hone par dikhega.
+ const sidebarProfile=$("p-photo-side").closest(".sidebar-profile");
+
+ sidebarProfile.style.display=
+  hasPhoto && selectedTemplate.includes("layout-sidebar")
+   ? "block"
+   : "none";
 }
 
 // Main preview update
@@ -775,23 +795,24 @@ function updatePreview(){
  references.forEach(item=>addTextEntry(refList,item,"name",["role","contact"],null));
  $("reference-section").style.display=references.length?"":"none";
 
+ const hasLinks=renderLinks();
+ const isSidebar=selectedTemplate.includes("layout-sidebar");
 
-const hasLinks=renderLinks();
-const isSidebar=selectedTemplate.includes("layout-sidebar");
-const isCorporate=selectedTemplate==="layout-corporate";
+ // Sidebar layouts mein sidebar show hoga.
+ // Baaki layouts mein normal top header show hoga.
+ $("main-heading").style.display="none";
+ $("resume-top").style.display=isSidebar?"none":"block";
 
-// Sidebar layouts mein sidebar show hoga.
-// Baaki layouts mein normal top header show hoga.
-$("main-heading").style.display="none";
-$("resume-top").style.display=isSidebar?"none":"block";
+ // Main content aur sidebar ki visibility
+ $("skills-main-section").style.display=skills.length&&!isSidebar?"":"none";
+ $("languages-main-section").style.display=languages.length&&!isSidebar?"":"none";
+ $("p-links-main").style.display=hasLinks&&!isSidebar?"":"none";
 
-// Main content aur sidebar ki visibility
-$("skills-main-section").style.display=skills.length&&!isSidebar?"":"none";
-$("languages-main-section").style.display=languages.length&&!isSidebar?"":"none";
-$("p-links-main").style.display=hasLinks&&!isSidebar?"":"none";
+ const resume=$("resume");
+ resume.className="resume "+selectedTemplate;
 
-const resume=$("resume");
-resume.className="resume "+selectedTemplate;
+ // Roman Urdu: Layout badalne par photo ki visibility bhi dobara check karo.
+ showPhoto();
 
  const accent=get("accent")||"#245bd5";
  resume.style.setProperty("--accent",accent);
@@ -804,37 +825,38 @@ resume.className="resume "+selectedTemplate;
 }
 
 // Photo upload
-function showPhoto(){
- ["p-photo-top","p-photo-side"].forEach(id=>{
-  const img=$(id);
-  if(photoData){
-   img.src=photoData;
-   img.style.display="block";
-  }else{
-   img.removeAttribute("src");
-   img.style.display="none";
-  }
- });
-}
 $("photo").addEventListener("change",function(){
  const file=this.files[0];
- if(!file)return;
+
+ if(!file){
+  photoData="";
+  showPhoto();
+  updatePreview();
+  saveData();
+  return;
+ }
+
  if(!file.type.startsWith("image/")){
   alert("Please select an image file.");
   this.value="";
   return;
  }
+
  if(file.size>2*1024*1024){
   alert("Please choose a photo smaller than 2 MB.");
   this.value="";
   return;
  }
+
  const reader=new FileReader();
+
  reader.onload=()=>{
   photoData=reader.result;
   showPhoto();
+  updatePreview();
   saveData();
  };
+
  reader.readAsDataURL(file);
 });
 
@@ -857,48 +879,14 @@ function collectData(){
 function saveData(){
  try{
   localStorage.setItem("cvToolsSavedCV5",JSON.stringify(collectData()));
-  $("save-status").textContent="CV saved automatically in this browser.";
+  $("save-status").textContent="CV saved in this browser. It will not load automatically after refresh.";
  }catch(error){
   $("save-status").textContent="Unable to save. Try a smaller profile photo.";
  }
 }
 
-// Load V5 first, then V4/V3/older saved CV
-function loadData(){
- try{
-  const saved=localStorage.getItem("cvToolsSavedCV5")
-   ||localStorage.getItem("cvToolsSavedCV4")
-   ||localStorage.getItem("cvToolsSavedCV3")
-   ||localStorage.getItem("cvToolsSavedCV");
-  if(!saved)return;
-  const data=JSON.parse(saved);
-
-  ["name","email","phone","address","job","summary","skills","accent","linkedin","website"].forEach(id=>{
-   if(data[id]!==undefined)$(id).value=data[id];
-  });
-  if(data.accent)$("accent").value=data.accent;
-
-  const types=["work","education","language","certification","project","reference"];
-  const lists={
-   work:"work-list",education:"education-list",language:"language-list",
-   certification:"certification-list",project:"project-list",reference:"reference-list"
-  };
-  types.forEach(type=>$(lists[type]).replaceChildren());
-
-  (data.work||[]).forEach(addWork);
-  (data.education||[]).forEach(addEducation);
-  (data.languages||[]).forEach(addLanguage);
-  (data.certifications||[]).forEach(addCertification);
-  (data.projects||[]).forEach(addProject);
-  (data.references||[]).forEach(addReference);
-
-  selectedTemplate=templates.some(t=>t.id===data.template)?data.template:"layout-sidebar";
-  photoData=data.photo||"";
-  showPhoto();
- }catch(error){
-  console.log("Saved CV could not be loaded.");
- }
-}
+// Purana saved data load karne wala function jaan-boojh kar use nahi hota.
+// Is se refresh par purani information ya photo automatically load nahi hogi.
 
 // Main profile fields update preview and save
 ["name","email","phone","address","job","summary","skills","accent","linkedin","website"].forEach(id=>{
@@ -910,8 +898,10 @@ function loadData(){
 
 function clearForm(){
  if(!confirm("Are you sure you want to clear all CV details?"))return;
+
  ["name","email","phone","address","job","summary","skills","linkedin","website"].forEach(id=>$(id).value="");
  $("accent").value="#245bd5";
+
  ["work","education","language","certification","project","reference"].forEach(type=>{
   const ids={
    work:"work-list",education:"education-list",language:"language-list",
@@ -919,13 +909,17 @@ function clearForm(){
   };
   $(ids[type]).replaceChildren();
  });
+
  $("photo").value="";
  photoData="";
  selectedTemplate="layout-sidebar";
+
  addWork();
  addEducation();
  showPhoto();
+
  ["cvToolsSavedCV5","cvToolsSavedCV4","cvToolsSavedCV3","cvToolsSavedCV"].forEach(key=>localStorage.removeItem(key));
+
  updatePreview();
  $("save-status").textContent="Form cleared.";
 }
@@ -935,9 +929,11 @@ function downloadPDF(){
 }
 
 // Initial setup
+// Roman Urdu: Har naye page visit ya refresh par fresh blank CV start hoga.
 addWork();
 addEducation();
-loadData();
+photoData="";
+showPhoto();
 updatePreview();
 </script>
 </body>
