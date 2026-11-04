@@ -1,0 +1,448 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online PDF Scanner | CV Tools</title>
+<meta name="description" content="Scan documents using your camera or upload images. Rotate, arrange and combine pages into a PDF for free.">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#f3f6fb;color:#17243a;font-family:Arial,Helvetica,sans-serif}
+header{background:#101b32;color:#fff;padding:18px 5%;font-size:22px;font-weight:700}
+header span{color:#78a8ff}
+.container{max-width:1150px;margin:28px auto;padding:0 18px}
+.hero{text-align:center;margin:35px 0}
+.hero h1{font-size:32px;margin:0 0 10px}
+.hero p{color:#64748b;line-height:1.6}
+.panel{background:#fff;border:1px solid #e1e7f0;border-radius:13px;padding:22px;margin-bottom:20px}
+.panel h2{font-size:19px;margin:0 0 16px}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+button{border:0;border-radius:8px;padding:11px 16px;font-weight:700;cursor:pointer}
+button:disabled{opacity:.45;cursor:not-allowed}
+button:focus-visible{outline:3px solid #9ab8ff;outline-offset:2px}
+.primary{background:#245bd5;color:#fff}
+.secondary{background:#eaf0ff;color:#245bd5}
+.danger{background:#fff0f0;color:#bd3030}
+.upload-label{display:inline-flex;align-items:center;justify-content:center;background:#eaf0ff;color:#245bd5;padding:12px 17px;border-radius:8px;font-weight:700;cursor:pointer}
+.upload-label input{display:none}
+.hint{font-size:12px;color:#718096;line-height:1.6;margin:12px 0 0}
+.camera-box{display:none;margin-top:16px}
+video{width:100%;max-height:420px;object-fit:contain;background:#101827;border-radius:9px}
+.settings{display:flex;gap:20px;flex-wrap:wrap;margin-top:18px}
+.settings label{font-size:13px;font-weight:700}
+.settings select{display:block;margin-top:7px;padding:10px;border:1px solid #cbd5e1;border-radius:7px;background:white}
+.page-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:15px}
+.empty{padding:35px 15px;text-align:center;border:2px dashed #d8e0ed;border-radius:10px;color:#8190a5}
+.page-card{border:1px solid #e0e6ef;border-radius:10px;overflow:hidden;background:#fff;min-width:0}
+.page-image{height:215px;background:#edf1f7;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.page-image img{max-width:100%;max-height:100%;object-fit:contain}
+.page-info{padding:11px}
+.page-info strong{font-size:13px;display:block;overflow-wrap:anywhere;margin-bottom:9px}
+.page-buttons{display:flex;gap:5px;flex-wrap:wrap}
+.page-buttons button{padding:8px 10px;font-size:12px}
+.status{font-size:13px;color:#32815b;margin-top:14px;min-height:18px}
+.progress{height:7px;background:#e6ebf3;border-radius:20px;overflow:hidden;margin-top:10px;display:none}
+.progress div{height:100%;width:0;background:#245bd5;transition:width .2s}
+footer{text-align:center;padding:25px;color:#718096;font-size:12px}
+@media(max-width:550px){
+ .container{padding:0 11px}
+ .panel{padding:16px}
+ .hero h1{font-size:26px}
+ .page-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .page-image{height:170px}
+ .page-buttons button{padding:8px}
+}
+</style>
+</head>
+<body>
+<header>CV <span>Tools</span></header>
+
+<main class="container">
+ <section class="hero">
+  <h1>Free Online PDF Scanner</h1>
+  <p>Scan documents, arrange your pages and create a PDF in seconds.</p>
+ </section>
+
+ <section class="panel">
+  <h2>1. Add Your Documents</h2>
+  <div class="actions">
+   <label class="upload-label">
+    + Upload Images
+    <input id="fileInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+   </label>
+   <button class="primary" id="cameraStart">Open Camera</button>
+  </div>
+  <p class="hint">Upload JPG, PNG or WebP images. You can add multiple pages. Your images are processed locally in your browser.</p>
+
+  <div class="camera-box" id="cameraBox">
+   <video id="cameraVideo" autoplay playsinline muted></video>
+   <div class="actions" style="margin-top:12px">
+    <button class="primary" id="captureButton">Capture Page</button>
+    <button class="secondary" id="cameraSwitch">Switch Camera</button>
+    <button class="danger" id="cameraStop">Close Camera</button>
+   </div>
+   <p class="hint">Allow camera permission when your browser asks. On mobile, use the rear camera for documents.</p>
+  </div>
+ </section>
+
+ <section class="panel">
+  <h2>2. Arrange and Edit Pages</h2>
+  <div id="pageList" class="page-list">
+   <div class="empty" style="grid-column:1/-1">No pages added yet. Upload images or scan a document with your camera.</div>
+  </div>
+  <div class="settings">
+   <label>PDF Page Size
+    <select id="pageSize">
+     <option value="a4">A4</option>
+     <option value="letter">Letter</option>
+     <option value="fit">Fit to Image</option>
+    </select>
+   </label>
+   <label>Image Quality
+    <select id="quality">
+     <option value="0.92">High</option>
+     <option value="0.78" selected>Balanced</option>
+     <option value="0.60">Smaller PDF</option>
+    </select>
+   </label>
+  </div>
+  <p class="hint">Use Rotate to correct page orientation. Use the arrows to change page order. Remove any page you do not need.</p>
+ </section>
+
+ <section class="panel">
+  <h2>3. Create Your PDF</h2>
+  <div class="actions">
+   <button class="primary" id="createPdf">Download PDF</button>
+   <button class="danger" id="clearAll">Remove All Pages</button>
+  </div>
+  <div class="progress" id="progress"><div id="progressBar"></div></div>
+  <div class="status" id="status" role="status" aria-live="polite"></div>
+  <p class="hint">PDF generation happens in your browser. Large image collections may take longer and use more device memory.</p>
+ </section>
+</main>
+
+<footer>© 2026 CV Tools. Free Online PDF Scanner.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js"></script>
+<script>
+"use strict";
+
+// Roman Urdu: Har scanned ya uploaded page ka data yahan store hota hai.
+let pages=[];
+let cameraStream=null;
+let cameraFacing="environment";
+let busy=false;
+
+const $=id=>document.getElementById(id);
+const fileInput=$("fileInput");
+const pageList=$("pageList");
+
+function setStatus(message,isError=false){
+ $("status").textContent=message;
+ $("status").style.color=isError?"#bd3030":"#32815b";
+}
+
+// File ko browser image mein load karna.
+function readImage(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();
+  reader.onerror=()=>reject(new Error("Could not read image."));
+  reader.onload=()=>{
+   const img=new Image();
+   img.onload=()=>resolve({img,src:reader.result});
+   img.onerror=()=>reject(new Error("Invalid image file."));
+   img.src=reader.result;
+  };
+  reader.readAsDataURL(file);
+ });
+}
+
+// Uploaded images add karna.
+fileInput.addEventListener("change",async()=>{
+ const files=[...fileInput.files];
+ if(!files.length)return;
+
+ const allowed=["image/jpeg","image/png","image/webp"];
+ const valid=files.filter(file=>allowed.includes(file.type));
+
+ if(valid.length!==files.length){
+  setStatus("Some files were skipped. Only JPG, PNG and WebP are supported.",true);
+ }
+
+ for(const file of valid){
+  try{
+   if(file.size>15*1024*1024){
+    setStatus(file.name+" is larger than 15 MB and was skipped.",true);
+    continue;
+   }
+   const result=await readImage(file);
+   pages.push({
+    id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),
+    name:file.name,
+    src:result.src,
+    width:result.img.naturalWidth,
+    height:result.img.naturalHeight,
+    rotation:0
+   });
+  }catch(error){
+   setStatus("Could not load "+file.name,true);
+  }
+ }
+ fileInput.value="";
+ renderPages();
+ if(pages.length)setStatus(pages.length+" page(s) ready.");
+});
+
+// Camera start and stop.
+async function startCamera(){
+ try{
+  stopCamera();
+  cameraStream=await navigator.mediaDevices.getUserMedia({
+   video:{facingMode:{ideal:cameraFacing}},
+   audio:false
+  });
+  $("cameraVideo").srcObject=cameraStream;
+  $("cameraBox").style.display="block";
+  await $("cameraVideo").play();
+  setStatus("Camera is ready. Capture your document.");
+ }catch(error){
+  setStatus("Camera could not open. Check browser permission or use image upload.",true);
+ }
+}
+function stopCamera(){
+ if(cameraStream){
+  cameraStream.getTracks().forEach(track=>track.stop());
+  cameraStream=null;
+ }
+ $("cameraVideo").srcObject=null;
+ $("cameraBox").style.display="none";
+}
+$("cameraStart").addEventListener("click",()=>{
+ if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){
+  setStatus("Camera is not supported in this browser. Please upload images instead.",true);
+  return;
+ }
+ startCamera();
+});
+$("cameraStop").addEventListener("click",stopCamera);
+$("cameraSwitch").addEventListener("click",async()=>{
+ cameraFacing=cameraFacing==="environment"?"user":"environment";
+ await startCamera();
+});
+
+// Camera se image capture karna.
+$("captureButton").addEventListener("click",()=>{
+ const video=$("cameraVideo");
+ if(!video.videoWidth){
+  setStatus("Camera is not ready yet.",true);
+  return;
+ }
+ const canvas=document.createElement("canvas");
+ canvas.width=video.videoWidth;
+ canvas.height=video.videoHeight;
+ const ctx=canvas.getContext("2d");
+ ctx.drawImage(video,0,0,canvas.width,canvas.height);
+ const src=canvas.toDataURL("image/jpeg",0.92);
+
+ pages.push({
+  id:crypto.randomUUID?crypto.randomUUID():String(Date.now()+Math.random()),
+  name:"Scanned page "+(pages.length+1),
+  src,
+  width:canvas.width,
+  height:canvas.height,
+  rotation:0
+ });
+ renderPages();
+ setStatus("Page captured successfully.");
+});
+
+// Image rotation ko canvas par apply karna.
+function rotatedCanvas(page){
+ return new Promise((resolve,reject)=>{
+  const img=new Image();
+  img.onload=()=>{
+   const angle=((page.rotation%360)+360)%360;
+   const swap=angle===90||angle===270;
+   const canvas=document.createElement("canvas");
+   canvas.width=swap?img.naturalHeight:img.naturalWidth;
+   canvas.height=swap?img.naturalWidth:img.naturalHeight;
+   const ctx=canvas.getContext("2d");
+   ctx.translate(canvas.width/2,canvas.height/2);
+   ctx.rotate(angle*Math.PI/180);
+   ctx.drawImage(img,-img.naturalWidth/2,-img.naturalHeight/2);
+   resolve(canvas);
+  };
+  img.onerror=()=>reject(new Error("Image could not be processed."));
+  img.src=page.src;
+ });
+}
+
+// Page cards render karna.
+function renderPages(){
+ pageList.replaceChildren();
+
+ if(!pages.length){
+  const empty=document.createElement("div");
+  empty.className="empty";
+  empty.style.gridColumn="1/-1";
+  empty.textContent="No pages added yet. Upload images or scan a document with your camera.";
+  pageList.appendChild(empty);
+  return;
+ }
+
+ pages.forEach((page,index)=>{
+  const card=document.createElement("article");
+  card.className="page-card";
+
+  const imageBox=document.createElement("div");
+  imageBox.className="page-image";
+  const img=document.createElement("img");
+  img.src=page.src;
+  img.alt="Document page "+(index+1);
+  img.style.transform="rotate("+page.rotation+"deg)";
+  imageBox.appendChild(img);
+
+  const info=document.createElement("div");
+  info.className="page-info";
+  const title=document.createElement("strong");
+  title.textContent="Page "+(index+1)+" — "+page.name;
+
+  const buttons=document.createElement("div");
+  buttons.className="page-buttons";
+
+  function addButton(text,action,disabled=false,style="secondary"){
+   const button=document.createElement("button");
+   button.type="button";
+   button.className=style;
+   button.textContent=text;
+   button.disabled=disabled;
+   button.addEventListener("click",action);
+   buttons.appendChild(button);
+  }
+
+  addButton("↶ Rotate",()=>{
+   page.rotation=(page.rotation+270)%360;
+   renderPages();
+  });
+  addButton("↷ Rotate",()=>{
+   page.rotation=(page.rotation+90)%360;
+   renderPages();
+  });
+  addButton("↑",()=>{
+   if(index>0){
+    [pages[index-1],pages[index]]=[pages[index],pages[index-1]];
+    renderPages();
+   }
+  },index===0);
+  addButton("↓",()=>{
+   if(index<pages.length-1){
+    [pages[index+1],pages[index]]=[pages[index],pages[index+1]];
+    renderPages();
+   }
+  },index===pages.length-1);
+  addButton("Remove",()=>{
+   pages=pages.filter(item=>item.id!==page.id);
+   renderPages();
+   setStatus("Page removed.");
+  },false,"danger");
+
+  info.append(title,buttons);
+  card.append(imageBox,info);
+  pageList.appendChild(card);
+ });
+}
+
+// PDF generation.
+async function createPDF(){
+ if(busy)return;
+ if(!pages.length){
+  setStatus("Please add at least one page first.",true);
+  return;
+ }
+ if(!window.jspdf||!window.jspdf.jsPDF){
+  setStatus("PDF library did not load. Refresh the page and try again.",true);
+  return;
+ }
+
+ busy=true;
+ const button=$("createPdf");
+ button.disabled=true;
+ button.textContent="Creating PDF...";
+ $("progress").style.display="block";
+ $("progressBar").style.width="0%";
+
+ try{
+  const {jsPDF}=window.jspdf;
+  const size=$("pageSize").value;
+  const quality=Number($("quality").value);
+  let doc=null;
+
+  for(let i=0;i<pages.length;i++){
+   const canvas=await rotatedCanvas(pages[i]);
+   const imageData=canvas.toDataURL("image/jpeg",quality);
+
+   if(!doc){
+    doc=new jsPDF({
+     orientation:size==="fit"?(canvas.width>canvas.height?"landscape":"portrait"):"portrait",
+     unit:"mm",
+     format:size==="fit"?[canvas.width*0.264583,canvas.height*0.264583]:size,
+     compress:true
+    });
+   }else{
+    let format=size;
+    let orientation="portrait";
+    if(size==="fit"){
+     orientation=canvas.width>canvas.height?"landscape":"portrait";
+     format=[canvas.width*0.264583,canvas.height*0.264583];
+    }
+    doc.addPage(format,orientation);
+   }
+
+   const pageWidth=doc.internal.pageSize.getWidth();
+   const pageHeight=doc.internal.pageSize.getHeight();
+   const margin=size==="fit"?0:7;
+   const availableWidth=pageWidth-margin*2;
+   const availableHeight=pageHeight-margin*2;
+   const ratio=Math.min(
+    availableWidth/canvas.width,
+    availableHeight/canvas.height
+   );
+   const width=canvas.width*ratio;
+   const height=canvas.height*ratio;
+   const x=(pageWidth-width)/2;
+   const y=(pageHeight-height)/2;
+
+   doc.addImage(imageData,"JPEG",x,y,width,height,undefined,"FAST");
+   $("progressBar").style.width=Math.round(((i+1)/pages.length)*100)+"%";
+  }
+
+  doc.save("scanned-document.pdf");
+  setStatus("Your PDF has been created and downloaded successfully.");
+ }catch(error){
+  console.error(error);
+  setStatus("PDF could not be created. Try fewer or smaller images.",true);
+ }finally{
+  busy=false;
+  button.disabled=false;
+  button.textContent="Download PDF";
+ }
+}
+$("createPdf").addEventListener("click",createPDF);
+
+// Remove all pages.
+$("clearAll").addEventListener("click",()=>{
+ if(!pages.length)return;
+ if(!confirm("Remove all pages?"))return;
+ pages=[];
+ renderPages();
+ setStatus("All pages removed.");
+});
+
+// Camera ko page leave karne par band karna.
+window.addEventListener("pagehide",stopCamera);
+
+renderPages();
+</script>
+</body>
+</html>
