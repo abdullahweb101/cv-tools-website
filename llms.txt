@@ -1,4 +1,3 @@
-
 # CV Tools Website
 
 > Free online tools to create professional CVs, scan documents, and manage PDF files.
