@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Online CV Maker</title>
+<meta name="description" content="Create a professional CV online for free. Customize your resume and download it as a PDF.">
+
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,sans-serif;background:#f3f5f9;color:#172033}
+header{background:#101b32;color:white;padding:18px 5%;font-size:22px;font-weight:bold}
+header span{color:#70a5ff}
+.container{max-width:1400px;margin:25px auto;padding:0 20px}
+.heading{text-align:center;margin:30px 0}
+.heading h1{margin-bottom:8px;font-size:32px}
+.heading p{color:#68758b}
+.workspace{display:grid;grid-template-columns: minmax(300px,1fr) minmax(320px,1fr);gap:25px;align-items:start}
+.panel{background:white;padding:24px;border:1px solid #e0e5ee;border-radius:13px}
+.panel h2{margin-top:0;font-size:21px}
+.field{margin-bottom:15px}
+label{display:block;font-weight:bold;font-size:13px;margin-bottom:7px}
+input,textarea,select{width:100%;padding:11px;border:1px solid #ccd3df;border-radius:7px;font-size:14px;font-family:inherit}
+textarea{min-height:75px;resize:vertical}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.section-title{font-size:16px;margin:25px 0 13px;border-bottom:1px solid #e5e9f0;padding-bottom:8px}
+button{border:0;border-radius:7px;padding:12px 17px;font-weight:bold;cursor:pointer}
+.primary{background:#245bd5;color:white}
+.secondary{background:#eaf0ff;color:#245bd5}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+.preview-wrap{background:#dfe4ec;padding:15px;border-radius:10px;overflow:auto}
+.resume{background:white;width:100%;min-height:850px;padding:38px 34px;color:#263248;box-shadow:0 2px 12px #0001}
+.resume h1{font-size:29px;margin:0 0 7px;color:#18345b}
+.resume .contact{font-size:12px;color:#68758b;line-height:1.8}
+.resume h3{font-size:14px;text-transform:uppercase;color:#245bd5;border-bottom:1px solid #ccd5e4;padding-bottom:6px;margin:25px 0 10px}
+.resume p{font-size:13px;line-height:1.6;white-space:pre-line;margin:5px 0}
+.resume .name-line{height:4px;background:#245bd5;margin:15px 0}
+.resume .entry{margin:12px 0}
+.resume .entry strong{font-size:13px}
+.resume .entry small{display:block;color:#68758b;margin-top:3px}
+.resume .skills{font-size:13px;line-height:1.8}
+.template-classic h1{color:#172033}
+.template-classic h3{color:#172033}
+.template-green h1{color:#16765c}
+.template-green h3{color:#16765c}
+.template-green .name-line{background:#16765c}
+footer{text-align:center;color:#778196;padding:25px}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.resume{min-height:700px}}
+@media(max-width:480px){.two{grid-template-columns:1fr}.panel{padding:16px}.container{padding:0 12px}}
+@media print{
+  body{background:white}
+  header,.heading,.form-panel,.actions,footer,.preview-label{display:none!important}
+  .container{margin:0;padding:0;max-width:none}
+  .workspace{display:block}
+  .preview-wrap{padding:0;background:white}
+  .resume{box-shadow:none;width:100%;min-height:0;padding:15mm}
+  @page{size:A4;margin:0}
+}
+</style>
+</head>
+
+<body>
+<header>CV <span>Tools</span></header>
+
+<div class="container">
+<div class="heading">
+<h1>Free Online CV Maker</h1>
+<p>Create your professional resume with a live preview.</p>
+</div>
+
+<div class="workspace">
+
+<div class="panel form-panel">
+<h2>Enter Your Details</h2>
+
+<div class="field">
+<label>Full Name</label>
+<input id="name" placeholder="e.g. John Smith">
+</div>
+
+<div class="two">
+<div class="field">
+<label>Email</label>
+<input id="email" placeholder="john@email.com">
+</div>
+<div class="field">
+<label>Phone</label>
+<input id="phone" placeholder="+1 234 567 890">
+</div>
+</div>
+
+<div class="field">
+<label>Address / Location</label>
+<input id="address" placeholder="City, Country">
+</div>
+
+<div class="field">
+<label>Professional Title</label>
+<input id="job" placeholder="e.g. Graphic Designer">
+</div>
+
+<div class="field">
+<label>Professional Summary</label>
+<textarea id="summary" placeholder="Write a short introduction about yourself..."></textarea>
+</div>
+
+<h3 class="section-title">Work Experience</h3>
+<div class="field">
+<label>Job Title</label>
+<input id="work" placeholder="e.g. Sales Assistant">
+</div>
+<div class="two">
+<div class="field">
+<label>Company</label>
+<input id="company" placeholder="Company name">
+</div>
+<div class="field">
+<label>Duration</label>
+<input id="duration" placeholder="2022 - 2025">
+</div>
+</div>
+<div class="field">
+<label>Responsibilities</label>
+<textarea id="details" placeholder="Describe your work and achievements..."></textarea>
+</div>
+
+<h3 class="section-title">Education</h3>
+<div class="field">
+<label>Degree / Qualification</label>
+<input id="degree" placeholder="e.g. Bachelor's Degree">
+</div>
+<div class="two">
+<div class="field">
+<label>Institute</label>
+<input id="institute" placeholder="School or university">
+</div>
+<div class="field">
+<label>Year</label>
+<input id="year" placeholder="2020 - 2024">
+</div>
+</div>
+
+<h3 class="section-title">Skills</h3>
+<div class="field">
+<label>Your Skills (separate with commas)</label>
+<textarea id="skills" placeholder="Communication, Microsoft Office, Teamwork"></textarea>
+</div>
+
+<h3 class="section-title">Choose Template</h3>
+<div class="field">
+<select id="template">
+<option value="template-blue">Modern Blue</option>
+<option value="template-classic">Professional Classic</option>
+<option value="template-green">Elegant Green</option>
+</select>
+</div>
+
+<div class="actions">
+<button class="primary" onclick="window.print()">Download CV as PDF</button>
+<button class="secondary" onclick="clearForm()">Clear Form</button>
+</div>
+<p style="font-size:12px;color:#778196">Tip: Choose "Save as PDF" in the print window to download your CV.</p>
+</div>
+
+<div>
+<h2 class="preview-label">Live CV Preview</h2>
+<div class="preview-wrap">
+<div class="resume" id="resume">
+<h1 id="p-name">Your Name</h1>
+<div id="p-job" style="font-size:15px">Professional Title</div>
+<div class="contact" id="p-contact">Email | Phone | Location</div>
+<div class="name-line"></div>
+
+<h3>Professional Summary</h3>
+<p id="p-summary">Your professional summary will appear here.</p>
+
+<h3>Work Experience</h3>
+<div class="entry">
+<strong id="p-work">Job Title</strong>
+<small id="p-company">Company | Duration</small>
+<p id="p-details">Your responsibilities and achievements.</p>
+</div>
+
+<h3>Education</h3>
+<div class="entry">
+<strong id="p-degree">Degree / Qualification</strong>
+<small id="p-institute">Institute | Year</small>
+</div>
+
+<h3>Skills</h3>
+<div class="skills" id="p-skills">Your skills will appear here.</div>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<footer>© 2026 CV Tools. Free Online CV Maker.</footer>
+
+<script>
+const fields = [
+"name","email","phone","address","job","summary",
+"work","company","duration","details","degree",
+"institute","year","skills"
+];
+
+function updatePreview(){
+const get = id => document.getElementById(id).value.trim();
+
+document.getElementById("p-name").textContent=get("name")||"Your Name";
+document.getElementById("p-job").textContent=get("job")||"Professional Title";
+
+const contact=[get("email"),get("phone"),get("address")].filter(Boolean);
+document.getElementById("p-contact").textContent=contact.join(" | ")||"Email | Phone | Location";
+
+document.getElementById("p-summary").textContent=get("summary")||"Your professional summary will appear here.";
+document.getElementById("p-work").textContent=get("work")||"Job Title";
+document.getElementById("p-company").textContent=[get("company"),get("duration")].filter(Boolean).join(" | ")||"Company | Duration";
+document.getElementById("p-details").textContent=get("details")||"Your responsibilities and achievements.";
+document.getElementById("p-degree").textContent=get("degree")||"Degree / Qualification";
+document.getElementById("p-institute").textContent=[get("institute"),get("year")].filter(Boolean).join(" | ")||"Institute | Year";
+document.getElementById("p-skills").textContent=get("skills").split(",").map(s=>s.trim()).filter(Boolean).join(" • ")||"Your skills will appear here.";
+
+document.getElementById("resume").className="resume "+document.getElementById("template").value;
+}
+
+fields.forEach(id=>{
+document.getElementById(id).addEventListener("input",updatePreview);
+});
+document.getElementById("template").addEventListener("change",updatePreview);
+
+function clearForm(){
+if(!confirm("Are you sure you want to clear all details?"))return;
+fields.forEach(id=>document.getElementById(id).value="");
+document.getElementById("template").value="template-blue";
+updatePreview();
+}
+updatePreview();
+</script>
+</body>
+</html>
