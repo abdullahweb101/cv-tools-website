@@ -5,9 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>CV Tools - Free Online CV Maker, Portfolio Maker & PDF Tools</title>
+  <title>CV Tools - Free Online CV Maker, Image Studio, QR & PDF Tools</title>
 
-  <meta name="description" content="Create professional CVs and portfolios, scan documents and manage PDF files with free online tools. No registration required.">
+  <meta name="description" content="Explore free online tools including CV Maker, Portfolio Maker, Image Studio, QR Code Generator, Logo Maker, Brand Identity Studio and professional PDF tools.">
 
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#ffffff">
@@ -190,6 +190,7 @@
       flex-direction: column;
       align-items: flex-start;
       transition: transform 0.2s, box-shadow 0.2s;
+      min-width: 0;
     }
 
     .tool-card:hover {
@@ -208,6 +209,7 @@
       color: #3563e9;
       font-size: 26px;
       margin-bottom: 22px;
+      flex-shrink: 0;
     }
 
     .tool-card h3 {
@@ -385,7 +387,7 @@
       font-size: 13px;
     }
 
-    /* Tablet and mobile */
+    /* Tablet */
     @media (max-width: 850px) {
       .tools-grid,
       .benefits-grid,
@@ -399,6 +401,7 @@
       }
     }
 
+    /* Mobile */
     @media (max-width: 600px) {
       .navbar {
         padding: 15px 18px;
@@ -475,17 +478,17 @@
 
   <!-- Main introduction -->
   <section class="hero">
-    <div class="hero-label">Free Online Productivity Tools</div>
+    <div class="hero-label">Free Online Productivity & Creative Tools</div>
 
-    <h1>Simple Tools to Create CVs and Manage PDF Documents</h1>
+    <h1>Free Online Tools for Documents, Design and Productivity</h1>
 
     <p>
-      Create professional resumes, build personal portfolios, scan your documents
-      and manage PDF files with easy-to-use online tools. Get your work done without
-      complicated software or unnecessary steps.
+      Create professional CVs and portfolios, design logos and brand identities,
+      generate QR codes, edit images, scan documents and manage PDF files.
+      Use practical online tools directly from your browser.
     </p>
 
-    <a href="#tools" class="hero-button">Explore Free Tools</a>
+    <a href="#tools" class="hero-button">Explore All Free Tools</a>
   </section>
 
   <main>
@@ -496,68 +499,131 @@
       <div class="section-heading">
         <h2>Explore Our Free Online Tools</h2>
         <p>
-          Choose a tool and get started. Our simple online utilities
-          help you create and manage important documents.
+          Discover useful tools for creating professional documents,
+          designing visual content and managing everyday digital tasks.
         </p>
       </div>
 
       <div class="tools-grid">
 
+        <!-- CV Maker -->
         <article class="tool-card">
           <div class="tool-icon">📄</div>
-
           <h3>Free CV Maker</h3>
-
           <p>
-            Create a professional CV with customizable templates,
-            personal details, work experience, education and skills.
-            Download your finished resume as a PDF.
+            Create a professional CV with customizable layouts.
+            Add personal information, work experience, education,
+            skills and professional links, then download your CV as a PDF.
           </p>
-
           <a href="cv-maker.html" class="tool-button">Open CV Maker</a>
         </article>
 
-        <!-- NEW: Portfolio Maker card -->
+        <!-- Portfolio Maker -->
         <article class="tool-card">
           <div class="tool-icon">💼</div>
-
-          <h3>Free Portfolio Maker</h3>
-
+          <h3>Portfolio Maker</h3>
           <p>
-            Build a professional personal portfolio with 15 stylish templates.
-            Add your profile, skills, experience, projects and social links.
-            Download your portfolio as a website or PDF.
+            Build a professional personal portfolio with creative designs.
+            Showcase your profile, projects, services, skills and social links.
+            Export your portfolio as a website or PDF.
           </p>
-
           <a href="portfolio-maker.html" class="tool-button">Create Portfolio</a>
         </article>
 
+        <!-- PDF Scanner -->
         <article class="tool-card">
           <div class="tool-icon">📷</div>
-
           <h3>PDF Scanner</h3>
-
           <p>
-            Turn photos and scanned documents into PDF files.
-            Capture pages with your camera, crop images, adjust filters
-            and organize your scanned documents.
+            Convert photos and scanned documents into PDF files.
+            Capture pages with your camera, adjust images, crop documents
+            and organize scanned pages.
           </p>
-
           <a href="pdf-scanner.html" class="tool-button">Open PDF Scanner</a>
         </article>
 
+        <!-- PDF Tools -->
         <article class="tool-card">
           <div class="tool-icon">🗂️</div>
-
           <h3>PDF Tools</h3>
-
           <p>
-            Manage your PDF documents with useful features.
-            Merge multiple PDFs, extract pages, split files,
-            rotate pages and organize documents.
+            Manage PDF documents with useful utilities.
+            Organize files, merge documents, split PDFs, extract pages
+            and perform other PDF tasks.
           </p>
-
           <a href="pdf-tools.html" class="tool-button">Open PDF Tools</a>
+        </article>
+
+        <!-- Image Studio -->
+        <article class="tool-card">
+          <div class="tool-icon">🖼️</div>
+          <h3>Image Studio</h3>
+          <p>
+            Edit and optimize images with browser-based tools.
+            Resize pictures, change image formats, adjust quality
+            and process multiple images for your projects.
+          </p>
+          <a href="image-studio.html" class="tool-button">Open Image Studio</a>
+        </article>
+
+        <!-- QR Code Studio -->
+        <article class="tool-card">
+          <div class="tool-icon">▦</div>
+          <h3>QR Code Studio</h3>
+          <p>
+            Generate customized QR codes for websites, text, Wi-Fi,
+            WhatsApp, email, phone numbers and contact information.
+            Customize colours and download your QR code.
+          </p>
+          <a href="qr-code-studio.html" class="tool-button">Generate QR Code</a>
+        </article>
+
+        <!-- Brand Identity Studio -->
+        <article class="tool-card">
+          <div class="tool-icon">🎨</div>
+          <h3>Brand Identity Studio</h3>
+          <p>
+            Create colour palettes, explore colour combinations,
+            check colour contrast, build gradients and prepare
+            a consistent visual identity for your brand.
+          </p>
+          <a href="brand-studio.html" class="tool-button">Open Brand Studio</a>
+        </article>
+
+        <!-- Logo Studio Pro -->
+        <article class="tool-card">
+          <div class="tool-icon">✏️</div>
+          <h3>Logo Studio Pro</h3>
+          <p>
+            Design and customize logos using text, shapes, symbols,
+            colours and uploaded graphics. Export your logo in
+            PNG and SVG formats and create brand assets.
+          </p>
+          <a href="logo-maker.html" class="tool-button">Create a Logo</a>
+        </article>
+
+        <!-- Merge PDF -->
+        <article class="tool-card">
+          <div class="tool-icon">📑</div>
+          <h3>Merge PDF Files</h3>
+          <p>
+            Combine multiple PDF documents into one organized file.
+            Add your PDF files, arrange their order and create
+            a single merged document.
+          </p>
+          <a href="merge-pdf-files-online.html" class="tool-button">Merge PDF Files</a>
+        </article>
+
+        <!-- Split PDF -->
+        <article class="tool-card">
+          <div class="tool-icon">✂️</div>
+          <h3>Split PDF Files</h3>
+          <p>
+            Separate a PDF into smaller documents or extract
+            selected pages. Choose the pages you need and
+            create individual PDF files.
+          </p>
+          <a href="split-pdf-files.html" class="tool-button">Split PDF Files</a>
         </article>
 
       </div>
@@ -570,8 +636,8 @@
         <div class="section-heading">
           <h2>Why Use CV Tools?</h2>
           <p>
-            Practical online utilities designed to make everyday
-            document tasks easier.
+            Practical online utilities designed to make document creation,
+            image editing and everyday digital tasks easier.
           </p>
         </div>
 
@@ -581,8 +647,8 @@
             <div class="benefit-icon">⚡</div>
             <h3>Easy to Use</h3>
             <p>
-              Simple interfaces help you complete common document
-              tasks without complicated software.
+              Clear interfaces and straightforward controls help you
+              complete common tasks without complicated software.
             </p>
           </div>
 
@@ -590,8 +656,8 @@
             <div class="benefit-icon">🌐</div>
             <h3>Works Online</h3>
             <p>
-              Open the tools in a modern web browser on your
-              computer, tablet or mobile device.
+              Access the tools through a modern web browser on
+              your computer, tablet or mobile device.
             </p>
           </div>
 
@@ -599,8 +665,9 @@
             <div class="benefit-icon">🔒</div>
             <h3>Browser-Based Processing</h3>
             <p>
-              Our current tools process documents directly in your
-              browser rather than requiring a document upload to our server.
+              Many tools process files directly in your browser.
+              Always check the instructions of an individual tool
+              to understand how its processing works.
             </p>
           </div>
 
@@ -624,26 +691,26 @@
           <div class="step-number">1</div>
           <h3>Choose a Tool</h3>
           <p>
-            Select the CV Maker, Portfolio Maker, PDF Scanner or PDF Tools
-            according to your needs.
+            Select the tool you need, such as CV Maker, Image Studio,
+            QR Code Studio, Logo Studio or PDF Tools.
           </p>
         </div>
 
         <div class="step">
           <div class="step-number">2</div>
-          <h3>Add Your Information</h3>
+          <h3>Add Your Content</h3>
           <p>
-            Enter your details, upload documents or select
-            the PDF files you want to manage.
+            Enter your information, upload images or documents,
+            choose your design and customize the available settings.
           </p>
         </div>
 
         <div class="step">
           <div class="step-number">3</div>
-          <h3>Create and Download</h3>
+          <h3>Create and Export</h3>
           <p>
-            Complete your task and download your generated
-            CV, portfolio or PDF document.
+            Complete your work and export your CV, portfolio,
+            image, logo, QR code or PDF using the available options.
           </p>
         </div>
 
@@ -657,7 +724,7 @@
         <div class="section-heading">
           <h2>Frequently Asked Questions</h2>
           <p>
-            Find answers to common questions about our online tools.
+            Find answers to common questions about our free online tools.
           </p>
         </div>
 
@@ -666,51 +733,88 @@
           <div class="faq-item">
             <h3>Are the tools free to use?</h3>
             <p>
-              Yes. The tools available on this website are currently
-              provided free of charge.
+              The tools on this website are currently provided free of charge.
+              Some features may depend on browser compatibility or
+              third-party libraries used by an individual tool.
             </p>
           </div>
 
           <div class="faq-item">
-            <h3>Can I create a CV online?</h3>
+            <h3>Can I create a professional CV online?</h3>
             <p>
-              Yes. Use our CV Maker to enter your personal information,
-              add your experience and education, choose a template
+              Yes. Use our CV Maker to add your personal information,
+              work experience, education and skills. Choose a layout
               and download your CV as a PDF.
             </p>
           </div>
 
-          <!-- NEW: Portfolio Maker FAQ -->
           <div class="faq-item">
-            <h3>Can I create a personal portfolio online?</h3>
+            <h3>Can I build a personal portfolio?</h3>
             <p>
-              Yes. Our Portfolio Maker lets you build a personal portfolio
-              using 15 templates. You can add your skills, experience,
-              education and projects, then export it as HTML or PDF.
+              Yes. Our Portfolio Maker helps you showcase your profile,
+              projects, services, skills and professional links.
+              You can export your portfolio in the available formats.
             </p>
           </div>
 
           <div class="faq-item">
-            <h3>Can I convert photos into a PDF?</h3>
+            <h3>What can I do with Image Studio?</h3>
             <p>
-              Yes. Our PDF Scanner lets you upload images or capture
-              documents with your camera and create a PDF file.
+              Image Studio provides image resizing, format conversion,
+              quality adjustment and batch image processing features.
             </p>
           </div>
 
           <div class="faq-item">
-            <h3>What can I do with the PDF Tools?</h3>
+            <h3>Can I generate QR codes for different purposes?</h3>
             <p>
-              You can merge PDF files, extract selected pages,
-              split documents, rotate pages and organize PDF files.
+              Yes. QR Code Studio supports different content types,
+              including website links, text, Wi-Fi details,
+              WhatsApp, email, phone numbers and contact information.
             </p>
           </div>
 
           <div class="faq-item">
-            <h3>Do I need to install any software?</h3>
+            <h3>Can I create a logo for my business?</h3>
             <p>
-              No. You can access the tools directly through a
-              supported web browser without installing a desktop application.
+              Yes. Logo Studio Pro lets you customize logo designs
+              with text, shapes, symbols, colours and uploaded graphics.
+              You can export your finished logo in supported formats.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>What is Brand Identity Studio used for?</h3>
+            <p>
+              Brand Identity Studio helps you explore colour palettes,
+              gradients, contrast and font combinations for a consistent
+              visual identity.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I combine multiple PDF files?</h3>
+            <p>
+              Yes. Use Merge PDF Files to combine multiple documents
+              into one PDF. You can also use Split PDF Files
+              to extract or separate selected pages.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Can I scan photos and save them as PDF?</h3>
+            <p>
+              Yes. PDF Scanner lets you upload images or capture
+              documents with a compatible camera and create PDF files.
+            </p>
+          </div>
+
+          <div class="faq-item">
+            <h3>Do I need to install software?</h3>
+            <p>
+              No desktop installation is required for the browser-based
+              tools. Open the relevant tool page using a supported
+              web browser.
             </p>
           </div>
 
@@ -729,22 +833,32 @@
         <h2>CV Tools</h2>
         <p>
           Free online tools to create professional CVs and portfolios,
-          scan documents and manage PDF files with ease.
+          design logos, generate QR codes, edit images and manage
+          PDF documents with ease.
         </p>
       </div>
 
       <div class="footer-links">
-        <h3>Quick Links</h3>
-        <a href="index.html">Home</a>
+        <h3>Documents</h3>
         <a href="cv-maker.html">CV Maker</a>
         <a href="portfolio-maker.html">Portfolio Maker</a>
         <a href="pdf-scanner.html">PDF Scanner</a>
         <a href="pdf-tools.html">PDF Tools</a>
+        <a href="merge-pdf-files-online.html">Merge PDF</a>
+        <a href="split-pdf-files.html">Split PDF</a>
+      </div>
+
+      <div class="footer-links">
+        <h3>Design Tools</h3>
+        <a href="image-studio.html">Image Studio</a>
+        <a href="qr-code-studio.html">QR Code Studio</a>
+        <a href="brand-studio.html">Brand Identity Studio</a>
+        <a href="logo-maker.html">Logo Studio Pro</a>
       </div>
 
       <div class="footer-links">
         <h3>Explore</h3>
-        <a href="#tools">Our Tools</a>
+        <a href="#tools">All Tools</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#faq">FAQs</a>
         <a href="blog.html">Blog</a>
@@ -765,5 +879,6 @@
     </div>
 
   </footer>
+
 </body>
 </html>
