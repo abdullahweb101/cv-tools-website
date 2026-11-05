@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create a professional portfolio website and PDF for free. Choose from 15 portfolio templates, add projects, skills and experience, and download your portfolio.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cv-tools-website.pages.dev/portfolio-maker.html">
+<title>Free Portfolio Maker | CV Tools</title>
+
+<style>
+:root{
+  --brand:#2563eb;
+  --ink:#172033;
+  --muted:#64748b;
+  --line:#e2e8f0;
+  --paper:#ffffff;
+  --bg:#f4f7fb;
+  --radius:15px;
+  --shadow:0 8px 30px rgba(15,23,42,.07);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:Inter,Arial,Helvetica,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.topbar{
+  background:#101827;color:#fff;padding:13px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:15px;position:sticky;top:0;z-index:50;
+  box-shadow:0 3px 15px #0002;
+}
+.brand{font-size:19px;font-weight:800;letter-spacing:-.4px}
+.brand span{color:#60a5fa}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--line);background:#fff;color:#172033;
+  padding:10px 14px;border-radius:9px;font-weight:700;
+  font-size:13px;transition:.2s;
+}
+.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px #0001}
+.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
+.btn.dark{background:#172033;border-color:#172033;color:#fff}
+.btn.danger{color:#dc2626;border-color:#fecaca;background:#fff}
+.btn.small{padding:7px 10px;font-size:12px}
+.app{
+  max-width:1600px;margin:auto;padding:20px;
+  display:grid;grid-template-columns:minmax(330px,440px) minmax(0,1fr);
+  gap:20px;align-items:start;
+}
+.panel,.preview-panel{
+  background:#fff;border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);
+}
+.panel{overflow:hidden}
+.panel-head{
+  padding:19px 20px;border-bottom:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.panel-head h1{font-size:19px;margin:0}
+.panel-head p{font-size:12px;color:var(--muted);margin:5px 0 0}
+.tabs{
+  display:flex;overflow-x:auto;gap:5px;padding:10px;
+  border-bottom:1px solid var(--line);background:#f8fafc;
+}
+.tab{
+  white-space:nowrap;border:0;background:transparent;color:#64748b;
+  border-radius:8px;padding:9px 11px;font-size:12px;font-weight:700;
+}
+.tab.active{background:#e8efff;color:#1d4ed8}
+.form-content{padding:19px;max-height:calc(100vh - 190px);overflow:auto}
+.section-title{font-size:17px;font-weight:800;margin:0 0 6px}
+.section-help{font-size:12px;color:var(--muted);margin:0 0 18px;line-height:1.6}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px;color:#334155}
+.field input,.field textarea,.field select{
+  width:100%;border:1px solid #dbe2ea;border-radius:9px;
+  padding:11px 12px;background:#fff;color:#172033;outline:none;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe;
+}
+.field textarea{min-height:85px;resize:vertical;line-height:1.5}
+.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hint{font-size:11px;color:#94a3b8;margin-top:5px}
+.upload-box{
+  border:1px dashed #94a3b8;border-radius:11px;padding:13px;
+  background:#f8fafc;
+}
+.upload-box input{padding:7px;background:#fff}
+.item-card{
+  border:1px solid var(--line);border-radius:11px;padding:13px;
+  margin-bottom:12px;background:#fcfdff;
+}
+.item-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.item-card-head strong{font-size:13px}
+.add-btn{
+  width:100%;padding:11px;border:1px dashed #93a4bb;
+  background:#f8fafc;border-radius:9px;color:#1d4ed8;font-weight:750;
+}
+.checkline{display:flex;gap:9px;align-items:center;font-size:13px;margin:12px 0}
+.checkline input{width:auto}
+.preview-panel{position:sticky;top:78px;overflow:hidden}
+.preview-head{
+  padding:13px 16px;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+}
+.preview-head strong{font-size:14px}
+.preview-head span{font-size:11px;color:var(--muted)}
+.preview-wrap{
+  background:#e8edf4;padding:22px;max-height:calc(100vh - 145px);
+  overflow:auto;min-height:650px;
+}
+.preview-page{
+  max-width:1000px;min-height:850px;margin:0 auto;
+  background:#fff;box-shadow:0 5px 25px #17203318;
+}
+.empty-preview{
+  min-height:600px;display:grid;place-items:center;text-align:center;
+  color:#64748b;padding:30px;
+}
+.empty-preview strong{display:block;color:#334155;font-size:22px;margin-bottom:8px}
+.template-picker{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;
+}
+.template-option{
+  border:1px solid var(--line);background:#fff;border-radius:10px;
+  padding:9px;text-align:left;min-width:0;
+}
+.template-option.active{border:2px solid #2563eb;background:#eff6ff;padding:8px}
+.template-swatch{height:42px;border-radius:6px;margin-bottom:7px}
+.template-option strong{font-size:11px;display:block}
+.template-option small{font-size:10px;color:var(--muted)}
+.color-row{display:flex;gap:10px;align-items:center}
+.color-row input[type=color]{width:48px;height:39px;padding:3px}
+.notice{
+  border:1px solid #bfdbfe;background:#eff6ff;color:#1e40af;
+  padding:11px;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:15px;
+}
+.footer-note{text-align:center;padding:18px;color:#94a3b8;font-size:11px}
+.hidden{display:none!important}
+
+/* Portfolio preview shared styles */
+.portfolio{
+  --accent:#2563eb;--dark:#172033;--soft:#f1f5f9;
+  --font:Arial,sans-serif;
+  font-family:var(--font);color:var(--dark);background:#fff;
+  min-height:850px;overflow:hidden;
+}
+.portfolio *{box-sizing:border-box}
+.portfolio a{color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
+.portfolio .p-hero{padding:58px 7% 45px;background:var(--soft)}
+.portfolio .p-name{font-size:clamp(30px,5vw,55px);line-height:1.05;margin:0 0 10px;font-weight:850;letter-spacing:-1.5px}
+.portfolio .p-role{font-size:18px;color:var(--accent);font-weight:700;margin:0 0 14px}
+.portfolio .p-intro{font-size:15px;line-height:1.8;max-width:720px;color:#526174}
+.portfolio .p-photo{
+  width:145px;height:145px;object-fit:cover;border-radius:50%;
+  border:5px solid #fff;box-shadow:0 6px 20px #0002;
+}
+.portfolio .p-section{padding:28px 7%}
+.portfolio .p-section h2{
+  font-size:19px;margin:0 0 17px;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--accent);
+}
+.portfolio .p-section p{line-height:1.75;color:#526174;font-size:14px}
+.portfolio .p-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
+.portfolio .p-card{
+  border:1px solid #e2e8f0;border-radius:12px;padding:16px;
+  break-inside:avoid;background:#fff;
+}
+.portfolio .p-card h3{font-size:15px;margin:0 0 6px}
+.portfolio .p-meta{font-size:12px;color:#64748b;margin-bottom:8px}
+.portfolio .p-card p{font-size:13px;margin:7px 0}
+.portfolio .p-project-img{
+  width:100%;height:170px;object-fit:cover;border-radius:8px;margin-bottom:10px;
+}
+.portfolio .p-tags{display:flex;gap:7px;flex-wrap:wrap}
+.portfolio .p-tag{
+  display:inline-block;padding:7px 10px;border-radius:30px;
+  background:var(--soft);font-size:11px;font-weight:700;color:var(--dark);
+}
+.portfolio .p-contact{
+  padding:30px 7%;background:var(--dark);color:#fff;
+}
+.portfolio .p-contact h2{margin:0 0 12px;font-size:20px}
+.portfolio .p-contact p{color:#dbeafe;font-size:13px;line-height:1.8}
+.portfolio .p-contact a{color:#93c5fd}
+.portfolio .p-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
+.portfolio .p-links a{font-size:12px;font-weight:700}
+.portfolio .p-footer{padding:15px 7%;font-size:11px;color:#94a3b8;text-align:center}
+.portfolio .p-hero-row{display:flex;align-items:center;gap:25px}
+.portfolio .p-hero-text{flex:1}
+.portfolio .p-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:12px}
+
+/* 15 unique template directions */
+.portfolio.t01 .p-hero{background:#101827;color:#fff}
+.portfolio.t01 .p-intro{color:#cbd5e1}
+.portfolio.t01 .p-role{color:#60a5fa}
+.portfolio.t01 .p-section:nth-child(even){background:#f8fafc}
+.portfolio.t02 .p-hero{background:#fff;border-bottom:1px solid #e5e7eb}
+.portfolio.t02 .p-name{font-weight:500;letter-spacing:-2px}
+.portfolio.t02 .p-section h2{font-weight:500}
+.portfolio.t03 .p-hero{background:linear-gradient(130deg,#111827,#243b63);color:#fff}
+.portfolio.t03 .p-intro{color:#dbeafe}
+.portfolio.t03 .p-role{color:#a5b4fc}
+.portfolio.t04 .p-hero{background:#fff7ed}
+.portfolio.t04 .p-name{font-family:Georgia,serif}
+.portfolio.t04 .p-section h2{color:#c2410c}
+.portfolio.t05 .p-hero{background:#111;color:#fff;text-align:center}
+.portfolio.t05 .p-hero-row{flex-direction:column}
+.portfolio.t05 .p-intro{margin:auto;color:#ddd}
+.portfolio.t05 .p-photo{width:175px;height:175px}
+.portfolio.t06 .p-hero{background:#ecfeff}
+.portfolio.t06 .p-section h2{color:#0e7490}
+.portfolio.t06 .p-card{border-radius:3px}
+.portfolio.t07 .p-hero{background:#172554;color:#fff}
+.portfolio.t07 .p-intro{color:#dbeafe}
+.portfolio.t07 .p-role{color:#93c5fd}
+.portfolio.t08 .p-hero{background:#f0fdf4}
+.portfolio.t08 .p-section h2{color:#15803d}
+.portfolio.t08 .p-card{box-shadow:0 5px 18px #14532d12;border:0}
+.portfolio.t09 .p-hero{background:#faf5ff}
+.portfolio.t09 .p-name{font-family:Georgia,serif}
+.portfolio.t09 .p-section h2{color:#7e22ce}
+.portfolio.t10 .p-hero{background:#f8fafc;border-left:10px solid var(--accent)}
+.portfolio.t10 .p-section{padding-top:22px;padding-bottom:22px}
+.portfolio.t11 .p-hero{background:#fff1f2}
+.portfolio.t11 .p-section h2{color:#be123c}
+.portfolio.t11 .p-card{border-radius:18px}
+.portfolio.t12 .p-hero{background:#eff6ff}
+.portfolio.t12 .p-hero-row{align-items:flex-start}
+.portfolio.t12 .p-section:nth-child(odd){background:#f8fafc}
+.portfolio.t13 .p-hero{background:#f5f5f4}
+.portfolio.t13 .p-name{font-family:Georgia,serif}
+.portfolio.t13 .p-card{border-radius:0}
+.portfolio.t14 .p-hero{background:#18181b;color:#fff}
+.portfolio.t14 .p-intro{color:#d4d4d8}
+.portfolio.t14 .p-role{color:#f0abfc}
+.portfolio.t15 .p-hero{background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
+.portfolio.t15 .p-section{max-width:1050px;margin:auto}
+.portfolio.t15 .p-card{box-shadow:0 8px 24px #1e293b0d}
+
+@media(max-width:1050px){
+  .app{grid-template-columns:380px minmax(0,1fr);padding:12px;gap:12px}
+  .preview-wrap{padding:12px}
+}
+@media(max-width:780px){
+  .app{display:flex;flex-direction:column;padding:10px}
+  .panel,.preview-panel{width:100%}
+  .preview-panel{position:static}
+  .form-content{max-height:none}
+  .preview-wrap{max-height:none;min-height:400px}
+  .topbar{padding:11px 13px;align-items:flex-start}
+  .brand{font-size:16px}
+  .top-actions .btn{padding:8px;font-size:11px}
+  .portfolio .p-grid{grid-template-columns:1fr}
+  .portfolio .p-hero{padding:35px 6%}
+  .portfolio .p-section{padding:23px 6%}
+  .portfolio .p-hero-row{gap:14px}
+  .portfolio .p-photo{width:100px;height:100px}
+}
+@media(max-width:480px){
+  .field-grid{grid-template-columns:1fr}
+  .template-picker{grid-template-columns:repeat(2,1fr)}
+  .topbar{flex-direction:column}
+  .top-actions{width:100%}
+  .top-actions .btn{flex:1}
+  .portfolio .p-hero-row{flex-direction:column;align-items:flex-start}
+  .portfolio .p-name{font-size:34px}
+}
+@media print{
+  body{background:#fff!important}
+  .topbar,.panel,.preview-head,.footer-note{display:none!important}
+  .app{display:block;padding:0;margin:0}
+  .preview-panel{position:static;border:0;box-shadow:none}
+  .preview-wrap{padding:0;max-height:none;overflow:visible;background:#fff}
+  .preview-page{max-width:none;min-height:0;box-shadow:none}
+  .portfolio{min-height:0}
+  .portfolio .p-card{break-inside:avoid}
+  @page{size:A4;margin:12mm}
+}
+</style>
+</head>
+
+<body>
+<header class="topbar">
+  <div class="brand">CV <span>TOOLS</span> <small style="font-size:11px;font-weight:500;color:#cbd5e1">/ Portfolio Maker</small></div>
+  <div class="top-actions">
+    <button class="btn" id="saveBtn">Save Draft</button>
+    <button class="btn" id="jsonBtn">Backup JSON</button>
+    <button class="btn" id="htmlBtn">Download Website</button>
+    <button class="btn primary" id="pdfBtn">Download PDF</button>
+  </div>
+</header>
+
+<main class="app">
+  <section class="panel">
+    <div class="panel-head">
+      <div>
+        <h1>Build Your Portfolio</h1>
+        <p>Create a professional portfolio in minutes — free.</p>
+      </div>
+      <button class="btn danger small" id="resetBtn">Reset</button>
+    </div>
+
+    <nav class="tabs" id="tabs">
+      <button class="tab active" data-tab="profile">Profile</button>
+      <button class="tab" data-tab="about">About</button>
+      <button class="tab" data-tab="skills">Skills</button>
+      <button class="tab" data-tab="experience">Experience</button>
+      <button class="tab" data-tab="education">Education</button>
+      <button class="tab" data-tab="projects">Projects</button>
+      <button class="tab" data-tab="extras">More</button>
+      <button class="tab" data-tab="design">Design</button>
+    </nav>
+
+    <div class="form-content" id="formContent"></div>
+  </section>
+
+  <section class="preview-panel">
+    <div class="preview-head">
+      <div><strong>Live Portfolio Preview</strong><br><span>Changes appear automatically</span></div>
+      <button class="btn small" id="previewBtn">Refresh Preview</button>
+    </div>
+    <div class="preview-wrap">
+      <div class="preview-page" id="previewPage">
+        <div class="empty-preview">
+          <div><strong>Your portfolio starts here</strong>Enter your details on the left to see your portfolio.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="footer-note">Free Portfolio Maker · CV Tools · Your information stays in your browser</div>
+
+<input type="file" id="jsonImport" accept=".json,application/json" hidden>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+const STORAGE_KEY = "cvtools_portfolio_maker_v1";
+
+const templates = [
+  ["Developer Pro","Dark modern developer layout"],
+  ["Minimal Portfolio","Clean and minimal style"],
+  ["Full Stack","Gradient technology style"],
+  ["Creative Designer","Warm creative editorial"],
+  ["Photographer","Image-focused black layout"],
+  ["UI/UX Designer","Modern cyan design"],
+  ["Corporate","Professional navy layout"],
+  ["Freelancer","Fresh green service layout"],
+  ["Executive","Elegant purple design"],
+  ["Consultant","Structured business layout"],
+  ["Student","Friendly student design"],
+  ["Educator","Clean academic design"],
+  ["Architect","Minimal architectural style"],
+  ["Writer","Editorial dark style"],
+  ["Personal Portfolio","Universal modern design"]
+];
+
+const defaultData = {
+  template:0,
+  accent:"#2563eb",
+  font:"Arial, sans-serif",
+  showPhoto:true,
+  name:"",
+  role:"",
+  location:"",
+  email:"",
+  phone:"",
+  website:"",
+  photo:"",
+  intro:"",
+  about:"",
+  skills:[],
+  experience:[],
+  education:[],
+  projects:[],
+  services:[],
+  certificates:[],
+  achievements:[],
+  testimonials:[],
+  social:[],
+  contactMessage:"Let's work together. Feel free to get in touch."
+};
+
+let data = structuredClone(defaultData);
+let currentTab = "profile";
+
+function esc(value){
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  }[c]));
+}
+function safeUrl(value){
+  const v=String(value||"").trim();
+  if(!v)return "";
+  try{
+    const u=new URL(v,location.href);
+    return ["http:","https:","mailto:","tel:"].includes(u.protocol)?u.href:"";
+  }catch{return "";}
+}
+function uid(){return Math.random().toString(36).slice(2,10)}
+
+function setTab(tab){
+  currentTab=tab;
+  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+  renderForm();
+}
+$("tabs").addEventListener("click",e=>{
+  const b=e.target.closest("[data-tab]");
+  if(b)setTab(b.dataset.tab);
+});
+
+function inputField(label,key,placeholder="",type="text",value=data[key]||""){
+  return `<div class="field"><label>${esc(label)}</label><input type="${type}" data-key="${key}" value="${esc(value)}" placeholder="${esc(placeholder)}"></div>`;
+}
+function textareaField(label,key,placeholder="",value=data[key]||""){
+  return `<div class="field"><label>${esc(label)}</label><textarea data-key="${key}" placeholder="${esc(placeholder)}">${esc(value)}</textarea></div>`;
+}
+function uploadField(label,key,help){
+  return `<div class="field"><label>${esc(label)}</label><div class="upload-box"><input type="file" accept="image/*" data-image-key="${key}"><div class="hint">${esc(help)}</div>${data[key]?`<button class="btn small danger" type="button" data-remove-image="${key}" style="margin-top:8px">Remove image</button>`:""}</div></div>`;
+}
+function listEditor(key,title,fields){
+  const arr=data[key]||[];
+  let html=`<div class="section-title">${esc(title)}</div><p class="section-help">Add as many entries as you need. You can edit or remove each entry.</p>`;
+  arr.forEach((item,index)=>{
+    html+=`<div class="item-card"><div class="item-card-head"><strong>${esc(title)} ${index+1}</strong><button class="btn danger small" type="button" data-remove="${key}" data-index="${index}">Delete</button></div>`;
+    fields.forEach(f=>{
+      const val=item[f.key]||"";
+      if(f.type==="textarea"){
+        html+=`<div class="field"><label>${esc(f.label)}</label><textarea data-list="${key}" data-index="${index}" data-field="${f.key}" placeholder="${esc(f.placeholder||"")}">${esc(val)}</textarea></div>`;
+      }else if(f.type==="image"){
+        html+=`<div class="field"><label>${esc(f.label)}</label><input type="file" accept="image/*" data-list-image="${key}" data-index="${index}">${item[f.key]?`<img src="${esc(item[f.key])}" style="width:100%;max-height:100px;object-fit:cover;border-radius:8px;margin-top:7px"><button type="button" class="btn small danger" data-remove-list-image="${key}" data-index="${index}">Remove image</button>`:""}</div>`;
+      }else{
+        html+=`<div class="field"><label>${esc(f.label)}</label><input type="${f.type||"text"}" data-list="${key}" data-index="${index}" data-field="${f.key}" value="${esc(val)}" placeholder="${esc(f.placeholder||"")}"></div>`;
+      }
+    });
+    html+="</div>";
+  });
+  html+=`<button class="add-btn" type="button" data-add="${key}">＋ Add ${esc(title.replace(/s$/,""))}</button>`;
+  return html;
+}
+
+function renderForm(){
+  const c=$("formContent");
+  let html="";
+  if(currentTab==="profile"){
+    html=`<div class="section-title">Personal Profile</div><p class="section-help">Start with your name, professional title and contact details.</p>
+      ${inputField("Full Name","name","e.g. Alex Morgan")}
+      ${inputField("Professional Title","role","e.g. Front-End Developer")}
+      ${inputField("Location","location","e.g. Islamabad, Pakistan")}
+      <div class="field-grid">${inputField("Email Address","email","you@example.com","email")}${inputField("Phone Number","phone","+92 300 0000000","tel")}</div>
+      ${inputField("Personal Website","website","https://yourwebsite.com","url")}
+      ${uploadField("Profile Photo","photo","JPG, PNG or WebP image. A square image works best.")}
+      ${textareaField("Short Introduction","intro","A short introduction shown near the top of your portfolio.")}`;
+  }else if(currentTab==="about"){
+    html=`<div class="section-title">About Me</div><p class="section-help">Tell visitors who you are, what you do and what makes your work valuable.</p>
+      ${textareaField("Professional Biography","about","Write about your background, experience, interests and professional goals.")}`;
+  }else if(currentTab==="skills"){
+    html=listEditor("skills","Skills",[{key:"name",label:"Skill name",placeholder:"e.g. JavaScript"},{key:"level",label:"Level (optional)",placeholder:"e.g. Advanced"}]);
+  }else if(currentTab==="experience"){
+    html=listEditor("experience","Experience",[
+      {key:"position",label:"Job Title",placeholder:"e.g. Software Developer"},
+      {key:"company",label:"Company / Organization"},
+      {key:"duration",label:"Duration",placeholder:"e.g. Jan 2023 – Present"},
+      {key:"location",label:"Location"},
+      {key:"description",label:"Responsibilities and achievements",type:"textarea"}
+    ]);
+  }else if(currentTab==="education"){
+    html=listEditor("education","Education",[
+      {key:"qualification",label:"Degree / Qualification"},
+      {key:"institution",label:"Institute / University"},
+      {key:"year",label:"Year / Duration"},
+      {key:"details",label:"Additional details",type:"textarea"}
+    ]);
+  }else if(currentTab==="projects"){
+    html=listEditor("projects","Projects",[
+      {key:"title",label:"Project Title"},
+      {key:"category",label:"Category / Role",placeholder:"e.g. Web Design"},
+      {key:"description",label:"Project Description",type:"textarea"},
+      {key:"tools",label:"Tools / Technologies",placeholder:"HTML, CSS, JavaScript"},
+      {key:"link",label:"Live Project URL",type:"url"},
+      {key:"image",label:"Project Image",type:"image"}
+    ]);
+  }else if(currentTab==="extras"){
+    html=`<div class="section-title">Additional Sections</div><p class="section-help">These sections are optional. Add only what is relevant to your profession.</p>
+      ${listEditor("services","Services",[
+        {key:"title",label:"Service Name"},
+        {key:"description",label:"Service Description",type:"textarea"}
+      ])}
+      ${listEditor("certificates","Certifications",[
+        {key:"title",label:"Certificate Name"},
+        {key:"issuer",label:"Issuing Organization"},
+        {key:"date",label:"Issue Date"},
+        {key:"link",label:"Certificate URL",type:"url"}
+      ])}
+      ${listEditor("achievements","Achievements",[
+        {key:"title",label:"Achievement"},
+        {key:"date",label:"Date"},
+        {key:"description",label:"Details",type:"textarea"}
+      ])}
+      ${listEditor("testimonials","Testimonials",[
+        {key:"name",label:"Client / Person Name"},
+        {key:"role",label:"Designation / Company"},
+        {key:"quote",label:"Feedback",type:"textarea"}
+      ])}
+      ${listEditor("social","Social & Professional Links",[
+        {key:"name",label:"Platform",placeholder:"LinkedIn, GitHub, Behance..."},
+        {key:"url",label:"Profile URL",type:"url"}
+      ])}
+      ${textareaField("Contact Section Message","contactMessage","Let's work together.")}`;
+  }else if(currentTab==="design"){
+    html=`<div class="section-title">Choose Your Design</div><p class="section-help">Select one of 15 layouts. Your content stays the same when you switch designs.</p>
+      <div class="template-picker">${templates.map((t,i)=>`<button type="button" class="template-option ${data.template===i?"active":""}" data-template="${i}"><div class="template-swatch" style="background:${["#101827","#fff","#243b63","#fff7ed","#111","#ecfeff","#172554","#f0fdf4","#faf5ff","#f8fafc","#fff1f2","#eff6ff","#f5f5f4","#18181b","#eff6ff"][i]}"></div><strong>${String(i+1).padStart(2,"0")}. ${esc(t[0])}</strong><small>${esc(t[1])}</small></button>`).join("")}</div>
+      <div class="field"><label>Accent Color</label><div class="color-row"><input type="color" id="accentColor" value="${esc(data.accent)}"><span class="hint">Used for headings, highlights and links.</span></div></div>
+      <div class="field"><label>Typography</label><select id="fontSelect">
+        <option value="Arial, sans-serif">Modern Sans Serif</option>
+        <option value="Georgia, serif">Classic Serif</option>
+        <option value="'Trebuchet MS', sans-serif">Friendly Modern</option>
+        <option value="'Courier New', monospace">Technical Mono</option>
+        <option value="Verdana, sans-serif">Clean Professional</option>
+      </select></div>
+      <label class="checkline"><input type="checkbox" id="showPhoto" ${data.showPhoto?"checked":""}> Show profile photo when uploaded</label>
+      <div class="notice">Tip: Use strong project images, concise descriptions and working links to make your portfolio more convincing.</div>`;
+  }
+  c.innerHTML=html;
+  const font=$("fontSelect");if(font)font.value=data.font;
+}
+
+function addItem(key){
+  const defaults={
+    skills:{name:"",level:""},
+    experience:{position:"",company:"",duration:"",location:"",description:""},
+    education:{qualification:"",institution:"",year:"",details:""},
+    projects:{title:"",category:"",description:"",tools:"",link:"",image:""},
+    services:{title:"",description:""},
+    certificates:{title:"",issuer:"",date:"",link:""},
+    achievements:{title:"",date:"",description:""},
+    testimonials:{name:"",role:"",quote:""},
+    social:{name:"",url:""}
+  };
+  if(!defaults[key])return;
+  data[key].push({...defaults[key]});
+  renderForm();updatePreview();
+}
+$("formContent").addEventListener("click",e=>{
+  const add=e.target.closest("[data-add]");
+  if(add){addItem(add.dataset.add);return}
+  const del=e.target.closest("[data-remove]");
+  if(del){
+    data[del.dataset.remove].splice(Number(del.dataset.index),1);
+    renderForm();updatePreview();return;
+  }
+  const removeImg=e.target.closest("[data-remove-image]");
+  if(removeImg){data[removeImg.dataset.removeImage]="";renderForm();updatePreview();return}
+  const removeListImg=e.target.closest("[data-remove-list-image]");
+  if(removeListImg){
+    data[removeListImg.dataset.removeListImage][Number(removeListImg.dataset.index)].image="";
+    renderForm();updatePreview();return;
+  }
+  const temp=e.target.closest("[data-template]");
+  if(temp){data.template=Number(temp.dataset.template);renderForm();updatePreview()}
+});
+
+$("formContent").addEventListener("input",e=>{
+  const el=e.target;
+  if(el.dataset.key){data[el.dataset.key]=el.value;updatePreview()}
+  if(el.dataset.list){
+    const arr=data[el.dataset.list],item=arr[Number(el.dataset.index)];
+    if(item)item[el.dataset.field]=el.value;
+    updatePreview();
+  }
+  if(el.id==="accentColor"){data.accent=el.value;updatePreview()}
+  if(el.id==="fontSelect"){data.font=el.value;updatePreview()}
+  if(el.id==="showPhoto"){data.showPhoto=el.checked;updatePreview()}
+});
+$("formContent").addEventListener("change",async e=>{
+  const el=e.target;
+  if(el.dataset.imageKey){
+    const file=el.files&&el.files[0];if(!file)return;
+    if(!file.type.startsWith("image/")){alert("Please choose an image file.");return}
+    if(file.size>8*1024*1024){alert("Please use an image smaller than 8 MB.");return}
+    data[el.dataset.imageKey]=await imageToData(file);
+    renderForm();updatePreview();
+  }
+  if(el.dataset.listImage){
+    const file=el.files&&el.files[0];if(!file)return;
+    if(!file.type.startsWith("image/")){alert("Please choose an image file.");return}
+    if(file.size>8*1024*1024){alert("Please use an image smaller than 8 MB.");return}
+    data[el.dataset.listImage][Number(el.dataset.index)].image=await imageToData(file);
+    renderForm();updatePreview();
+  }
+});
+function imageToData(file){
+  return new Promise((resolve,reject)=>{
+    const reader=new FileReader();
+    reader.onload=()=>resolve(reader.result);
+    reader.onerror=reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function section(title,content){
+  if(!content)return "";
+  return `<section class="p-section"><h2>${esc(title)}</h2>${content}</section>`;
+}
+function renderCards(items,kind){
+  if(!items||!items.length)return "";
+  return `<div class="p-grid">${items.map(x=>{
+    if(kind==="experience")return `<article class="p-card"><h3>${esc(x.position)}</h3><div class="p-meta">${esc(x.company)} ${x.duration?" · "+esc(x.duration):""} ${x.location?" · "+esc(x.location):""}</div><p>${esc(x.description)}</p></article>`;
+    if(kind==="education")return `<article class="p-card"><h3>${esc(x.qualification)}</h3><div class="p-meta">${esc(x.institution)} ${x.year?" · "+esc(x.year):""}</div><p>${esc(x.details)}</p></article>`;
+    if(kind==="projects"){
+      const link=safeUrl(x.link);
+      return `<article class="p-card">${x.image?`<img class="p-project-img" src="${esc(x.image)}" alt="${esc(x.title)}">`:""}<h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.category)}</div><p>${esc(x.description)}</p>${x.tools?`<p><strong>Tools:</strong> ${esc(x.tools)}</p>`:""}${link?`<a href="${esc(link)}" target="_blank" rel="noopener">View project ↗</a>`:""}</article>`;
+    }
+    if(kind==="services")return `<article class="p-card"><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></article>`;
+    if(kind==="certificates")return `<article class="p-card"><h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.issuer)} ${x.date?" · "+esc(x.date):""}</div>${safeUrl(x.link)?`<a href="${esc(safeUrl(x.link))}" target="_blank" rel="noopener">View certificate ↗</a>`:""}</article>`;
+    if(kind==="achievements")return `<article class="p-card"><h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.date)}</div><p>${esc(x.description)}</p></article>`;
+    if(kind==="testimonials")return `<article class="p-card"><p>“${esc(x.quote)}”</p><h3>${esc(x.name)}</h3><div class="p-meta">${esc(x.role)}</div></article>`;
+    return "";
+  }).join("")}</div>`;
+}
+function renderPortfolio(){
+  const t=String(data.template+1).padStart(2,"0");
+  const photo=data.showPhoto&&data.photo?`<img class="p-photo" src="${esc(data.photo)}" alt="${esc(data.name||"Profile photo")}">`:"";
+  const social=(data.social||[]).filter(x=>x.name&&safeUrl(x.url));
+  const links=social.map(x=>`<a href="${esc(safeUrl(x.url))}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>`).join("");
+  const contactBits=[
+    data.email?`<a href="mailto:${esc(data.email)}">${esc(data.email)}</a>`:"",
+    data.phone?`<a href="tel:${esc(data.phone.replace(/[^\d+]/g,""))}">${esc(data.phone)}</a>`:"",
+    data.location?esc(data.location):"",
+    safeUrl(data.website)?`<a href="${esc(safeUrl(data.website))}" target="_blank" rel="noopener">Personal website ↗</a>`:""
+  ].filter(Boolean).join(" &nbsp; · &nbsp; ");
+
+  return `<div class="portfolio t${t}" style="--accent:${esc(data.accent)};--font:${data.font}">
+    <header class="p-hero"><div class="p-hero-row">${photo}<div class="p-hero-text">
+      <div class="p-kicker">Professional Portfolio</div>
+      <h1 class="p-name">${esc(data.name||"Your Name")}</h1>
+      <div class="p-role">${esc(data.role||"Your Professional Title")}</div>
+      ${data.intro?`<div class="p-intro">${esc(data.intro).replace(/\n/g,"<br>")}</div>`:`<div class="p-intro">Add a short introduction to tell visitors what you do and what you bring to your work.</div>`}
+      ${data.location?`<div class="p-meta" style="margin-top:12px">${esc(data.location)}</div>`:""}
+    </div></div></header>
+    ${data.about?section("About Me",`<p>${esc(data.about).replace(/\n/g,"<br>")}</p>`):""}
+    ${data.skills.length?section("Skills",`<div class="p-tags">${data.skills.filter(x=>x.name).map(x=>`<span class="p-tag">${esc(x.name)}${x.level?" · "+esc(x.level):""}</span>`).join("")}</div>`):""}
+    ${data.experience.length?section("Experience",renderCards(data.experience,"experience")):""}
+    ${data.education.length?section("Education",renderCards(data.education,"education")):""}
+    ${data.projects.length?section("Selected Projects",renderCards(data.projects,"projects")):""}
+    ${data.services.length?section("Services",renderCards(data.services,"services")):""}
+    ${data.certificates.length?section("Certifications",renderCards(data.certificates,"certificates")):""}
+    ${data.achievements.length?section("Achievements",renderCards(data.achievements,"achievements")):""}
+    ${data.testimonials.length?section("Testimonials",renderCards(data.testimonials,"testimonials")):""}
+    ${contactBits||links?`<footer class="p-contact"><h2>Get in Touch</h2><p>${esc(data.contactMessage||"Let's work together.")}</p><p>${contactBits}</p><div class="p-links">${links}</div></footer>`:""}
+    <div class="p-footer">Portfolio created with CV Tools</div>
+  </div>`;
+}
+function updatePreview(){
+  $("previewPage").innerHTML=renderPortfolio();
+}
+$("previewBtn").addEventListener("click",updatePreview);
+
+$("saveBtn").addEventListener("click",()=>{
+  try{
+    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
+    alert("Your portfolio draft has been saved in this browser.");
+  }catch(e){alert("Could not save. Your images may be too large. Try smaller images.")}
+});
+function loadDraft(){
+  const raw=localStorage.getItem(STORAGE_KEY);
+  if(!raw)return false;
+  try{
+    const parsed=JSON.parse(raw);
+    data={...structuredClone(defaultData),...parsed};
+    return true;
+  }catch{return false}
+}
+$("resetBtn").addEventListener("click",()=>{
+  if(!confirm("Reset all portfolio information? This cannot be undone unless you have a backup."))return;
+  data=structuredClone(defaultData);
+  localStorage.removeItem(STORAGE_KEY);
+  setTab("profile");updatePreview();
+});
+
+function downloadBlob(content,name,type){
+  const blob=new Blob([content],{type});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=name;a.click();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+$("jsonBtn").addEventListener("click",()=>{
+  downloadBlob(JSON.stringify(data,null,2),"my-portfolio-backup.json","application/json");
+});
+$("jsonImport").addEventListener("change",async e=>{
+  const file=e.target.files[0];if(!file)return;
+  try{
+    const parsed=JSON.parse(await file.text());
+    if(!parsed||typeof parsed!=="object"||!Array.isArray(parsed.projects)||!Array.isArray(parsed.skills))throw new Error("Invalid backup");
+    data={...structuredClone(defaultData),...parsed};
+    setTab("profile");updatePreview();alert("Portfolio backup imported successfully.");
+  }catch{alert("This JSON file is not a valid Portfolio Maker backup.")}
+  e.target.value="";
+});
+const importButton=document.createElement("button");
+importButton.className="btn";
+importButton.textContent="Import JSON";
+importButton.addEventListener("click",()=>$("jsonImport").click());
+document.querySelector(".top-actions").insertBefore(importButton,$("htmlBtn"));
+
+function standaloneHtml(){
+  const css=[...document.querySelectorAll("style")].map(s=>s.textContent).join("\n");
+  const portfolio=renderPortfolio();
+  return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${esc(data.name||"Professional Portfolio")} | Portfolio</title>
+<meta name="description" content="${esc((data.intro||data.about||"Professional portfolio").slice(0,155))}">
+<style>${css}
+body{background:#fff!important;margin:0!important}
+.portfolio{max-width:1100px;margin:0 auto}
+</style></head><body>${portfolio}</body></html>`;
+}
+$("htmlBtn").addEventListener("click",()=>{
+  downloadBlob(standaloneHtml(),"my-professional-portfolio.html","text/html;charset=utf-8");
+});
+$("pdfBtn").addEventListener("click",()=>{
+  updatePreview();
+  window.print();
+});
+
+function init(){
+  if(loadDraft()){
+    // Existing saved draft is restored only when the user explicitly uses Load Draft.
+    // Initial page visit starts blank to protect privacy.
+    data=structuredClone(defaultData);
+  }
+  renderForm();updatePreview();
+  const loadButton=document.createElement("button");
+  loadButton.className="btn";
+  loadButton.textContent="Load Draft";
+  loadButton.addEventListener("click",()=>{
+    if(loadDraft()){
+      setTab("profile");updatePreview();alert("Saved draft loaded.");
+    }else alert("No saved draft was found in this browser.");
+  });
+  document.querySelector(".top-actions").insertBefore(loadButton,$("jsonBtn"));
+}
+init();
+</script>
+</body>
+</html>
