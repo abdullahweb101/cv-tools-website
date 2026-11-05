@@ -509,17 +509,20 @@ button{cursor:pointer}
   </div>
 </div>
 
-<!-- SYMBOL MODAL -->
-<div class="modal-backdrop" id="symbolModal">
+
+<!-- ADVANCED SHAPE LIBRARY -->
+<div class="modal-backdrop" id="shapeModal">
   <div class="modal">
     <div class="modal-head">
-      <h2>Symbol library</h2>
-      <button class="close-modal" data-close="symbolModal">✕</button>
+      <h2>Advanced Shape Library</h2>
+      <button class="close-modal" data-close="shapeModal">✕</button>
     </div>
-    <p class="muted">Choose a symbol to add it as an editable text element.</p>
-    <div class="modal-grid" id="symbolGrid"></div>
+    <p class="muted">Choose a shape to add it to your logo canvas. Every shape can be edited separately.</p>
+    <input type="text" id="shapeSearch" placeholder="Search shapes..." style="width:100%;padding:10px;border:1px solid #e2e8f0;border-radius:8px;margin:8px 0 14px">
+    <div class="modal-grid" id="shapeGrid"></div>
   </div>
 </div>
+
 
 <div class="toast" id="toast"></div>
 
@@ -640,36 +643,168 @@ function addElement(item,record=true){
 }
 function getSelected(){return elements.find(e=>e.id===selectedId)||null;}
 
+
 function shapeMarkup(e){
  const fill=escapeXML(e.fill);
  const stroke=escapeXML(e.stroke||"none");
  const sw=Math.max(0,e.strokeWidth);
- const common=`fill="${fill}" stroke="${stroke}" stroke-width="${sw}"`;
+ const common=`fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round" stroke-linecap="round"`;
+
+ const polygon=(points)=>`<polygon points="${points}" ${common}/>`;
+ const path=(d)=>`<path d="${d}" ${common}/>`;
+ const w=e.w,h=e.h;
+
  switch(e.shape){
+
   case "circle":
-   return `<ellipse cx="${e.w/2}" cy="${e.h/2}" rx="${e.w/2}" ry="${e.h/2}" ${common}/>`;
-  case "triangle":
-   return `<polygon points="${e.w/2},0 ${e.w},${e.h} 0,${e.h}" ${common}/>`;
-  case "diamond":
-   return `<polygon points="${e.w/2},0 ${e.w},${e.h/2} ${e.w/2},${e.h} 0,${e.h/2}" ${common}/>`;
-  case "hexagon":
-   return `<polygon points="${e.w*.25},0 ${e.w*.75},0 ${e.w},${e.h/2} ${e.w*.75},${e.h} ${e.w*.25},${e.h} 0,${e.h/2}" ${common}/>`;
-  case "star":{
-   let pts=[];
-   for(let i=0;i<10;i++){
-    const r=i%2===0?Math.min(e.w,e.h)*.49:Math.min(e.w,e.h)*.22;
-    const a=-Math.PI/2+i*Math.PI/5;
-    pts.push(`${e.w/2+Math.cos(a)*r},${e.h/2+Math.sin(a)*r}`);
-   }
-   return `<polygon points="${pts.join(" ")}" ${common}/>`;
-  }
-  case "line":
-   return `<line x1="0" y1="${e.h/2}" x2="${e.w}" y2="${e.h/2}" stroke="${fill}" stroke-width="${Math.max(1,sw||4)}"/>`;
+   return `<ellipse cx="${w/2}" cy="${h/2}" rx="${w/2}" ry="${h/2}" ${common}/>`;
+
+  case "oval":
+   return `<ellipse cx="${w/2}" cy="${h/2}" rx="${w/2}" ry="${h/2}" ${common}/>`;
+
   case "rect":
+   return `<rect width="${w}" height="${h}" ${common}/>`;
+
+  case "rounded":
+   return `<rect width="${w}" height="${h}" rx="${Math.min(w,h)*.2}" ${common}/>`;
+
+  case "pill":
+   return `<rect width="${w}" height="${h}" rx="${Math.min(w,h)/2}" ${common}/>`;
+
+  case "triangle":
+   return polygon(`${w/2},0 ${w},${h} 0,${h}`);
+
+  case "triangle-down":
+   return polygon(`0,0 ${w},0 ${w/2},${h}`);
+
+  case "triangle-left":
+   return polygon(`0,${h/2} ${w},0 ${w},${h}`);
+
+  case "triangle-right":
+   return polygon(`0,0 ${w},${h/2} 0,${h}`);
+
+  case "diamond":
+   return polygon(`${w/2},0 ${w},${h/2} ${w/2},${h} 0,${h/2}`);
+
+  case "parallelogram":
+   return polygon(`${w*.22},0 ${w},0 ${w*.78},${h} 0,${h}`);
+
+  case "trapezoid":
+   return polygon(`${w*.2},0 ${w*.8},0 ${w},${h} 0,${h}`);
+
+  case "pentagon":{
+   const pts=[];
+   for(let i=0;i<5;i++){
+    const a=-Math.PI/2+i*2*Math.PI/5;
+    pts.push(`${w/2+Math.cos(a)*w*.48},${h/2+Math.sin(a)*h*.48}`);
+   }
+   return polygon(pts.join(" "));
+  }
+
+  case "hexagon":
+   return polygon(`${w*.25},0 ${w*.75},0 ${w},${h/2} ${w*.75},${h} ${w*.25},${h} 0,${h/2}`);
+
+  case "octagon":
+   return polygon(`${w*.3},0 ${w*.7},0 ${w},${h*.3} ${w},${h*.7} ${w*.7},${h} ${w*.3},${h} 0,${h*.7} 0,${h*.3}`);
+
+  case "star":
+  case "star6":
+  case "star8":{
+   const count=e.shape==="star6"?6:e.shape==="star8"?8:5;
+   const pts=[];
+   for(let i=0;i<count*2;i++){
+    const r=i%2===0?.49:.22;
+    const a=-Math.PI/2+i*Math.PI/count;
+    pts.push(`${w/2+Math.cos(a)*w*r},${h/2+Math.sin(a)*h*r}`);
+   }
+   return polygon(pts.join(" "));
+  }
+
+  case "heart":
+   return path(`M ${w/2} ${h*.92}
+    C ${w*.05} ${h*.58}, ${w*.02} ${h*.35}, ${w*.23} ${h*.18}
+    C ${w*.38} ${h*.04}, ${w*.5} ${h*.22}, ${w/2} ${h*.3}
+    C ${w*.68} ${h*.04}, ${w*.98} ${h*.18}, ${w*.98} ${h*.43}
+    C ${w*.98} ${h*.67}, ${w*.7} ${h*.84}, ${w/2} ${h*.92} Z`);
+
+  case "cross":
+   return polygon(`${w*.36},0 ${w*.64},0 ${w*.64},${h*.36} ${w},${h*.36} ${w},${h*.64} ${w*.64},${h*.64} ${w*.64},${h} ${w*.36},${h} ${w*.36},${h*.64} 0,${h*.64} 0,${h*.36} ${w*.36},${h*.36}`);
+
+  case "plus":
+   return polygon(`${w*.4},0 ${w*.6},0 ${w*.6},${h*.4} ${w},${h*.4} ${w},${h*.6} ${w*.6},${h*.6} ${w*.6},${h} ${w*.4},${h} ${w*.4},${h*.6} 0,${h*.6} 0,${h*.4} ${w*.4},${h*.4}`);
+
+  case "arrow-right":
+   return polygon(`0,${h*.3} ${w*.65},${h*.3} ${w*.65},0 ${w},${h/2} ${w*.65},${h} ${w*.65},${h*.7} 0,${h*.7}`);
+
+  case "arrow-left":
+   return polygon(`${w},${h*.3} ${w*.35},${h*.3} ${w*.35},0 0,${h/2} ${w*.35},${h} ${w*.35},${h*.7} ${w},${h*.7}`);
+
+  case "chevron":
+   return polygon(`0,0 ${w*.5},${h/2} 0,${h} ${w*.35},${h} ${w*.85},${h/2} ${w*.35},0`);
+
+  case "shield":
+   return path(`M ${w/2} 0 L ${w*.95} ${h*.18} L ${w*.9} ${h*.63} Q ${w*.8} ${h*.85} ${w/2} ${h} Q ${w*.2} ${h*.85} ${w*.1} ${h*.63} L ${w*.05} ${h*.18} Z`);
+
+  case "badge":
+   return polygon(`${w*.5},0 ${w*.62},${h*.12} ${w*.82},${h*.08} ${w*.86},${h*.28} ${w},${h*.5} ${w*.86},${h*.72} ${w*.82},${h*.92} ${w*.62},${h*.88} ${w*.5},${h} ${w*.38},${h*.88} ${w*.18},${h*.92} ${w*.14},${h*.72} 0,${h*.5} ${w*.14},${h*.28} ${w*.18},${h*.08} ${w*.38},${h*.12}`);
+
+  case "cloud":
+   return path(`M ${w*.2} ${h*.75} C ${w*.02} ${h*.75} 0 ${h*.57} ${w*.12} ${h*.42} C ${w*.22} ${h*.29} ${w*.38} ${h*.3} ${w*.46} ${h*.39} C ${w*.52} ${h*.12} ${w*.9} ${h*.1} ${w*.94} ${h*.4} C ${w*1.1} ${h*.44} ${w*1.05} ${h*.78} ${w*.82} ${h*.78} Z`);
+
+  case "speech":
+   return path(`M 0 ${h*.12} Q 0 0 ${w*.12} 0 L ${w*.88} 0 Q ${w} 0 ${w} ${h*.12} L ${w} ${h*.7} Q ${w} ${h*.82} ${w*.88} ${h*.82} L ${w*.35} ${h*.82} L ${w*.18} ${h} L ${w*.2} ${h*.82} L ${w*.12} ${h*.82} Q 0 ${h*.82} 0 ${h*.7} Z`);
+
+  case "tag":
+   return path(`M 0 0 L ${w*.72} 0 L ${w} ${h*.5} L ${w*.72} ${h} L 0 ${h} Z`);
+
+  case "ribbon":
+   return path(`M 0 0 L ${w} 0 L ${w} ${h*.75} L ${w*.5} ${h*.58} L 0 ${h*.75} Z`);
+
+  case "ring":
+   return `<ellipse cx="${w/2}" cy="${h/2}" rx="${w*.43}" ry="${h*.43}" fill="none" stroke="${fill}" stroke-width="${Math.max(5,Math.min(w,h)*.12)}"/>`;
+
+  case "donut":
+   return `<path d="M ${w/2} ${h*.05} A ${w*.45} ${h*.45} 0 1 1 ${w/2-0.01} ${h*.05} M ${w/2} ${h*.3} A ${w*.2} ${h*.2} 0 1 0 ${w/2+0.01} ${h*.3}" fill="${fill}" fill-rule="evenodd" stroke="${stroke}" stroke-width="${sw}"/>`;
+
+  case "line":
+   return `<line x1="0" y1="${h/2}" x2="${w}" y2="${h/2}" stroke="${fill}" stroke-width="${Math.max(2,sw||4)}"/>`;
+
+  case "wave":
+   return path(`M 0 ${h*.5} Q ${w*.25} 0 ${w*.5} ${h*.5} T ${w} ${h*.5} L ${w} ${h*.8} Q ${w*.75} ${h*.3} ${w*.5} ${h*.8} T 0 ${h*.8} Z`);
+
+  case "flower":{
+   const petals=[];
+   for(let i=0;i<8;i++){
+    const a=i*Math.PI/4;
+    const cx=w/2+Math.cos(a)*w*.22;
+    const cy=h/2+Math.sin(a)*h*.22;
+    petals.push(`<ellipse cx="${cx}" cy="${cy}" rx="${w*.17}" ry="${h*.17}" transform="rotate(${i*45} ${cx} ${cy})" ${common}/>`);
+   }
+   petals.push(`<circle cx="${w/2}" cy="${h/2}" r="${Math.min(w,h)*.12}" ${common}/>`);
+   return petals.join("");
+  }
+
+  case "burst":{
+   const pts=[];
+   for(let i=0;i<24;i++){
+    const a=-Math.PI/2+i*Math.PI/12;
+    const r=i%2===0?.49:.34;
+    pts.push(`${w/2+Math.cos(a)*w*r},${h/2+Math.sin(a)*h*r}`);
+   }
+   return polygon(pts.join(" "));
+  }
+
+  case "spark":
+   return polygon(`${w*.5},0 ${w*.63},${h*.37} ${w},${h*.5} ${w*.63},${h*.63} ${w*.5},${h} ${w*.37},${h*.63} 0,${h*.5} ${w*.37},${h*.37}`);
+
+  case "location":
+   return path(`M ${w/2} ${h} C ${w*.3} ${h*.68} 0 ${h*.4} ${w*.12} ${h*.22} C ${w*.28} 0 ${w*.72} 0 ${w*.88} ${h*.22} C ${w} ${h*.4} ${w*.7} ${h*.68} ${w/2} ${h} Z M ${w/2} ${h*.2} A ${w*.12} ${h*.12} 0 1 0 ${w/2-.01} ${h*.2} Z`);
+
   default:
-   return `<rect x="0" y="0" width="${e.w}" height="${e.h}" rx="${num(e.rx,0)}" ${common}/>`;
+   return `<rect width="${w}" height="${h}" ${common}/>`;
  }
 }
+
 function elementMarkup(e){
  const opacity=clamp(e.opacity,0,100)/100;
  let inner="";
@@ -832,9 +967,90 @@ $("confirmAddText").addEventListener("click",()=>{
  addText(text,num($("newTextStyle").value,700));
  closeModal("textModal");toast("Text added.");
 });
-$("addShape").addEventListener("click",()=>addShape("rect"));
-document.querySelectorAll(".quick-shape").forEach(btn=>{
+$("addShape").addEventListener("click",()=>{
+ $("shapeSearch").value="";
+ document.querySelectorAll("#shapeGrid .modal-option").forEach(btn=>{
+  btn.style.display="block";
+ });
+ openModal("shapeModal");
+});
+  document.querySelectorAll(".quick-shape").forEach(btn=>{
  btn.addEventListener("click",()=>addShape(btn.dataset.shape));
+});
+
+/* ADVANCED SHAPE LIBRARY */
+
+const shapeOptions = [
+ ["Rectangle","rect","▰"],
+ ["Rounded Rectangle","rounded","▢"],
+ ["Pill","pill","▱"],
+ ["Circle","circle","●"],
+ ["Oval","oval","⬭"],
+ ["Triangle","triangle","▲"],
+ ["Down Triangle","triangle-down","▼"],
+ ["Left Triangle","triangle-left","◀"],
+ ["Right Triangle","triangle-right","▶"],
+ ["Diamond","diamond","◆"],
+ ["Parallelogram","parallelogram","▱"],
+ ["Trapezoid","trapezoid","⏢"],
+ ["Pentagon","pentagon","⬟"],
+ ["Hexagon","hexagon","⬡"],
+ ["Octagon","octagon","⯃"],
+ ["Star 5","star","★"],
+ ["Star 6","star6","✶"],
+ ["Star 8","star8","✳"],
+ ["Heart","heart","♥"],
+ ["Cross","cross","✚"],
+ ["Plus","plus","+"],
+ ["Arrow Right","arrow-right","➜"],
+ ["Arrow Left","arrow-left","⬅"],
+ ["Chevron","chevron","❯"],
+ ["Shield","shield","⬟"],
+ ["Badge","badge","✹"],
+ ["Cloud","cloud","☁"],
+ ["Speech Bubble","speech","▱"],
+ ["Tag","tag","◆"],
+ ["Ribbon","ribbon","⚑"],
+ ["Ring","ring","◎"],
+ ["Donut","donut","◉"],
+ ["Line","line","―"],
+ ["Wave","wave","〰"],
+ ["Flower","flower","✿"],
+ ["Burst","burst","✴"],
+ ["Spark","spark","✦"],
+ ["Location Pin","location","📍"]
+];
+
+function buildShapePicker(){
+ const box=$("shapeGrid");
+ box.innerHTML="";
+
+ shapeOptions.forEach(([name,shape,glyph])=>{
+  const btn=document.createElement("button");
+  btn.className="modal-option";
+  btn.dataset.shapeName=name.toLowerCase();
+  btn.innerHTML=`
+   <strong style="font-size:23px;display:block;margin-bottom:5px">${glyph}</strong>
+   <small>${name}</small>
+  `;
+
+  btn.addEventListener("click",()=>{
+   addShape(shape);
+   closeModal("shapeModal");
+   toast(name+" added to canvas.");
+  });
+
+  box.appendChild(btn);
+ });
+}
+
+buildShapePicker();
+
+$("shapeSearch").addEventListener("input",()=>{
+ const query=$("shapeSearch").value.toLowerCase();
+ document.querySelectorAll("#shapeGrid .modal-option").forEach(btn=>{
+  btn.style.display=btn.dataset.shapeName.includes(query)?"block":"none";
+ });
 });
 
 /* SYMBOLS */
