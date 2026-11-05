@@ -1,604 +1,477 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Create a professional portfolio website and PDF for free. Choose from 15 portfolio templates, add projects, skills and experience, and download your portfolio.">
+<title>Free Portfolio Builder | CV Tools</title>
+<meta name="description" content="Create a professional personal portfolio with free templates, a drag-and-drop editor, project galleries and HTML or PDF export.">
 <meta name="robots" content="index,follow">
 <link rel="canonical" href="https://cv-tools-website.pages.dev/portfolio-maker.html">
-<title>Free Portfolio Maker | CV Tools</title>
 
 <style>
-:root{
-  --brand:#2563eb;
-  --ink:#172033;
-  --muted:#64748b;
-  --line:#e2e8f0;
-  --paper:#ffffff;
-  --bg:#f4f7fb;
-  --radius:15px;
-  --shadow:0 8px 30px rgba(15,23,42,.07);
+:root {
+  --blue:#3563e9;
+  --dark:#172033;
+  --muted:#68748a;
+  --line:#e5eaf2;
+  --bg:#f5f7fb;
 }
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:Inter,Arial,Helvetica,sans-serif;
-  background:var(--bg);
-  color:var(--ink);
-}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--dark);background:var(--bg)}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+[hidden]{display:none!important}
+
+/* Main header */
 .topbar{
-  background:#101827;color:#fff;padding:13px 22px;
+  height:65px;background:#fff;border-bottom:1px solid var(--line);
   display:flex;align-items:center;justify-content:space-between;
-  gap:15px;position:sticky;top:0;z-index:50;
-  box-shadow:0 3px 15px #0002;
+  padding:0 25px;position:sticky;top:0;z-index:100
 }
-.brand{font-size:19px;font-weight:800;letter-spacing:-.4px}
-.brand span{color:#60a5fa}
-.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.brand{font-size:21px;font-weight:800;letter-spacing:-.5px}
+.brand span{color:var(--blue)}
+.top-actions{display:flex;align-items:center;gap:9px}
 .btn{
-  border:1px solid var(--line);background:#fff;color:#172033;
-  padding:10px 14px;border-radius:9px;font-weight:700;
-  font-size:13px;transition:.2s;
+  border:1px solid var(--line);background:#fff;color:var(--dark);
+  padding:10px 15px;border-radius:8px;font-size:13px;font-weight:700
 }
-.btn:hover{transform:translateY(-1px);box-shadow:0 4px 12px #0001}
-.btn.primary{background:#2563eb;border-color:#2563eb;color:#fff}
-.btn.dark{background:#172033;border-color:#172033;color:#fff}
-.btn.danger{color:#dc2626;border-color:#fecaca;background:#fff}
+.btn:hover{border-color:var(--blue);color:var(--blue)}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:#244dc5}
+.btn.danger{color:#c33;border-color:#f0d0d0}
 .btn.small{padding:7px 10px;font-size:12px}
-.app{
-  max-width:1600px;margin:auto;padding:20px;
-  display:grid;grid-template-columns:minmax(330px,440px) minmax(0,1fr);
-  gap:20px;align-items:start;
+.muted{color:var(--muted)}
+.page-wrap{max-width:1250px;margin:auto;padding:35px 22px 70px}
+.page-title{text-align:center;margin:15px auto 30px;max-width:720px}
+.page-title h1{font-size:36px;letter-spacing:-1px;margin:0 0 12px}
+.page-title p{color:var(--muted);line-height:1.7;margin:0}
+
+/* Gallery */
+.gallery-toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+.filter{
+  border:1px solid var(--line);background:#fff;padding:9px 13px;
+  border-radius:30px;font-size:12px;font-weight:700;color:#566176
 }
-.panel,.preview-panel{
-  background:#fff;border:1px solid var(--line);
-  border-radius:var(--radius);box-shadow:var(--shadow);
+.filter.active{background:var(--dark);border-color:var(--dark);color:#fff}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}
+.template-card{
+  background:#fff;border:1px solid var(--line);border-radius:13px;
+  overflow:hidden;transition:.2s;min-width:0
 }
-.panel{overflow:hidden}
-.panel-head{
-  padding:19px 20px;border-bottom:1px solid var(--line);
-  display:flex;justify-content:space-between;align-items:center;
+.template-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px #17203312}
+.template-thumb{height:220px;padding:12px;background:#e9edf5;overflow:hidden}
+.mini-site{height:100%;background:#fff;overflow:hidden;padding:18px;position:relative}
+.mini-site .mini-top{height:7px;width:35%;background:#222;margin-bottom:20px;border-radius:5px}
+.mini-site .mini-title{height:18px;width:70%;background:var(--mini-accent);margin-bottom:9px;border-radius:3px}
+.mini-site .mini-sub{height:6px;width:85%;background:#d8dce4;margin-bottom:6px;border-radius:4px}
+.mini-site .mini-sub.short{width:55%}
+.mini-site .mini-image{height:60px;width:37%;background:var(--mini-accent);opacity:.25;position:absolute;right:15px;top:55px;border-radius:7px}
+.mini-site .mini-bars{display:flex;gap:7px;margin-top:24px}
+.mini-site .mini-bars i{height:38px;flex:1;background:#eef0f5;border-radius:5px}
+.mini-site.dark{background:#101827;color:#fff}
+.mini-site.dark .mini-top{background:#fff}
+.mini-site.dark .mini-sub{background:#536078}
+.mini-site.dark .mini-bars i{background:#24334c}
+.mini-site.editorial{padding:24px 14px}
+.mini-site.editorial .mini-title{height:26px;width:90%}
+.mini-site.editorial .mini-image{width:85%;height:55px;left:14px;top:100px}
+.template-info{padding:17px}
+.template-info h3{font-size:16px;margin:0 0 5px}
+.template-info p{font-size:12px;color:var(--muted);margin:0 0 14px;line-height:1.5}
+.template-meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.tag{font-size:11px;color:#667085;background:#f0f2f7;padding:5px 8px;border-radius:20px}
+
+/* Editor */
+.editor-shell{height:calc(100vh - 65px);min-height:600px;display:flex;flex-direction:column}
+.editor-toolbar{
+  background:#fff;border-bottom:1px solid var(--line);padding:10px 15px;
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap
 }
-.panel-head h1{font-size:19px;margin:0}
-.panel-head p{font-size:12px;color:var(--muted);margin:5px 0 0}
-.tabs{
-  display:flex;overflow-x:auto;gap:5px;padding:10px;
-  border-bottom:1px solid var(--line);background:#f8fafc;
-}
-.tab{
-  white-space:nowrap;border:0;background:transparent;color:#64748b;
-  border-radius:8px;padding:9px 11px;font-size:12px;font-weight:700;
-}
-.tab.active{background:#e8efff;color:#1d4ed8}
-.form-content{padding:19px;max-height:calc(100vh - 190px);overflow:auto}
-.section-title{font-size:17px;font-weight:800;margin:0 0 6px}
-.section-help{font-size:12px;color:var(--muted);margin:0 0 18px;line-height:1.6}
-.field{margin-bottom:13px}
-.field label{display:block;font-size:12px;font-weight:750;margin-bottom:6px;color:#334155}
+.editor-tools{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.editor-body{display:grid;grid-template-columns:275px minmax(0,1fr) 270px;flex:1;min-height:0}
+.panel{background:#fff;overflow:auto;padding:17px;border-right:1px solid var(--line)}
+.panel.right{border-right:0;border-left:1px solid var(--line)}
+.panel h3{font-size:14px;margin:2px 0 15px}
+.panel-section{padding:13px 0;border-bottom:1px solid var(--line)}
+.panel-section:last-child{border-bottom:0}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:11px;font-weight:700;color:#59657a;margin-bottom:6px}
 .field input,.field textarea,.field select{
-  width:100%;border:1px solid #dbe2ea;border-radius:9px;
-  padding:11px 12px;background:#fff;color:#172033;outline:none;
+  width:100%;border:1px solid #dfe4ec;border-radius:7px;padding:9px;
+  font-size:12px;background:#fff;color:#172033;outline:none
 }
-.field input:focus,.field textarea:focus,.field select:focus{
-  border-color:#60a5fa;box-shadow:0 0 0 3px #dbeafe;
+.field textarea{min-height:75px;resize:vertical;line-height:1.5}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue)}
+.field input[type=color]{height:39px;padding:3px}
+.field input[type=file]{padding:7px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.editor-stage{overflow:auto;background:#e9edf4;padding:30px;display:flex;justify-content:center;align-items:flex-start}
+.stage-frame{width:100%;max-width:850px;min-width:320px}
+.stage-label{font-size:11px;color:#788397;margin:0 0 9px;text-align:center}
+#portfolioCanvas{
+  background:#fff;min-height:850px;width:100%;box-shadow:0 5px 30px #18243b18;
+  color:#172033;overflow:hidden;--accent:#3563e9;--font:Arial;
+  font-family:var(--font),Arial,sans-serif
 }
-.field textarea{min-height:85px;resize:vertical;line-height:1.5}
-.field-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.hint{font-size:11px;color:#94a3b8;margin-top:5px}
-.upload-box{
-  border:1px dashed #94a3b8;border-radius:11px;padding:13px;
-  background:#f8fafc;
-}
-.upload-box input{padding:7px;background:#fff}
-.item-card{
-  border:1px solid var(--line);border-radius:11px;padding:13px;
-  margin-bottom:12px;background:#fcfdff;
-}
-.item-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.item-card-head strong{font-size:13px}
-.add-btn{
-  width:100%;padding:11px;border:1px dashed #93a4bb;
-  background:#f8fafc;border-radius:9px;color:#1d4ed8;font-weight:750;
-}
-.checkline{display:flex;gap:9px;align-items:center;font-size:13px;margin:12px 0}
-.checkline input{width:auto}
-.preview-panel{position:sticky;top:78px;overflow:hidden}
-.preview-head{
-  padding:13px 16px;border-bottom:1px solid var(--line);
-  display:flex;align-items:center;justify-content:space-between;gap:10px;
-}
-.preview-head strong{font-size:14px}
-.preview-head span{font-size:11px;color:var(--muted)}
-.preview-wrap{
-  background:#e8edf4;padding:22px;max-height:calc(100vh - 145px);
-  overflow:auto;min-height:650px;
-}
-.preview-page{
-  max-width:1000px;min-height:850px;margin:0 auto;
-  background:#fff;box-shadow:0 5px 25px #17203318;
-}
-.empty-preview{
-  min-height:600px;display:grid;place-items:center;text-align:center;
-  color:#64748b;padding:30px;
-}
-.empty-preview strong{display:block;color:#334155;font-size:22px;margin-bottom:8px}
-.template-picker{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;
-}
-.template-option{
-  border:1px solid var(--line);background:#fff;border-radius:10px;
-  padding:9px;text-align:left;min-width:0;
-}
-.template-option.active{border:2px solid #2563eb;background:#eff6ff;padding:8px}
-.template-swatch{height:42px;border-radius:6px;margin-bottom:7px}
-.template-option strong{font-size:11px;display:block}
-.template-option small{font-size:10px;color:var(--muted)}
-.color-row{display:flex;gap:10px;align-items:center}
-.color-row input[type=color]{width:48px;height:39px;padding:3px}
-.notice{
-  border:1px solid #bfdbfe;background:#eff6ff;color:#1e40af;
-  padding:11px;border-radius:9px;font-size:12px;line-height:1.5;margin-bottom:15px;
-}
-.footer-note{text-align:center;padding:18px;color:#94a3b8;font-size:11px}
-.hidden{display:none!important}
+.canvas-section{position:relative;padding:45px 7%;border:2px solid transparent;cursor:grab}
+.canvas-section:active{cursor:grabbing}
+.canvas-section.selected{border:2px dashed var(--accent);background-image:linear-gradient(#3563e908,#3563e908)}
+.canvas-section.drag-over{outline:3px dashed var(--accent);outline-offset:-5px}
+.canvas-section h1,.canvas-section h2,.canvas-section h3,.canvas-section p{margin-top:0}
+.canvas-section h1{font-size:clamp(30px,5vw,55px);line-height:1.1;letter-spacing:-1.5px;margin-bottom:14px}
+.canvas-section h2{font-size:27px;margin-bottom:18px}
+.canvas-section h3{font-size:18px;margin-bottom:8px}
+.canvas-section p{line-height:1.75;color:inherit;opacity:.78;font-size:14px}
+.canvas-section [contenteditable=true]{outline:none;cursor:text}
+.canvas-section [contenteditable=true]:focus{outline:1px dashed var(--accent);outline-offset:3px}
+.hero-section{min-height:310px;display:flex;align-items:center;gap:25px}
+.hero-copy{flex:1}
+.hero-photo{width:155px;height:175px;object-fit:cover;border-radius:16px;background:#e5eaf2}
+.portfolio-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:12px}
+.portfolio-button{display:inline-block;background:var(--accent);color:#fff;padding:10px 17px;border-radius:5px;font-size:12px;font-weight:700;margin-top:8px}
+.about-layout{max-width:700px}
+.skills-list{display:flex;flex-wrap:wrap;gap:9px}
+.skill-pill{padding:8px 12px;border:1px solid #dfe4ec;border-radius:30px;font-size:12px}
+.experience-item,.education-item,.service-item,.certificate-item{padding:13px 0;border-bottom:1px solid #e7eaf0}
+.item-date{font-size:11px;color:var(--accent);font-weight:700;margin-bottom:5px}
+.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:17px}
+.project-card{border:1px solid #e7eaf0;border-radius:9px;overflow:hidden}
+.project-card img{width:100%;height:145px;object-fit:cover;display:block;background:#eef0f5}
+.project-copy{padding:13px}
+.project-copy p{font-size:12px;margin:5px 0}
+.project-link{color:var(--accent);font-size:12px;font-weight:700}
+.contact-links{display:flex;gap:12px;flex-wrap:wrap;font-size:13px}
+.social-links{display:flex;gap:10px;flex-wrap:wrap}
+.social-links a{color:var(--accent);font-size:12px}
+.portfolio-footer{padding:20px 7%;font-size:11px;opacity:.65;text-align:center}
+.canvas-section[hidden]{display:none}
 
-/* Portfolio preview shared styles */
-.portfolio{
-  --accent:#2563eb;--dark:#172033;--soft:#f1f5f9;
-  --font:Arial,sans-serif;
-  font-family:var(--font);color:var(--dark);background:#fff;
-  min-height:850px;overflow:hidden;
-}
-.portfolio *{box-sizing:border-box}
-.portfolio a{color:var(--accent);text-decoration:none;overflow-wrap:anywhere}
-.portfolio .p-hero{padding:58px 7% 45px;background:var(--soft)}
-.portfolio .p-name{font-size:clamp(30px,5vw,55px);line-height:1.05;margin:0 0 10px;font-weight:850;letter-spacing:-1.5px}
-.portfolio .p-role{font-size:18px;color:var(--accent);font-weight:700;margin:0 0 14px}
-.portfolio .p-intro{font-size:15px;line-height:1.8;max-width:720px;color:#526174}
-.portfolio .p-photo{
-  width:145px;height:145px;object-fit:cover;border-radius:50%;
-  border:5px solid #fff;box-shadow:0 6px 20px #0002;
-}
-.portfolio .p-section{padding:28px 7%}
-.portfolio .p-section h2{
-  font-size:19px;margin:0 0 17px;text-transform:uppercase;
-  letter-spacing:1.5px;color:var(--accent);
-}
-.portfolio .p-section p{line-height:1.75;color:#526174;font-size:14px}
-.portfolio .p-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px}
-.portfolio .p-card{
-  border:1px solid #e2e8f0;border-radius:12px;padding:16px;
-  break-inside:avoid;background:#fff;
-}
-.portfolio .p-card h3{font-size:15px;margin:0 0 6px}
-.portfolio .p-meta{font-size:12px;color:#64748b;margin-bottom:8px}
-.portfolio .p-card p{font-size:13px;margin:7px 0}
-.portfolio .p-project-img{
-  width:100%;height:170px;object-fit:cover;border-radius:8px;margin-bottom:10px;
-}
-.portfolio .p-tags{display:flex;gap:7px;flex-wrap:wrap}
-.portfolio .p-tag{
-  display:inline-block;padding:7px 10px;border-radius:30px;
-  background:var(--soft);font-size:11px;font-weight:700;color:var(--dark);
-}
-.portfolio .p-contact{
-  padding:30px 7%;background:var(--dark);color:#fff;
-}
-.portfolio .p-contact h2{margin:0 0 12px;font-size:20px}
-.portfolio .p-contact p{color:#dbeafe;font-size:13px;line-height:1.8}
-.portfolio .p-contact a{color:#93c5fd}
-.portfolio .p-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:15px}
-.portfolio .p-links a{font-size:12px;font-weight:700}
-.portfolio .p-footer{padding:15px 7%;font-size:11px;color:#94a3b8;text-align:center}
-.portfolio .p-hero-row{display:flex;align-items:center;gap:25px}
-.portfolio .p-hero-text{flex:1}
-.portfolio .p-kicker{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);font-weight:800;margin-bottom:12px}
+/* Template appearances */
+#portfolioCanvas.tpl-2{font-family:Georgia,serif}
+#portfolioCanvas.tpl-2 .hero-section{text-align:center;display:block;padding-top:80px}
+#portfolioCanvas.tpl-2 .hero-photo{width:115px;height:115px;border-radius:50%;margin:15px auto;display:block}
+#portfolioCanvas.tpl-3{background:#0d1422;color:#edf2ff}
+#portfolioCanvas.tpl-3 .canvas-section{border-color:transparent}
+#portfolioCanvas.tpl-3 .skill-pill,#portfolioCanvas.tpl-3 .project-card{border-color:#34415a;background:#151f32}
+#portfolioCanvas.tpl-3 .project-copy p{color:#d1d8e6}
+#portfolioCanvas.tpl-4 .hero-section{background:#f7e8e1}
+#portfolioCanvas.tpl-4 .hero-photo{border-radius:2px}
+#portfolioCanvas.tpl-5 .hero-section{display:block;text-align:center;background:#161616;color:#fff}
+#portfolioCanvas.tpl-5 .hero-photo{display:block;margin:18px auto;border-radius:50%}
+#portfolioCanvas.tpl-6{font-family:Arial,sans-serif}
+#portfolioCanvas.tpl-6 .canvas-section h1{letter-spacing:-2px}
+#portfolioCanvas.tpl-7 .hero-section{background:#f1f4f8}
+#portfolioCanvas.tpl-8 .hero-section{background:#eff8f4}
+#portfolioCanvas.tpl-9{font-family:Georgia,serif}
+#portfolioCanvas.tpl-9 .hero-section{background:#172033;color:#fff}
+#portfolioCanvas.tpl-10 .hero-section{border-left:8px solid var(--accent)}
+#portfolioCanvas.tpl-11 .hero-section{text-align:center;display:block}
+#portfolioCanvas.tpl-11 .hero-photo{display:block;margin:15px auto;width:120px;height:120px;border-radius:50%}
+#portfolioCanvas.tpl-12 .hero-section{background:#f3f0e9}
+#portfolioCanvas.tpl-13 .hero-section{background:#f1f1ee}
+#portfolioCanvas.tpl-14{font-family:Georgia,serif}
+#portfolioCanvas.tpl-14 .hero-section{min-height:350px}
+#portfolioCanvas.tpl-15 .hero-section{background:#f4f0ff}
 
-/* 15 unique template directions */
-.portfolio.t01 .p-hero{background:#101827;color:#fff}
-.portfolio.t01 .p-intro{color:#cbd5e1}
-.portfolio.t01 .p-role{color:#60a5fa}
-.portfolio.t01 .p-section:nth-child(even){background:#f8fafc}
-.portfolio.t02 .p-hero{background:#fff;border-bottom:1px solid #e5e7eb}
-.portfolio.t02 .p-name{font-weight:500;letter-spacing:-2px}
-.portfolio.t02 .p-section h2{font-weight:500}
-.portfolio.t03 .p-hero{background:linear-gradient(130deg,#111827,#243b63);color:#fff}
-.portfolio.t03 .p-intro{color:#dbeafe}
-.portfolio.t03 .p-role{color:#a5b4fc}
-.portfolio.t04 .p-hero{background:#fff7ed}
-.portfolio.t04 .p-name{font-family:Georgia,serif}
-.portfolio.t04 .p-section h2{color:#c2410c}
-.portfolio.t05 .p-hero{background:#111;color:#fff;text-align:center}
-.portfolio.t05 .p-hero-row{flex-direction:column}
-.portfolio.t05 .p-intro{margin:auto;color:#ddd}
-.portfolio.t05 .p-photo{width:175px;height:175px}
-.portfolio.t06 .p-hero{background:#ecfeff}
-.portfolio.t06 .p-section h2{color:#0e7490}
-.portfolio.t06 .p-card{border-radius:3px}
-.portfolio.t07 .p-hero{background:#172554;color:#fff}
-.portfolio.t07 .p-intro{color:#dbeafe}
-.portfolio.t07 .p-role{color:#93c5fd}
-.portfolio.t08 .p-hero{background:#f0fdf4}
-.portfolio.t08 .p-section h2{color:#15803d}
-.portfolio.t08 .p-card{box-shadow:0 5px 18px #14532d12;border:0}
-.portfolio.t09 .p-hero{background:#faf5ff}
-.portfolio.t09 .p-name{font-family:Georgia,serif}
-.portfolio.t09 .p-section h2{color:#7e22ce}
-.portfolio.t10 .p-hero{background:#f8fafc;border-left:10px solid var(--accent)}
-.portfolio.t10 .p-section{padding-top:22px;padding-bottom:22px}
-.portfolio.t11 .p-hero{background:#fff1f2}
-.portfolio.t11 .p-section h2{color:#be123c}
-.portfolio.t11 .p-card{border-radius:18px}
-.portfolio.t12 .p-hero{background:#eff6ff}
-.portfolio.t12 .p-hero-row{align-items:flex-start}
-.portfolio.t12 .p-section:nth-child(odd){background:#f8fafc}
-.portfolio.t13 .p-hero{background:#f5f5f4}
-.portfolio.t13 .p-name{font-family:Georgia,serif}
-.portfolio.t13 .p-card{border-radius:0}
-.portfolio.t14 .p-hero{background:#18181b;color:#fff}
-.portfolio.t14 .p-intro{color:#d4d4d8}
-.portfolio.t14 .p-role{color:#f0abfc}
-.portfolio.t15 .p-hero{background:linear-gradient(135deg,#eff6ff,#f5f3ff)}
-.portfolio.t15 .p-section{max-width:1050px;margin:auto}
-.portfolio.t15 .p-card{box-shadow:0 8px 24px #1e293b0d}
-
-@media(max-width:1050px){
-  .app{grid-template-columns:380px minmax(0,1fr);padding:12px;gap:12px}
-  .preview-wrap{padding:12px}
+/* Small screen */
+@media(max-width:1000px){
+  .editor-body{grid-template-columns:230px minmax(0,1fr)}
+  .panel.right{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);max-height:250px}
 }
-@media(max-width:780px){
-  .app{display:flex;flex-direction:column;padding:10px}
-  .panel,.preview-panel{width:100%}
-  .preview-panel{position:static}
-  .form-content{max-height:none}
-  .preview-wrap{max-height:none;min-height:400px}
-  .topbar{padding:11px 13px;align-items:flex-start}
-  .brand{font-size:16px}
+@media(max-width:700px){
+  .topbar{padding:0 12px}
   .top-actions .btn{padding:8px;font-size:11px}
-  .portfolio .p-grid{grid-template-columns:1fr}
-  .portfolio .p-hero{padding:35px 6%}
-  .portfolio .p-section{padding:23px 6%}
-  .portfolio .p-hero-row{gap:14px}
-  .portfolio .p-photo{width:100px;height:100px}
-}
-@media(max-width:480px){
-  .field-grid{grid-template-columns:1fr}
-  .template-picker{grid-template-columns:repeat(2,1fr)}
-  .topbar{flex-direction:column}
-  .top-actions{width:100%}
-  .top-actions .btn{flex:1}
-  .portfolio .p-hero-row{flex-direction:column;align-items:flex-start}
-  .portfolio .p-name{font-size:34px}
-}
-@media print{
-  body{background:#fff!important}
-  .topbar,.panel,.preview-head,.footer-note{display:none!important}
-  .app{display:block;padding:0;margin:0}
-  .preview-panel{position:static;border:0;box-shadow:none}
-  .preview-wrap{padding:0;max-height:none;overflow:visible;background:#fff}
-  .preview-page{max-width:none;min-height:0;box-shadow:none}
-  .portfolio{min-height:0}
-  .portfolio .p-card{break-inside:avoid}
-  @page{size:A4;margin:12mm}
+  .page-wrap{padding:20px 13px 45px}
+  .page-title h1{font-size:29px}
+  .gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+  .template-thumb{height:150px;padding:8px}
+  .template-info{padding:12px}
+  .template-info h3{font-size:14px}
+  .editor-shell{height:auto;min-height:calc(100vh - 65px)}
+  .editor-body{display:flex;flex-direction:column}
+  .panel{max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+  .editor-stage{min-height:650px;padding:12px}
+  .stage-frame{min-width:300px}
+  #portfolioCanvas{min-height:750px}
+  .canvas-section{padding:30px 6%}
+  .hero-section{flex-direction:column;text-align:center}
+  .hero-photo{width:120px;height:130px}
+  .project-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
+
 <header class="topbar">
-  <div class="brand">CV <span>TOOLS</span> <small style="font-size:11px;font-weight:500;color:#cbd5e1">/ Portfolio Maker</small></div>
+  <a class="brand" href="index.html">CV <span>Tools</span></a>
   <div class="top-actions">
-    <button class="btn" id="saveBtn">Save Draft</button>
-    <button class="btn" id="jsonBtn">Backup JSON</button>
-    <button class="btn" id="htmlBtn">Download Website</button>
-    <button class="btn primary" id="pdfBtn">Download PDF</button>
+    <button class="btn small" id="backGallery">← Templates</button>
+    <a class="btn small" href="index.html">Home</a>
   </div>
 </header>
 
-<main class="app">
-  <section class="panel">
-    <div class="panel-head">
-      <div>
-        <h1>Build Your Portfolio</h1>
-        <p>Create a professional portfolio in minutes — free.</p>
+<!-- FIRST SCREEN: TEMPLATE GALLERY -->
+<section id="galleryScreen" class="page-wrap">
+  <div class="page-title">
+    <h1>Create Your Professional Portfolio</h1>
+    <p>Choose a design, customize your content and build a portfolio website that presents your work professionally. Start with a template and make it yours.</p>
+  </div>
+
+  <div class="gallery-toolbar">
+    <div class="filters" id="categoryFilters">
+      <button class="filter active" data-category="All">All Designs</button>
+      <button class="filter" data-category="Student">Student</button>
+      <button class="filter" data-category="Developer">Developer</button>
+      <button class="filter" data-category="Designer">Designer</button>
+      <button class="filter" data-category="Freelancer">Freelancer</button>
+      <button class="filter" data-category="Professional">Professional</button>
+      <button class="filter" data-category="Creative">Creative</button>
+    </div>
+    <span class="muted" id="templateCount">15 templates</span>
+  </div>
+
+  <div class="gallery-grid" id="templateGallery"></div>
+</section>
+
+<!-- EDITOR SCREEN -->
+<section id="editorScreen" hidden>
+  <div class="editor-shell">
+    <div class="editor-toolbar">
+      <div class="editor-tools">
+        <button class="btn small" id="addSection">+ Add Section</button>
+        <button class="btn small" id="addText">+ Add Text</button>
+        <button class="btn small" id="addImage">+ Add Image</button>
+        <button class="btn small" id="undoBtn">Undo</button>
       </div>
-      <button class="btn danger small" id="resetBtn">Reset</button>
+      <div class="editor-tools">
+        <button class="btn small" id="saveBtn">Save Draft</button>
+        <button class="btn small" id="loadBtn">Load Draft</button>
+        <button class="btn small" id="jsonBtn">Backup JSON</button>
+        <button class="btn small" id="importBtn">Import JSON</button>
+        <button class="btn small primary" id="htmlBtn">Download Website</button>
+        <button class="btn small primary" id="pdfBtn">Download PDF</button>
+      </div>
     </div>
 
-    <nav class="tabs" id="tabs">
-      <button class="tab active" data-tab="profile">Profile</button>
-      <button class="tab" data-tab="about">About</button>
-      <button class="tab" data-tab="skills">Skills</button>
-      <button class="tab" data-tab="experience">Experience</button>
-      <button class="tab" data-tab="education">Education</button>
-      <button class="tab" data-tab="projects">Projects</button>
-      <button class="tab" data-tab="extras">More</button>
-      <button class="tab" data-tab="design">Design</button>
-    </nav>
-
-    <div class="form-content" id="formContent"></div>
-  </section>
-
-  <section class="preview-panel">
-    <div class="preview-head">
-      <div><strong>Live Portfolio Preview</strong><br><span>Changes appear automatically</span></div>
-      <button class="btn small" id="previewBtn">Refresh Preview</button>
-    </div>
-    <div class="preview-wrap">
-      <div class="preview-page" id="previewPage">
-        <div class="empty-preview">
-          <div><strong>Your portfolio starts here</strong>Enter your details on the left to see your portfolio.</div>
+    <div class="editor-body">
+      <!-- LEFT: CONTENT AND SECTIONS -->
+      <aside class="panel">
+        <h3>Portfolio Elements</h3>
+        <div class="panel-section">
+          <div class="field">
+            <label>Selected section</label>
+            <select id="sectionSelect">
+              <option value="hero">Introduction / Hero</option>
+              <option value="about">About Me</option>
+              <option value="skills">Skills</option>
+              <option value="experience">Experience</option>
+              <option value="education">Education</option>
+              <option value="projects">Projects</option>
+              <option value="services">Services</option>
+              <option value="certificates">Certificates</option>
+              <option value="contact">Contact</option>
+            </select>
+          </div>
+          <button class="btn small" id="hideSection">Show / Hide Section</button>
+          <button class="btn small" id="moveUp">Move Up</button>
+          <button class="btn small" id="moveDown">Move Down</button>
         </div>
-      </div>
-    </div>
-  </section>
-</main>
-<div class="footer-note">Free Portfolio Maker · CV Tools · Your information stays in your browser</div>
 
-<input type="file" id="jsonImport" accept=".json,application/json" hidden>
+        <div class="panel-section">
+          <h3>Personal Information</h3>
+          <div class="field"><label>Full name</label><input id="nameInput" value="Alex Morgan"></div>
+          <div class="field"><label>Professional title</label><input id="roleInput" value="Creative Designer & Developer"></div>
+          <div class="field"><label>Location</label><input id="locationInput" value="New York, USA"></div>
+          <div class="field"><label>Email</label><input id="emailInput" value="hello@example.com"></div>
+          <div class="field"><label>Phone</label><input id="phoneInput" value="+1 234 567 890"></div>
+          <div class="field"><label>Website</label><input id="websiteInput" placeholder="https://example.com"></div>
+          <div class="field"><label>Short introduction</label><textarea id="introInput">I create meaningful digital experiences through thoughtful design, creative ideas and modern technology.</textarea></div>
+          <div class="field"><label>Profile photo</label><input type="file" id="profilePhoto" accept="image/*"></div>
+        </div>
+
+        <div class="panel-section">
+          <h3>About Me</h3>
+          <div class="field"><label>Biography</label><textarea id="aboutInput">I am a passionate professional who enjoys solving problems, learning new technologies and creating useful experiences. I combine creativity with practical skills to deliver quality work.</textarea></div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Skills</h3>
+          <div class="field"><label>Skills (separate with commas)</label><textarea id="skillsInput">Web Design, HTML, CSS, JavaScript, UI Design, Communication</textarea></div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Experience</h3>
+          <div id="experienceEditor"></div>
+          <button class="btn small" id="addExperience">+ Add Experience</button>
+        </div>
+
+        <div class="panel-section">
+          <h3>Education</h3>
+          <div id="educationEditor"></div>
+          <button class="btn small" id="addEducation">+ Add Education</button>
+        </div>
+
+        <div class="panel-section">
+          <h3>Projects</h3>
+          <div id="projectsEditor"></div>
+          <button class="btn small" id="addProject">+ Add Project</button>
+          <p class="muted" style="font-size:11px;line-height:1.5">Each project can contain multiple images. Select more than one image when uploading.</p>
+        </div>
+
+        <div class="panel-section">
+          <h3>Services</h3>
+          <div class="field"><label>Services (separate with commas)</label><textarea id="servicesInput">Web Design, Website Development, UI/UX Design</textarea></div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Certificates & Achievements</h3>
+          <div class="field"><label>Certificates (one per line)</label><textarea id="certificatesInput">Web Development Certificate - 2025
+UI/UX Design Course - 2024</textarea></div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Social Links</h3>
+          <div class="field"><label>LinkedIn URL</label><input id="linkedinInput" placeholder="https://linkedin.com/in/username"></div>
+          <div class="field"><label>GitHub URL</label><input id="githubInput" placeholder="https://github.com/username"></div>
+          <div class="field"><label>Instagram URL</label><input id="instagramInput" placeholder="https://instagram.com/username"></div>
+        </div>
+      </aside>
+
+      <!-- CENTER: CANVAS -->
+      <main class="editor-stage">
+        <div class="stage-frame">
+          <p class="stage-label">LIVE PORTFOLIO CANVAS · Select text to edit · Drag sections to rearrange</p>
+          <div id="portfolioCanvas" class="tpl-1"></div>
+        </div>
+      </main>
+
+      <!-- RIGHT: DESIGN SETTINGS -->
+      <aside class="panel right">
+        <h3>Design Settings</h3>
+        <div class="panel-section">
+          <div class="field">
+            <label>Template</label>
+            <select id="templateSelect">
+              <option value="1">01 - Modern Minimal</option>
+              <option value="2">02 - Elegant Classic</option>
+              <option value="3">03 - Dark Developer</option>
+              <option value="4">04 - Creative Designer</option>
+              <option value="5">05 - Photographer</option>
+              <option value="6">06 - UI/UX Designer</option>
+              <option value="7">07 - Corporate Professional</option>
+              <option value="8">08 - Freelancer</option>
+              <option value="9">09 - Executive</option>
+              <option value="10">10 - Consultant</option>
+              <option value="11">11 - Student</option>
+              <option value="12">12 - Educator</option>
+              <option value="13">13 - Architect</option>
+              <option value="14">14 - Writer</option>
+              <option value="15">15 - Creative Personal</option>
+            </select>
+          </div>
+          <div class="field"><label>Accent color</label><input type="color" id="accentInput" value="#3563e9"></div>
+          <div class="field">
+            <label>Font style</label>
+            <select id="fontInput">
+              <option value="Arial">Modern Sans</option>
+              <option value="Georgia">Elegant Serif</option>
+              <option value="Verdana">Clean Rounded</option>
+              <option value="Tahoma">Professional</option>
+              <option value="'Trebuchet MS'">Contemporary</option>
+            </select>
+          </div>
+          <div class="field">
+            <label>Canvas background</label>
+            <input type="color" id="backgroundInput" value="#ffffff">
+          </div>
+          <div class="field">
+            <label>Text color</label>
+            <input type="color" id="textColorInput" value="#172033">
+          </div>
+        </div>
+
+        <div class="panel-section">
+          <h3>Selected Element</h3>
+          <p class="muted" style="font-size:12px;line-height:1.6">Click a section or text in the canvas to select it. Text can be edited directly. Drag sections to change their order.</p>
+          <div class="field"><label>Section title</label><input id="selectedTitle" placeholder="Selected section title"></div>
+          <div class="field"><label>Section background</label><input type="color" id="selectedBg" value="#ffffff"></div>
+          <button class="btn small" id="applySectionBg">Apply Background</button>
+          <button class="btn small danger" id="deleteSelected">Delete Selected Section</button>
+        </div>
+
+        <div class="panel-section">
+          <h3>Editor Tips</h3>
+          <p class="muted" style="font-size:12px;line-height:1.7">
+            • Click text to edit it directly.<br>
+            • Drag a section to rearrange it.<br>
+            • Add extra text or image sections.<br>
+            • Upload multiple project images.<br>
+            • Save your draft before leaving.
+          </p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<input type="file" id="jsonImportFile" accept=".json,application/json" hidden>
+<input type="file" id="extraImageFile" accept="image/*" hidden>
 
 <script>
 "use strict";
 
-const $ = id => document.getElementById(id);
-const STORAGE_KEY = "cvtools_portfolio_maker_v1";
-
+/* TEMPLATE DATA */
 const templates = [
-  ["Developer Pro","Dark modern developer layout"],
-  ["Minimal Portfolio","Clean and minimal style"],
-  ["Full Stack","Gradient technology style"],
-  ["Creative Designer","Warm creative editorial"],
-  ["Photographer","Image-focused black layout"],
-  ["UI/UX Designer","Modern cyan design"],
-  ["Corporate","Professional navy layout"],
-  ["Freelancer","Fresh green service layout"],
-  ["Executive","Elegant purple design"],
-  ["Consultant","Structured business layout"],
-  ["Student","Friendly student design"],
-  ["Educator","Clean academic design"],
-  ["Architect","Minimal architectural style"],
-  ["Writer","Editorial dark style"],
-  ["Personal Portfolio","Universal modern design"]
+  {id:1,name:"Modern Minimal",category:"Professional",desc:"Clean layout with modern typography."},
+  {id:2,name:"Elegant Classic",category:"Professional",desc:"A refined serif design for a timeless look."},
+  {id:3,name:"Dark Developer",category:"Developer",desc:"Dark technical portfolio for developers."},
+  {id:4,name:"Creative Designer",category:"Designer",desc:"Expressive layout for creative professionals."},
+  {id:5,name:"Photographer",category:"Creative",desc:"Image-focused portfolio for photographers."},
+  {id:6,name:"UI/UX Designer",category:"Designer",desc:"Structured portfolio for product designers."},
+  {id:7,name:"Corporate Professional",category:"Professional",desc:"Polished and business-friendly layout."},
+  {id:8,name:"Freelancer",category:"Freelancer",desc:"Service-led design for independent workers."},
+  {id:9,name:"Executive",category:"Professional",desc:"Classic and confident professional profile."},
+  {id:10,name:"Consultant",category:"Professional",desc:"Clear sections for expertise and services."},
+  {id:11,name:"Student",category:"Student",desc:"Showcase education, skills and early projects."},
+  {id:12,name:"Educator",category:"Professional",desc:"A structured profile for teachers and trainers."},
+  {id:13,name:"Architect",category:"Creative",desc:"Minimal visual layout for architecture work."},
+  {id:14,name:"Writer",category:"Creative",desc:"Editorial style for writers and content creators."},
+  {id:15,name:"Creative Personal",category:"Freelancer",desc:"A colorful personal brand portfolio."}
 ];
 
-const defaultData = {
-  template:0,
-  accent:"#2563eb",
-  font:"Arial, sans-serif",
-  showPhoto:true,
-  name:"",
-  role:"",
-  location:"",
-  email:"",
-  phone:"",
-  website:"",
-  photo:"",
-  intro:"",
-  about:"",
-  skills:[],
-  experience:[],
-  education:[],
-  projects:[],
-  services:[],
-  certificates:[],
-  achievements:[],
-  testimonials:[],
-  social:[],
-  contactMessage:"Let's work together. Feel free to get in touch."
-};
+let currentTemplate = 1;
+let selectedSection = "hero";
+let selectedElement = null;
+let profileImage = "";
+let projectData = [];
+let experienceData = [{role:"Web Designer",company:"Creative Studio",date:"2023 - Present",description:"Designed responsive websites and digital experiences."}];
+let educationData = [{degree:"Bachelor's Degree",school:"University / College",date:"2020 - 2024",description:"Studied design, technology and communication."}];
+let extraSections = [];
+let historyStack = [];
+let activeCategory = "All";
 
-let data = structuredClone(defaultData);
-let currentTab = "profile";
+const $ = id => document.getElementById(id);
+const canvas = $("portfolioCanvas");
 
-function esc(value){
+function escapeHTML(value){
   return String(value ?? "").replace(/[&<>"']/g, c => ({
     "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
   }[c]));
 }
-function safeUrl(value){
-  const v=String(value||"").trim();
-  if(!v)return "";
+function safeURL(value){
   try{
-    const u=new URL(v,location.href);
-    return ["http:","https:","mailto:","tel:"].includes(u.protocol)?u.href:"";
-  }catch{return "";}
+    const u = new URL(value);
+    return ["http:","https:","mailto:","tel:"].includes(u.protocol) ? u.href : "";
+  }catch(e){return "";}
 }
-function uid(){return Math.random().toString(36).slice(2,10)}
-
-function setTab(tab){
-  currentTab=tab;
-  document.querySelectorAll(".tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
-  renderForm();
-}
-$("tabs").addEventListener("click",e=>{
-  const b=e.target.closest("[data-tab]");
-  if(b)setTab(b.dataset.tab);
-});
-
-function inputField(label,key,placeholder="",type="text",value=data[key]||""){
-  return `<div class="field"><label>${esc(label)}</label><input type="${type}" data-key="${key}" value="${esc(value)}" placeholder="${esc(placeholder)}"></div>`;
-}
-function textareaField(label,key,placeholder="",value=data[key]||""){
-  return `<div class="field"><label>${esc(label)}</label><textarea data-key="${key}" placeholder="${esc(placeholder)}">${esc(value)}</textarea></div>`;
-}
-function uploadField(label,key,help){
-  return `<div class="field"><label>${esc(label)}</label><div class="upload-box"><input type="file" accept="image/*" data-image-key="${key}"><div class="hint">${esc(help)}</div>${data[key]?`<button class="btn small danger" type="button" data-remove-image="${key}" style="margin-top:8px">Remove image</button>`:""}</div></div>`;
-}
-function listEditor(key,title,fields){
-  const arr=data[key]||[];
-  let html=`<div class="section-title">${esc(title)}</div><p class="section-help">Add as many entries as you need. You can edit or remove each entry.</p>`;
-  arr.forEach((item,index)=>{
-    html+=`<div class="item-card"><div class="item-card-head"><strong>${esc(title)} ${index+1}</strong><button class="btn danger small" type="button" data-remove="${key}" data-index="${index}">Delete</button></div>`;
-    fields.forEach(f=>{
-      const val=item[f.key]||"";
-      if(f.type==="textarea"){
-        html+=`<div class="field"><label>${esc(f.label)}</label><textarea data-list="${key}" data-index="${index}" data-field="${f.key}" placeholder="${esc(f.placeholder||"")}">${esc(val)}</textarea></div>`;
-      }else if(f.type==="image"){
-        html+=`<div class="field"><label>${esc(f.label)}</label><input type="file" accept="image/*" data-list-image="${key}" data-index="${index}">${item[f.key]?`<img src="${esc(item[f.key])}" style="width:100%;max-height:100px;object-fit:cover;border-radius:8px;margin-top:7px"><button type="button" class="btn small danger" data-remove-list-image="${key}" data-index="${index}">Remove image</button>`:""}</div>`;
-      }else{
-        html+=`<div class="field"><label>${esc(f.label)}</label><input type="${f.type||"text"}" data-list="${key}" data-index="${index}" data-field="${f.key}" value="${esc(val)}" placeholder="${esc(f.placeholder||"")}"></div>`;
-      }
-    });
-    html+="</div>";
-  });
-  html+=`<button class="add-btn" type="button" data-add="${key}">＋ Add ${esc(title.replace(/s$/,""))}</button>`;
-  return html;
-}
-
-function renderForm(){
-  const c=$("formContent");
-  let html="";
-  if(currentTab==="profile"){
-    html=`<div class="section-title">Personal Profile</div><p class="section-help">Start with your name, professional title and contact details.</p>
-      ${inputField("Full Name","name","e.g. Alex Morgan")}
-      ${inputField("Professional Title","role","e.g. Front-End Developer")}
-      ${inputField("Location","location","e.g. Islamabad, Pakistan")}
-      <div class="field-grid">${inputField("Email Address","email","you@example.com","email")}${inputField("Phone Number","phone","+92 300 0000000","tel")}</div>
-      ${inputField("Personal Website","website","https://yourwebsite.com","url")}
-      ${uploadField("Profile Photo","photo","JPG, PNG or WebP image. A square image works best.")}
-      ${textareaField("Short Introduction","intro","A short introduction shown near the top of your portfolio.")}`;
-  }else if(currentTab==="about"){
-    html=`<div class="section-title">About Me</div><p class="section-help">Tell visitors who you are, what you do and what makes your work valuable.</p>
-      ${textareaField("Professional Biography","about","Write about your background, experience, interests and professional goals.")}`;
-  }else if(currentTab==="skills"){
-    html=listEditor("skills","Skills",[{key:"name",label:"Skill name",placeholder:"e.g. JavaScript"},{key:"level",label:"Level (optional)",placeholder:"e.g. Advanced"}]);
-  }else if(currentTab==="experience"){
-    html=listEditor("experience","Experience",[
-      {key:"position",label:"Job Title",placeholder:"e.g. Software Developer"},
-      {key:"company",label:"Company / Organization"},
-      {key:"duration",label:"Duration",placeholder:"e.g. Jan 2023 – Present"},
-      {key:"location",label:"Location"},
-      {key:"description",label:"Responsibilities and achievements",type:"textarea"}
-    ]);
-  }else if(currentTab==="education"){
-    html=listEditor("education","Education",[
-      {key:"qualification",label:"Degree / Qualification"},
-      {key:"institution",label:"Institute / University"},
-      {key:"year",label:"Year / Duration"},
-      {key:"details",label:"Additional details",type:"textarea"}
-    ]);
-  }else if(currentTab==="projects"){
-    html=listEditor("projects","Projects",[
-      {key:"title",label:"Project Title"},
-      {key:"category",label:"Category / Role",placeholder:"e.g. Web Design"},
-      {key:"description",label:"Project Description",type:"textarea"},
-      {key:"tools",label:"Tools / Technologies",placeholder:"HTML, CSS, JavaScript"},
-      {key:"link",label:"Live Project URL",type:"url"},
-      {key:"image",label:"Project Image",type:"image"}
-    ]);
-  }else if(currentTab==="extras"){
-    html=`<div class="section-title">Additional Sections</div><p class="section-help">These sections are optional. Add only what is relevant to your profession.</p>
-      ${listEditor("services","Services",[
-        {key:"title",label:"Service Name"},
-        {key:"description",label:"Service Description",type:"textarea"}
-      ])}
-      ${listEditor("certificates","Certifications",[
-        {key:"title",label:"Certificate Name"},
-        {key:"issuer",label:"Issuing Organization"},
-        {key:"date",label:"Issue Date"},
-        {key:"link",label:"Certificate URL",type:"url"}
-      ])}
-      ${listEditor("achievements","Achievements",[
-        {key:"title",label:"Achievement"},
-        {key:"date",label:"Date"},
-        {key:"description",label:"Details",type:"textarea"}
-      ])}
-      ${listEditor("testimonials","Testimonials",[
-        {key:"name",label:"Client / Person Name"},
-        {key:"role",label:"Designation / Company"},
-        {key:"quote",label:"Feedback",type:"textarea"}
-      ])}
-      ${listEditor("social","Social & Professional Links",[
-        {key:"name",label:"Platform",placeholder:"LinkedIn, GitHub, Behance..."},
-        {key:"url",label:"Profile URL",type:"url"}
-      ])}
-      ${textareaField("Contact Section Message","contactMessage","Let's work together.")}`;
-  }else if(currentTab==="design"){
-    html=`<div class="section-title">Choose Your Design</div><p class="section-help">Select one of 15 layouts. Your content stays the same when you switch designs.</p>
-      <div class="template-picker">${templates.map((t,i)=>`<button type="button" class="template-option ${data.template===i?"active":""}" data-template="${i}"><div class="template-swatch" style="background:${["#101827","#fff","#243b63","#fff7ed","#111","#ecfeff","#172554","#f0fdf4","#faf5ff","#f8fafc","#fff1f2","#eff6ff","#f5f5f4","#18181b","#eff6ff"][i]}"></div><strong>${String(i+1).padStart(2,"0")}. ${esc(t[0])}</strong><small>${esc(t[1])}</small></button>`).join("")}</div>
-      <div class="field"><label>Accent Color</label><div class="color-row"><input type="color" id="accentColor" value="${esc(data.accent)}"><span class="hint">Used for headings, highlights and links.</span></div></div>
-      <div class="field"><label>Typography</label><select id="fontSelect">
-        <option value="Arial, sans-serif">Modern Sans Serif</option>
-        <option value="Georgia, serif">Classic Serif</option>
-        <option value="'Trebuchet MS', sans-serif">Friendly Modern</option>
-        <option value="'Courier New', monospace">Technical Mono</option>
-        <option value="Verdana, sans-serif">Clean Professional</option>
-      </select></div>
-      <label class="checkline"><input type="checkbox" id="showPhoto" ${data.showPhoto?"checked":""}> Show profile photo when uploaded</label>
-      <div class="notice">Tip: Use strong project images, concise descriptions and working links to make your portfolio more convincing.</div>`;
-  }
-  c.innerHTML=html;
-  const font=$("fontSelect");if(font)font.value=data.font;
-}
-
-function addItem(key){
-  const defaults={
-    skills:{name:"",level:""},
-    experience:{position:"",company:"",duration:"",location:"",description:""},
-    education:{qualification:"",institution:"",year:"",details:""},
-    projects:{title:"",category:"",description:"",tools:"",link:"",image:""},
-    services:{title:"",description:""},
-    certificates:{title:"",issuer:"",date:"",link:""},
-    achievements:{title:"",date:"",description:""},
-    testimonials:{name:"",role:"",quote:""},
-    social:{name:"",url:""}
-  };
-  if(!defaults[key])return;
-  data[key].push({...defaults[key]});
-  renderForm();updatePreview();
-}
-$("formContent").addEventListener("click",e=>{
-  const add=e.target.closest("[data-add]");
-  if(add){addItem(add.dataset.add);return}
-  const del=e.target.closest("[data-remove]");
-  if(del){
-    data[del.dataset.remove].splice(Number(del.dataset.index),1);
-    renderForm();updatePreview();return;
-  }
-  const removeImg=e.target.closest("[data-remove-image]");
-  if(removeImg){data[removeImg.dataset.removeImage]="";renderForm();updatePreview();return}
-  const removeListImg=e.target.closest("[data-remove-list-image]");
-  if(removeListImg){
-    data[removeListImg.dataset.removeListImage][Number(removeListImg.dataset.index)].image="";
-    renderForm();updatePreview();return;
-  }
-  const temp=e.target.closest("[data-template]");
-  if(temp){data.template=Number(temp.dataset.template);renderForm();updatePreview()}
-});
-
-$("formContent").addEventListener("input",e=>{
-  const el=e.target;
-  if(el.dataset.key){data[el.dataset.key]=el.value;updatePreview()}
-  if(el.dataset.list){
-    const arr=data[el.dataset.list],item=arr[Number(el.dataset.index)];
-    if(item)item[el.dataset.field]=el.value;
-    updatePreview();
-  }
-  if(el.id==="accentColor"){data.accent=el.value;updatePreview()}
-  if(el.id==="fontSelect"){data.font=el.value;updatePreview()}
-  if(el.id==="showPhoto"){data.showPhoto=el.checked;updatePreview()}
-});
-$("formContent").addEventListener("change",async e=>{
-  const el=e.target;
-  if(el.dataset.imageKey){
-    const file=el.files&&el.files[0];if(!file)return;
-    if(!file.type.startsWith("image/")){alert("Please choose an image file.");return}
-    if(file.size>8*1024*1024){alert("Please use an image smaller than 8 MB.");return}
-    data[el.dataset.imageKey]=await imageToData(file);
-    renderForm();updatePreview();
-  }
-  if(el.dataset.listImage){
-    const file=el.files&&el.files[0];if(!file)return;
-    if(!file.type.startsWith("image/")){alert("Please choose an image file.");return}
-    if(file.size>8*1024*1024){alert("Please use an image smaller than 8 MB.");return}
-    data[el.dataset.listImage][Number(el.dataset.index)].image=await imageToData(file);
-    renderForm();updatePreview();
-  }
-});
-function imageToData(file){
+function val(id){return $(id).value.trim()}
+function lines(id){return val(id).split("\n").map(x=>x.trim()).filter(Boolean)}
+function list(id){return val(id).split(",").map(x=>x.trim()).filter(Boolean)}
+function fileToData(file){
   return new Promise((resolve,reject)=>{
     const reader=new FileReader();
     reader.onload=()=>resolve(reader.result);
@@ -607,148 +480,505 @@ function imageToData(file){
   });
 }
 
-function section(title,content){
-  if(!content)return "";
-  return `<section class="p-section"><h2>${esc(title)}</h2>${content}</section>`;
+/* TEMPLATE GALLERY */
+function drawGallery(){
+  const gallery=$("templateGallery");
+  gallery.innerHTML="";
+  const shown=templates.filter(t=>activeCategory==="All" || t.category===activeCategory);
+  $("templateCount").textContent=shown.length+" templates";
+  shown.forEach(t=>{
+    const card=document.createElement("article");
+    card.className="template-card";
+    card.innerHTML=`
+      <div class="template-thumb">
+        <div class="mini-site ${[3,5,9].includes(t.id)?"dark":""} ${[2,14].includes(t.id)?"editorial":""}" style="--mini-accent:${["#3563e9","#a77c50","#54a6ff","#e67d55","#b7a17d","#6755d9","#294d79","#20a078","#9a7a50","#3984a8","#2e9b78","#b27b40","#687b74","#7b5b87","#8054d8"][t.id-1]}">
+            <div class="mini-top"></div>
+            <div class="mini-title"></div>
+            <div class="mini-sub"></div><div class="mini-sub short"></div>
+            <div class="mini-image"></div>
+            <div class="mini-bars"><i></i><i></i><i></i></div>
+          </div>
+      </div>
+      <div class="template-info">
+        <h3>${String(t.id).padStart(2,"0")} · ${escapeHTML(t.name)}</h3>
+        <p>${escapeHTML(t.desc)}</p>
+        <div class="template-meta">
+          <span class="tag">${escapeHTML(t.category)}</span>
+          <button class="btn primary small" data-use="${t.id}">Use This Design</button>
+        </div>
+      </div>`;
+    gallery.appendChild(card);
+  });
 }
-function renderCards(items,kind){
-  if(!items||!items.length)return "";
-  return `<div class="p-grid">${items.map(x=>{
-    if(kind==="experience")return `<article class="p-card"><h3>${esc(x.position)}</h3><div class="p-meta">${esc(x.company)} ${x.duration?" · "+esc(x.duration):""} ${x.location?" · "+esc(x.location):""}</div><p>${esc(x.description)}</p></article>`;
-    if(kind==="education")return `<article class="p-card"><h3>${esc(x.qualification)}</h3><div class="p-meta">${esc(x.institution)} ${x.year?" · "+esc(x.year):""}</div><p>${esc(x.details)}</p></article>`;
-    if(kind==="projects"){
-      const link=safeUrl(x.link);
-      return `<article class="p-card">${x.image?`<img class="p-project-img" src="${esc(x.image)}" alt="${esc(x.title)}">`:""}<h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.category)}</div><p>${esc(x.description)}</p>${x.tools?`<p><strong>Tools:</strong> ${esc(x.tools)}</p>`:""}${link?`<a href="${esc(link)}" target="_blank" rel="noopener">View project ↗</a>`:""}</article>`;
+$("categoryFilters").addEventListener("click",e=>{
+  const b=e.target.closest("[data-category]");
+  if(!b)return;
+  activeCategory=b.dataset.category;
+  document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));
+  drawGallery();
+});
+$("templateGallery").addEventListener("click",e=>{
+  const b=e.target.closest("[data-use]");
+  if(!b)return;
+  currentTemplate=Number(b.dataset.use);
+  $("templateSelect").value=String(currentTemplate);
+  $("galleryScreen").hidden=true;
+  $("editorScreen").hidden=false;
+  renderAll();
+  window.scrollTo(0,0);
+});
+$("backGallery").addEventListener("click",()=>{
+  $("editorScreen").hidden=true;
+  $("galleryScreen").hidden=false;
+  window.scrollTo(0,0);
+});
+
+/* READ ALL FORM DATA */
+function getData(){
+  return {
+    template:currentTemplate,
+    name:val("nameInput"),role:val("roleInput"),location:val("locationInput"),
+    email:val("emailInput"),phone:val("phoneInput"),website:val("websiteInput"),
+    intro:val("introInput"),about:val("aboutInput"),skills:list("skillsInput"),
+    experience:experienceData,education:educationData,projects:projectData,
+    services:list("servicesInput"),certificates:lines("certificatesInput"),
+    linkedin:val("linkedinInput"),github:val("githubInput"),instagram:val("instagramInput"),
+    profileImage,extraSections,
+    accent:val("accentInput"),font:val("fontInput"),
+    background:val("backgroundInput"),textColor:val("textColorInput")
+  };
+}
+
+/* SECTION HTML */
+function sectionHTML(id,d){
+  const name=escapeHTML(d.name || "Your Name");
+  const role=escapeHTML(d.role || "Your Professional Title");
+  const photo=d.profileImage ? `<img class="hero-photo" src="${d.profileImage}" alt="${name}">` : "";
+  if(id==="hero") return `<section class="canvas-section hero-section" data-section="hero" draggable="true">
+    <div class="hero-copy">
+      <div class="portfolio-kicker">PORTFOLIO</div>
+      <h1 contenteditable="true" data-edit="name">${name}</h1>
+      <h3 contenteditable="true" data-edit="role">${role}</h3>
+      <p contenteditable="true" data-edit="intro">${escapeHTML(d.intro)}</p>
+      <a class="portfolio-button" href="#contact">Let's Work Together</a>
+    </div>${photo}
+  </section>`;
+  if(id==="about") return `<section class="canvas-section" data-section="about" draggable="true">
+    <div class="portfolio-kicker">GET TO KNOW ME</div><h2 contenteditable="true">About Me</h2>
+    <div class="about-layout"><p contenteditable="true" data-edit="about">${escapeHTML(d.about)}</p></div>
+  </section>`;
+  if(id==="skills") return `<section class="canvas-section" data-section="skills" draggable="true">
+    <div class="portfolio-kicker">MY EXPERTISE</div><h2 contenteditable="true">Skills & Expertise</h2>
+    <div class="skills-list">${d.skills.map(s=>`<span class="skill-pill" contenteditable="true">${escapeHTML(s)}</span>`).join("")}</div>
+  </section>`;
+  if(id==="experience") return `<section class="canvas-section" data-section="experience" draggable="true">
+    <div class="portfolio-kicker">MY JOURNEY</div><h2 contenteditable="true">Experience</h2>
+    ${d.experience.map(x=>`<div class="experience-item"><div class="item-date" contenteditable="true">${escapeHTML(x.date)}</div><h3 contenteditable="true">${escapeHTML(x.role)}</h3><p contenteditable="true">${escapeHTML(x.company)}</p><p contenteditable="true">${escapeHTML(x.description)}</p></div>`).join("")}
+  </section>`;
+  if(id==="education") return `<section class="canvas-section" data-section="education" draggable="true">
+    <div class="portfolio-kicker">LEARNING & GROWTH</div><h2 contenteditable="true">Education</h2>
+    ${d.education.map(x=>`<div class="education-item"><div class="item-date" contenteditable="true">${escapeHTML(x.date)}</div><h3 contenteditable="true">${escapeHTML(x.degree)}</h3><p contenteditable="true">${escapeHTML(x.school)}</p><p contenteditable="true">${escapeHTML(x.description)}</p></div>`).join("")}
+  </section>`;
+  if(id==="projects") return `<section class="canvas-section" data-section="projects" draggable="true">
+    <div class="portfolio-kicker">SELECTED WORK</div><h2 contenteditable="true">Featured Projects</h2>
+    <div class="project-grid">${d.projects.map((p,i)=>`<article class="project-card">
+      ${p.images.length ? `<img src="${p.images[0]}" alt="${escapeHTML(p.title)}">` : `<div style="height:145px;background:#edf0f5;display:grid;place-items:center;color:#8791a3">Project image</div>`}
+      <div class="project-copy"><h3 contenteditable="true">${escapeHTML(p.title)}</h3><p contenteditable="true">${escapeHTML(p.description)}</p>
+      ${safeURL(p.link)?`<a class="project-link" href="${escapeHTML(safeURL(p.link))}" target="_blank" rel="noopener">View Project ↗</a>`:""}
+      ${p.images.length>1?`<div style="display:flex;gap:5px;margin-top:8px;overflow:auto">${p.images.slice(1).map(src=>`<img src="${src}" alt="Project gallery image" style="width:55px;height:45px;object-fit:cover;border-radius:4px">`).join("")}</div>`:""}
+      </div></article>`).join("")}</div>
+  </section>`;
+  if(id==="services") return `<section class="canvas-section" data-section="services" draggable="true">
+    <div class="portfolio-kicker">WHAT I OFFER</div><h2 contenteditable="true">Services</h2>
+    <div class="skills-list">${d.services.map(s=>`<span class="skill-pill" contenteditable="true">${escapeHTML(s)}</span>`).join("")}</div>
+  </section>`;
+  if(id==="certificates") return `<section class="canvas-section" data-section="certificates" draggable="true">
+    <div class="portfolio-kicker">CREDENTIALS</div><h2 contenteditable="true">Certificates & Achievements</h2>
+    ${d.certificates.map(x=>`<div class="certificate-item"><p contenteditable="true">${escapeHTML(x)}</p></div>`).join("")}
+  </section>`;
+  if(id==="contact") return `<section class="canvas-section" id="contact" data-section="contact" draggable="true">
+    <div class="portfolio-kicker">GET IN TOUCH</div><h2 contenteditable="true">Let's Connect</h2>
+    <div class="contact-links">
+      ${d.email?`<a href="mailto:${escapeHTML(d.email)}">${escapeHTML(d.email)}</a>`:""}
+      ${d.phone?`<span>${escapeHTML(d.phone)}</span>`:""}
+      ${d.location?`<span>${escapeHTML(d.location)}</span>`:""}
+      ${safeURL(d.website)?`<a href="${escapeHTML(safeURL(d.website))}" target="_blank" rel="noopener">Website</a>`:""}
+    </div>
+    <div class="social-links">
+      ${[["LinkedIn",d.linkedin],["GitHub",d.github],["Instagram",d.instagram]].filter(x=>safeURL(x[1])).map(x=>`<a href="${escapeHTML(safeURL(x[1]))}" target="_blank" rel="noopener">${x[0]} ↗</a>`).join("")}
+    </div>
+  </section>`;
+  return "";
+}
+
+function renderAll(){
+  const d=getData();
+  canvas.className="tpl-"+currentTemplate;
+  canvas.style.setProperty("--accent",d.accent);
+  canvas.style.setProperty("--font",d.font);
+  canvas.style.background=d.background;
+  canvas.style.color=d.textColor;
+
+  const ids=["hero","about","skills","experience","education","projects","services","certificates","contact"];
+  canvas.innerHTML=ids.map(id=>sectionHTML(id,d)).join("")+
+    extraSections.map((s,i)=>`<section class="canvas-section" data-section="extra-${i}" draggable="true">
+      <div class="portfolio-kicker">CUSTOM SECTION</div>
+      <h2 contenteditable="true">${escapeHTML(s.title)}</h2>
+      <p contenteditable="true">${escapeHTML(s.text)}</p>
+    </section>`).join("")+
+    `<div class="portfolio-footer">Created with CV Tools Portfolio Builder</div>`;
+  bindCanvas();
+  selectSection(selectedSection);
+}
+
+/* LIVE FORM UPDATES */
+const liveFields=["nameInput","roleInput","locationInput","emailInput","phoneInput","websiteInput","introInput","aboutInput","skillsInput","servicesInput","certificatesInput","linkedinInput","githubInput","instagramInput","accentInput","fontInput","backgroundInput","textColorInput"];
+liveFields.forEach(id=>$(id).addEventListener("input",()=>{
+  remember();
+  renderAll();
+}));
+$("templateSelect").addEventListener("change",()=>{
+  remember();currentTemplate=Number(val("templateSelect"));renderAll();
+});
+$("profilePhoto").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>5*1024*1024){alert("Please choose a profile image smaller than 5 MB.");return;}
+  profileImage=await fileToData(f);remember();renderAll();
+});
+
+/* REPEATING EDITOR FIELDS */
+function drawRepeating(){
+  $("experienceEditor").innerHTML=experienceData.map((x,i)=>`
+    <div style="border:1px solid #e5eaf2;border-radius:7px;padding:9px;margin-bottom:9px">
+      <div class="field"><label>Job title</label><input data-exp="${i}" data-key="role" value="${escapeHTML(x.role)}"></div>
+      <div class="field"><label>Company</label><input data-exp="${i}" data-key="company" value="${escapeHTML(x.company)}"></div>
+      <div class="field"><label>Dates</label><input data-exp="${i}" data-key="date" value="${escapeHTML(x.date)}"></div>
+      <div class="field"><label>Description</label><textarea data-exp="${i}" data-key="description">${escapeHTML(x.description)}</textarea></div>
+      <button class="btn small danger" data-remove-exp="${i}">Remove</button>
+    </div>`).join("");
+  $("educationEditor").innerHTML=educationData.map((x,i)=>`
+    <div style="border:1px solid #e5eaf2;border-radius:7px;padding:9px;margin-bottom:9px">
+      <div class="field"><label>Degree</label><input data-edu="${i}" data-key="degree" value="${escapeHTML(x.degree)}"></div>
+      <div class="field"><label>School</label><input data-edu="${i}" data-key="school" value="${escapeHTML(x.school)}"></div>
+      <div class="field"><label>Dates</label><input data-edu="${i}" data-key="date" value="${escapeHTML(x.date)}"></div>
+      <div class="field"><label>Description</label><textarea data-edu="${i}" data-key="description">${escapeHTML(x.description)}</textarea></div>
+      <button class="btn small danger" data-remove-edu="${i}">Remove</button>
+    </div>`).join("");
+  $("projectsEditor").innerHTML=projectData.map((x,i)=>`
+    <div style="border:1px solid #e5eaf2;border-radius:7px;padding:9px;margin-bottom:9px">
+      <div class="field"><label>Project title</label><input data-project="${i}" data-key="title" value="${escapeHTML(x.title)}"></div>
+      <div class="field"><label>Description</label><textarea data-project="${i}" data-key="description">${escapeHTML(x.description)}</textarea></div>
+      <div class="field"><label>Project URL</label><input data-project="${i}" data-key="link" value="${escapeHTML(x.link)}" placeholder="https://..."></div>
+      <div class="field"><label>Project images (multiple allowed)</label><input type="file" data-project-images="${i}" accept="image/*" multiple></div>
+      <p class="muted" style="font-size:11px">${x.images.length} image(s) added</p>
+      <button class="btn small danger" data-remove-project="${i}">Remove Project</button>
+    </div>`).join("");
+}
+function bindRepeating(){
+  document.addEventListener("input",e=>{
+    const t=e.target;
+    if(t.dataset.exp!==undefined){experienceData[Number(t.dataset.exp)][t.dataset.key]=t.value;remember();renderAll()}
+    if(t.dataset.edu!==undefined){educationData[Number(t.dataset.edu)][t.dataset.key]=t.value;remember();renderAll()}
+    if(t.dataset.project!==undefined){projectData[Number(t.dataset.project)][t.dataset.key]=t.value;remember();renderAll()}
+  });
+  document.addEventListener("click",e=>{
+    if(e.target.dataset.removeExp!==undefined){experienceData.splice(Number(e.target.dataset.removeExp),1);drawRepeating();renderAll();remember()}
+    if(e.target.dataset.removeEdu!==undefined){educationData.splice(Number(e.target.dataset.removeEdu),1);drawRepeating();renderAll();remember()}
+    if(e.target.dataset.removeProject!==undefined){projectData.splice(Number(e.target.dataset.removeProject),1);drawRepeating();renderAll();remember()}
+  });
+  document.addEventListener("change",async e=>{
+    if(e.target.dataset.projectImages!==undefined){
+      const i=Number(e.target.dataset.projectImages);
+      const files=Array.from(e.target.files);
+      for(const f of files){
+        if(!f.type.startsWith("image/"))continue;
+        if(f.size>5*1024*1024){alert(f.name+" is larger than 5 MB and was skipped.");continue}
+        projectData[i].images.push(await fileToData(f));
+      }
+      drawRepeating();renderAll();remember();
     }
-    if(kind==="services")return `<article class="p-card"><h3>${esc(x.title)}</h3><p>${esc(x.description)}</p></article>`;
-    if(kind==="certificates")return `<article class="p-card"><h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.issuer)} ${x.date?" · "+esc(x.date):""}</div>${safeUrl(x.link)?`<a href="${esc(safeUrl(x.link))}" target="_blank" rel="noopener">View certificate ↗</a>`:""}</article>`;
-    if(kind==="achievements")return `<article class="p-card"><h3>${esc(x.title)}</h3><div class="p-meta">${esc(x.date)}</div><p>${esc(x.description)}</p></article>`;
-    if(kind==="testimonials")return `<article class="p-card"><p>“${esc(x.quote)}”</p><h3>${esc(x.name)}</h3><div class="p-meta">${esc(x.role)}</div></article>`;
-    return "";
-  }).join("")}</div>`;
+  });
 }
-function renderPortfolio(){
-  const t=String(data.template+1).padStart(2,"0");
-  const photo=data.showPhoto&&data.photo?`<img class="p-photo" src="${esc(data.photo)}" alt="${esc(data.name||"Profile photo")}">`:"";
-  const social=(data.social||[]).filter(x=>x.name&&safeUrl(x.url));
-  const links=social.map(x=>`<a href="${esc(safeUrl(x.url))}" target="_blank" rel="noopener">${esc(x.name)} ↗</a>`).join("");
-  const contactBits=[
-    data.email?`<a href="mailto:${esc(data.email)}">${esc(data.email)}</a>`:"",
-    data.phone?`<a href="tel:${esc(data.phone.replace(/[^\d+]/g,""))}">${esc(data.phone)}</a>`:"",
-    data.location?esc(data.location):"",
-    safeUrl(data.website)?`<a href="${esc(safeUrl(data.website))}" target="_blank" rel="noopener">Personal website ↗</a>`:""
-  ].filter(Boolean).join(" &nbsp; · &nbsp; ");
+$("addExperience").onclick=()=>{experienceData.push({role:"New Position",company:"Company",date:"Year - Year",description:"Describe your work."});drawRepeating();renderAll();remember()};
+$("addEducation").onclick=()=>{educationData.push({degree:"New Qualification",school:"Institution",date:"Year",description:"Add details."});drawRepeating();renderAll();remember()};
+$("addProject").onclick=()=>{projectData.push({title:"New Project",description:"Describe your project.",link:"",images:[]});drawRepeating();renderAll();remember()};
 
-  return `<div class="portfolio t${t}" style="--accent:${esc(data.accent)};--font:${data.font}">
-    <header class="p-hero"><div class="p-hero-row">${photo}<div class="p-hero-text">
-      <div class="p-kicker">Professional Portfolio</div>
-      <h1 class="p-name">${esc(data.name||"Your Name")}</h1>
-      <div class="p-role">${esc(data.role||"Your Professional Title")}</div>
-      ${data.intro?`<div class="p-intro">${esc(data.intro).replace(/\n/g,"<br>")}</div>`:`<div class="p-intro">Add a short introduction to tell visitors what you do and what you bring to your work.</div>`}
-      ${data.location?`<div class="p-meta" style="margin-top:12px">${esc(data.location)}</div>`:""}
-    </div></div></header>
-    ${data.about?section("About Me",`<p>${esc(data.about).replace(/\n/g,"<br>")}</p>`):""}
-    ${data.skills.length?section("Skills",`<div class="p-tags">${data.skills.filter(x=>x.name).map(x=>`<span class="p-tag">${esc(x.name)}${x.level?" · "+esc(x.level):""}</span>`).join("")}</div>`):""}
-    ${data.experience.length?section("Experience",renderCards(data.experience,"experience")):""}
-    ${data.education.length?section("Education",renderCards(data.education,"education")):""}
-    ${data.projects.length?section("Selected Projects",renderCards(data.projects,"projects")):""}
-    ${data.services.length?section("Services",renderCards(data.services,"services")):""}
-    ${data.certificates.length?section("Certifications",renderCards(data.certificates,"certificates")):""}
-    ${data.achievements.length?section("Achievements",renderCards(data.achievements,"achievements")):""}
-    ${data.testimonials.length?section("Testimonials",renderCards(data.testimonials,"testimonials")):""}
-    ${contactBits||links?`<footer class="p-contact"><h2>Get in Touch</h2><p>${esc(data.contactMessage||"Let's work together.")}</p><p>${contactBits}</p><div class="p-links">${links}</div></footer>`:""}
-    <div class="p-footer">Portfolio created with CV Tools</div>
-  </div>`;
+/* CANVAS SELECTION, INLINE EDITING AND DRAG/DROP */
+function bindCanvas(){
+  canvas.querySelectorAll(".canvas-section").forEach(section=>{
+    section.addEventListener("click",e=>{
+      selectedSection=section.dataset.section;
+      selectSection(selectedSection);
+      if(e.target.closest("[contenteditable=true]"))selectedElement=e.target.closest("[contenteditable=true]");
+    });
+    section.addEventListener("dragstart",e=>{
+      if(e.target.closest("[contenteditable=true]")){e.preventDefault();return}
+      e.dataTransfer.setData("text/plain",section.dataset.section);
+      e.dataTransfer.effectAllowed="move";
+    });
+    section.addEventListener("dragover",e=>{e.preventDefault();section.classList.add("drag-over")});
+    section.addEventListener("dragleave",()=>section.classList.remove("drag-over"));
+    section.addEventListener("drop",e=>{
+      e.preventDefault();section.classList.remove("drag-over");
+      const movingId=e.dataTransfer.getData("text/plain");
+      const moving=canvas.querySelector(`[data-section="${CSS.escape(movingId)}"]`);
+      if(!moving||moving===section)return;
+      const rect=section.getBoundingClientRect();
+      const after=e.clientY>rect.top+rect.height/2;
+      section.parentNode.insertBefore(moving,after?section.nextSibling:section);
+      remember();
+    });
+    section.querySelectorAll("[contenteditable=true]").forEach(el=>{
+      el.addEventListener("input",()=>{});
+    });
+  });
 }
-function updatePreview(){
-  $("previewPage").innerHTML=renderPortfolio();
+function selectSection(id){
+  canvas.querySelectorAll(".canvas-section").forEach(s=>s.classList.toggle("selected",s.dataset.section===id));
+  const el=canvas.querySelector(`[data-section="${CSS.escape(id)}"]`);
+  if(el){
+    $("sectionSelect").value=["hero","about","skills","experience","education","projects","services","certificates","contact"].includes(id)?id:"hero";
+    const h=el.querySelector("h1,h2,h3");
+    $("selectedTitle").value=h?h.innerText:"";
+    $("selectedBg").value="#ffffff";
+  }
 }
-$("previewBtn").addEventListener("click",updatePreview);
+$("sectionSelect").onchange=()=>{selectedSection=val("sectionSelect");selectSection(selectedSection)};
+$("selectedTitle").oninput=()=>{
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  const h=el&&el.querySelector("h1,h2,h3");if(h)h.innerText=val("selectedTitle");
+};
+$("applySectionBg").onclick=()=>{
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  if(el)el.style.background=val("selectedBg");
+  remember();
+};
+$("hideSection").onclick=()=>{
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  if(el){el.hidden=!el.hidden;remember()}
+};
+$("moveUp").onclick=()=>{
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  if(el&&el.previousElementSibling&&el.previousElementSibling.classList.contains("canvas-section")){
+    canvas.insertBefore(el,el.previousElementSibling);remember()
+  }
+};
+$("moveDown").onclick=()=>{
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  if(el&&el.nextElementSibling&&el.nextElementSibling.classList.contains("canvas-section")){
+    canvas.insertBefore(el.nextElementSibling,el);remember()
+  }
+};
+$("deleteSelected").onclick=()=>{
+  if(["hero","about","skills","experience","education","projects","services","certificates","contact"].includes(selectedSection)){
+    alert("The main portfolio sections cannot be permanently deleted. You can hide them instead.");return;
+  }
+  const el=canvas.querySelector(`[data-section="${CSS.escape(selectedSection)}"]`);
+  if(el)el.remove();remember();
+};
 
-$("saveBtn").addEventListener("click",()=>{
-  try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
-    alert("Your portfolio draft has been saved in this browser.");
-  }catch(e){alert("Could not save. Your images may be too large. Try smaller images.")}
-});
-function loadDraft(){
-  const raw=localStorage.getItem(STORAGE_KEY);
-  if(!raw)return false;
-  try{
-    const parsed=JSON.parse(raw);
-    data={...structuredClone(defaultData),...parsed};
-    return true;
-  }catch{return false}
-}
-$("resetBtn").addEventListener("click",()=>{
-  if(!confirm("Reset all portfolio information? This cannot be undone unless you have a backup."))return;
-  data=structuredClone(defaultData);
-  localStorage.removeItem(STORAGE_KEY);
-  setTab("profile");updatePreview();
-});
+/* EXTRA DRAGGABLE CONTENT */
+$("addSection").onclick=()=>{
+  extraSections.push({title:"New Section",text:"Click here to edit this section."});
+  renderAll();selectedSection="extra-"+(extraSections.length-1);selectSection(selectedSection);remember();
+};
+$("addText").onclick=()=>{
+  extraSections.push({title:"Text Block",text:"Click this text on the canvas to edit it."});
+  renderAll();selectedSection="extra-"+(extraSections.length-1);selectSection(selectedSection);remember();
+};
+$("addImage").onclick=()=>$("extraImageFile").click();
+$("extraImageFile").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  if(f.size>5*1024*1024){alert("Choose an image smaller than 5 MB.");return}
+  const src=await fileToData(f);
+  extraSections.push({title:"Image",text:"",image:src});
+  renderAll();
+  const last=canvas.querySelectorAll(".canvas-section");
+  const section=last[last.length-1];
+  section.querySelector("p").insertAdjacentHTML("beforebegin",`<img src="${src}" alt="Portfolio image" style="max-width:100%;max-height:400px;object-fit:contain;display:block;margin:15px 0">`);
+  selectedSection=section.dataset.section;selectSection(selectedSection);remember();
+};
 
-function downloadBlob(content,name,type){
+/* UNDO SNAPSHOTS */
+function snapshot(){
+  return JSON.stringify({template:currentTemplate,form:Object.fromEntries(liveFields.map(id=>[id,$(id).value])),profileImage,experienceData,educationData,projectData,extraSections});
+}
+function remember(){
+  const s=snapshot();
+  if(historyStack[historyStack.length-1]!==s){
+    historyStack.push(s);
+    if(historyStack.length>20)historyStack.shift();
+  }
+}
+$("undoBtn").onclick=()=>{
+  if(historyStack.length<2){alert("No earlier edit available.");return}
+  historyStack.pop();
+  const s=JSON.parse(historyStack[historyStack.length-1]);
+  currentTemplate=s.template;
+  liveFields.forEach(id=>{if(s.form[id]!==undefined)$(id).value=s.form[id]});
+  profileImage=s.profileImage;experienceData=s.experienceData;educationData=s.educationData;projectData=s.projectData;extraSections=s.extraSections;
+  drawRepeating();renderAll();
+};
+
+/* SAVE AND LOAD */
+function saveObject(){
+  const d=getData();
+  d.sectionOrder=Array.from(canvas.querySelectorAll(".canvas-section")).map(x=>x.dataset.section);
+  d.hiddenSections=Array.from(canvas.querySelectorAll(".canvas-section[hidden]")).map(x=>x.dataset.section);
+  d.sectionBackgrounds=Array.from(canvas.querySelectorAll(".canvas-section")).filter(x=>x.style.background).map(x=>[x.dataset.section,x.style.background]);
+  return d;
+}
+function applyObject(d){
+  if(!d||typeof d!=="object"||!Array.isArray(d.projects)||!Array.isArray(d.skills)){
+    alert("This JSON file is not a valid portfolio backup.");return;
+  }
+  currentTemplate=Number(d.template)||1;
+  const map={
+    nameInput:d.name,roleInput:d.role,locationInput:d.location,emailInput:d.email,
+    phoneInput:d.phone,websiteInput:d.website,introInput:d.intro,aboutInput:d.about,
+    skillsInput:(d.skills||[]).join(", "),servicesInput:(d.services||[]).join(", "),
+    certificatesInput:(d.certificates||[]).join("\n"),linkedinInput:d.linkedin,
+    githubInput:d.github,instagramInput:d.instagram,accentInput:d.accent,
+    fontInput:d.font,backgroundInput:d.background,textColorInput:d.textColor
+  };
+  Object.entries(map).forEach(([id,v])=>{if(v!==undefined&&v!==null)$(id).value=v});
+  profileImage=d.profileImage||"";
+  experienceData=Array.isArray(d.experience)?d.experience:[];
+  educationData=Array.isArray(d.education)?d.education:[];
+  projectData=d.projects;
+  extraSections=Array.isArray(d.extraSections)?d.extraSections:[];
+  $("templateSelect").value=String(currentTemplate);
+  drawRepeating();renderAll();
+  if(Array.isArray(d.sectionOrder)){
+    d.sectionOrder.forEach(id=>{
+      const el=canvas.querySelector(`[data-section="${CSS.escape(id)}"]`);
+      if(el)canvas.appendChild(el);
+    });
+  }
+  (d.hiddenSections||[]).forEach(id=>{
+    const el=canvas.querySelector(`[data-section="${CSS.escape(id)}"]`);
+    if(el)el.hidden=true;
+  });
+  (d.sectionBackgrounds||[]).forEach(([id,bg])=>{
+    const el=canvas.querySelector(`[data-section="${CSS.escape(id)}"]`);
+    if(el)el.style.background=bg;
+  });
+  remember();
+}
+$("saveBtn").onclick=()=>{
+  try{localStorage.setItem("cvtoolsPortfolioDraft",JSON.stringify(saveObject()));alert("Your portfolio draft has been saved in this browser.")}
+  catch(e){alert("Could not save. Your images may be too large. Try smaller images or download a JSON backup.")}
+};
+$("loadBtn").onclick=()=>{
+  const s=localStorage.getItem("cvtoolsPortfolioDraft");
+  if(!s){alert("No saved draft was found in this browser.");return}
+  try{applyObject(JSON.parse(s));alert("Draft loaded successfully.")}
+  catch(e){alert("The saved draft could not be loaded.")}
+};
+$("jsonBtn").onclick=()=>{
+  downloadFile("portfolio-backup.json",JSON.stringify(saveObject(),null,2),"application/json");
+};
+$("importBtn").onclick=()=>$("jsonImportFile").click();
+$("jsonImportFile").onchange=async e=>{
+  const f=e.target.files[0];if(!f)return;
+  try{applyObject(JSON.parse(await f.text()));alert("Portfolio backup imported.")}
+  catch(err){alert("Invalid JSON backup file.")}
+  e.target.value="";
+};
+
+/* EXPORT WEBSITE */
+function exportCSS(){
+  return `
+  *{box-sizing:border-box}
+  body{margin:0;font-family:${val("fontInput")},Arial,sans-serif;background:${val("backgroundInput")};color:${val("textColorInput")};line-height:1.6}
+  #portfolioCanvas{max-width:1100px;margin:auto;background:${val("backgroundInput")};color:${val("textColorInput")};--accent:${val("accentInput")};font-family:${val("fontInput")},Arial,sans-serif}
+  .canvas-section{padding:55px 7%;border:0;cursor:default}
+  .canvas-section h1{font-size:clamp(34px,5vw,62px);line-height:1.1;letter-spacing:-1.5px;margin:0 0 14px}
+  .canvas-section h2{font-size:28px;margin:0 0 20px}
+  .canvas-section h3{font-size:18px}
+  .canvas-section p{line-height:1.8;opacity:.8}
+  .hero-section{min-height:320px;display:flex;align-items:center;gap:30px}
+  .hero-copy{flex:1}.hero-photo{width:160px;height:180px;object-fit:cover;border-radius:15px}
+  .portfolio-kicker{font-size:11px;letter-spacing:2px;color:var(--accent);font-weight:800;margin-bottom:12px}
+  .portfolio-button{display:inline-block;background:var(--accent);color:white;padding:11px 18px;border-radius:5px}
+  .skills-list{display:flex;flex-wrap:wrap;gap:10px}
+  .skill-pill{padding:8px 13px;border:1px solid #ddd;border-radius:30px;font-size:13px}
+  .experience-item,.education-item,.certificate-item{padding:15px 0;border-bottom:1px solid #ddd}
+  .item-date{font-size:12px;color:var(--accent);font-weight:bold}
+  .project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+  .project-card{border:1px solid #ddd;border-radius:9px;overflow:hidden}
+  .project-card img{width:100%;height:190px;object-fit:cover}
+  .project-copy{padding:15px}.project-copy p{font-size:13px}
+  .project-link,.social-links a{color:var(--accent);font-weight:bold}
+  .contact-links,.social-links{display:flex;gap:15px;flex-wrap:wrap;margin:12px 0}
+  .portfolio-footer{text-align:center;padding:20px;font-size:11px;opacity:.6}
+  #portfolioCanvas.tpl-2{font-family:Georgia,serif}
+  #portfolioCanvas.tpl-2 .hero-section{text-align:center;display:block;padding-top:85px}
+  #portfolioCanvas.tpl-2 .hero-photo{width:120px;height:120px;border-radius:50%;display:block;margin:20px auto}
+  #portfolioCanvas.tpl-3{background:#0d1422;color:#edf2ff}
+  #portfolioCanvas.tpl-3 .skill-pill,#portfolioCanvas.tpl-3 .project-card{border-color:#34415a;background:#151f32}
+  #portfolioCanvas.tpl-4 .hero-section{background:#f7e8e1}
+  #portfolioCanvas.tpl-5 .hero-section{display:block;text-align:center;background:#161616;color:white}
+  #portfolioCanvas.tpl-5 .hero-photo{display:block;margin:20px auto;border-radius:50%}
+  #portfolioCanvas.tpl-7 .hero-section{background:#f1f4f8}
+  #portfolioCanvas.tpl-8 .hero-section{background:#eff8f4}
+  #portfolioCanvas.tpl-9{font-family:Georgia,serif}
+  #portfolioCanvas.tpl-9 .hero-section{background:#172033;color:white}
+  #portfolioCanvas.tpl-10 .hero-section{border-left:8px solid var(--accent)}
+  #portfolioCanvas.tpl-11 .hero-section{text-align:center;display:block}
+  #portfolioCanvas.tpl-11 .hero-photo{display:block;margin:15px auto;border-radius:50%}
+  #portfolioCanvas.tpl-12 .hero-section{background:#f3f0e9}
+  #portfolioCanvas.tpl-13 .hero-section{background:#f1f1ee}
+  #portfolioCanvas.tpl-14{font-family:Georgia,serif}
+  #portfolioCanvas.tpl-15 .hero-section{background:#f4f0ff}
+  @media(max-width:650px){.hero-section{flex-direction:column;text-align:center}.project-grid{grid-template-columns:1fr}.canvas-section{padding:35px 6%}}
+  `;
+}
+function downloadFile(filename,content,type){
   const blob=new Blob([content],{type});
   const url=URL.createObjectURL(blob);
   const a=document.createElement("a");
-  a.href=url;a.download=name;a.click();
+  a.href=url;a.download=filename;document.body.appendChild(a);a.click();a.remove();
   setTimeout(()=>URL.revokeObjectURL(url),1500);
 }
-$("jsonBtn").addEventListener("click",()=>{
-  downloadBlob(JSON.stringify(data,null,2),"my-portfolio-backup.json","application/json");
-});
-$("jsonImport").addEventListener("change",async e=>{
-  const file=e.target.files[0];if(!file)return;
-  try{
-    const parsed=JSON.parse(await file.text());
-    if(!parsed||typeof parsed!=="object"||!Array.isArray(parsed.projects)||!Array.isArray(parsed.skills))throw new Error("Invalid backup");
-    data={...structuredClone(defaultData),...parsed};
-    setTab("profile");updatePreview();alert("Portfolio backup imported successfully.");
-  }catch{alert("This JSON file is not a valid Portfolio Maker backup.")}
-  e.target.value="";
-});
-const importButton=document.createElement("button");
-importButton.className="btn";
-importButton.textContent="Import JSON";
-importButton.addEventListener("click",()=>$("jsonImport").click());
-document.querySelector(".top-actions").insertBefore(importButton,$("htmlBtn"));
+$("htmlBtn").onclick=()=>{
+  const clone=canvas.cloneNode(true);
+  clone.querySelectorAll(".selected").forEach(x=>x.classList.remove("selected"));
+  clone.querySelectorAll("[contenteditable]").forEach(x=>x.removeAttribute("contenteditable"));
+  clone.querySelectorAll("[draggable]").forEach(x=>x.removeAttribute("draggable"));
+  clone.querySelectorAll("[hidden]").forEach(x=>x.remove());
+  const html=`<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${escapeHTML(val("nameInput"))} | Portfolio</title>
+<meta name="description" content="${escapeHTML(val("introInput").slice(0,155))}">
+<style>${exportCSS()}</style></head><body>${clone.outerHTML}</body></html>`;
+  downloadFile("my-portfolio.html",html,"text/html;charset=utf-8");
+};
 
-function standaloneHtml(){
-  const css=[...document.querySelectorAll("style")].map(s=>s.textContent).join("\n");
-  const portfolio=renderPortfolio();
-  return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(data.name||"Professional Portfolio")} | Portfolio</title>
-<meta name="description" content="${esc((data.intro||data.about||"Professional portfolio").slice(0,155))}">
-<style>${css}
-body{background:#fff!important;margin:0!important}
-.portfolio{max-width:1100px;margin:0 auto}
-</style></head><body>${portfolio}</body></html>`;
-}
-$("htmlBtn").addEventListener("click",()=>{
-  downloadBlob(standaloneHtml(),"my-professional-portfolio.html","text/html;charset=utf-8");
-});
-$("pdfBtn").addEventListener("click",()=>{
-  updatePreview();
-  window.print();
-});
+/* PDF PRINT */
+$("pdfBtn").onclick=()=>{
+  const clone=canvas.cloneNode(true);
+  clone.querySelectorAll(".selected").forEach(x=>x.classList.remove("selected"));
+  clone.querySelectorAll("[contenteditable]").forEach(x=>x.removeAttribute("contenteditable"));
+  clone.querySelectorAll("[draggable]").forEach(x=>x.removeAttribute("draggable"));
+  clone.querySelectorAll("[hidden]").forEach(x=>x.remove());
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups for this website to export your PDF.");return}
+  w.document.write(`<!DOCTYPE html><html><head><title>Portfolio PDF</title><meta charset="UTF-8"><style>${exportCSS()}@page{size:A4;margin:12mm}body{background:white!important;-webkit-print-color-adjust:exact;print-color-adjust:exact}#portfolioCanvas{max-width:100%;box-shadow:none}.canvas-section{break-inside:avoid}.project-card{break-inside:avoid}</style></head><body>${clone.outerHTML}<script>window.onload=()=>setTimeout(()=>window.print(),500)<\/script></body></html>`);
+  w.document.close();
+};
 
+/* INITIALIZE */
 function init(){
-  if(loadDraft()){
-    // Existing saved draft is restored only when the user explicitly uses Load Draft.
-    // Initial page visit starts blank to protect privacy.
-    data=structuredClone(defaultData);
-  }
-  renderForm();updatePreview();
-  const loadButton=document.createElement("button");
-  loadButton.className="btn";
-  loadButton.textContent="Load Draft";
-  loadButton.addEventListener("click",()=>{
-    if(loadDraft()){
-      setTab("profile");updatePreview();alert("Saved draft loaded.");
-    }else alert("No saved draft was found in this browser.");
-  });
-  document.querySelector(".top-actions").insertBefore(loadButton,$("jsonBtn"));
+  projectData=[
+    {title:"Personal Website",description:"A responsive website designed to present a personal brand and professional work.",link:"",images:[]},
+    {title:"Creative Project",description:"A creative project demonstrating design, problem-solving and attention to detail.",link:"",images:[]}
+  ];
+  drawGallery();
+  drawRepeating();
+  bindRepeating();
+  renderAll();
+  remember();
 }
 init();
 </script>
