@@ -1,0 +1,1386 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create professional logos and favicons online for free. Customize logo shapes, icons, colors and typography, then export PNG and SVG files.">
+<meta name="keywords" content="free logo maker, online logo creator, favicon generator, SVG logo maker, PNG logo maker">
+<title>Free Logo & Favicon Maker - CV Tools</title>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<style>
+:root{
+  --primary:#245bd5;
+  --primary-dark:#1748b5;
+  --ink:#17243a;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --surface:#ffffff;
+  --soft:#f5f7fb;
+  --success:#138a54;
+  --shadow:0 12px 35px rgba(23,36,58,.07);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  color:var(--ink);
+  background:#f5f7fb;
+}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{color:inherit;text-decoration:none}
+.site-header{
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:17px 5%;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+}
+.brand{
+  font-size:22px;
+  font-weight:800;
+  letter-spacing:-.5px;
+}
+.brand span{color:var(--primary)}
+.header-link{
+  color:var(--muted);
+  font-size:14px;
+  font-weight:700;
+}
+.header-link:hover{color:var(--primary)}
+.hero{
+  text-align:center;
+  padding:52px 20px 32px;
+  max-width:900px;
+  margin:auto;
+}
+.eyebrow{
+  display:inline-block;
+  background:#eaf0ff;
+  color:var(--primary);
+  padding:7px 13px;
+  border-radius:30px;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.5px;
+  text-transform:uppercase;
+}
+.hero h1{
+  font-size:clamp(30px,5vw,46px);
+  letter-spacing:-1.5px;
+  margin:17px 0 12px;
+}
+.hero p{
+  color:var(--muted);
+  line-height:1.7;
+  font-size:16px;
+  max-width:680px;
+  margin:auto;
+}
+.app{
+  max-width:1440px;
+  margin:0 auto;
+  padding:0 22px 55px;
+}
+.workspace{
+  display:grid;
+  grid-template-columns:310px minmax(0,1fr);
+  gap:20px;
+  align-items:start;
+}
+.panel{
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:16px;
+  box-shadow:var(--shadow);
+}
+.controls{padding:20px}
+.panel-title{
+  font-size:17px;
+  font-weight:800;
+  margin:0 0 17px;
+}
+.field{margin-bottom:17px}
+.field label{
+  display:block;
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.field input[type="text"],
+.field input[type="number"],
+.field select{
+  width:100%;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:11px 12px;
+  color:var(--ink);
+  background:#fff;
+  outline:none;
+}
+.field input:focus,.field select:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(36,91,213,.1);
+}
+.field input[type="color"]{
+  width:100%;
+  height:42px;
+  border:1px solid var(--border);
+  border-radius:9px;
+  padding:4px;
+  background:#fff;
+  cursor:pointer;
+}
+.field input[type="range"]{width:100%;accent-color:var(--primary)}
+.field small{
+  color:var(--muted);
+  display:block;
+  margin-top:6px;
+  font-size:11px;
+  line-height:1.5;
+}
+.two-fields{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.section-divider{
+  border:0;
+  border-top:1px solid var(--border);
+  margin:20px 0;
+}
+.control-tabs{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:7px;
+  margin-bottom:18px;
+}
+.control-tab{
+  border:1px solid var(--border);
+  background:#fff;
+  padding:9px 5px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+}
+.control-tab.active{
+  background:#edf2ff;
+  border-color:#b9cbff;
+  color:var(--primary);
+}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+.template-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:9px;
+}
+.template-card{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:9px 7px;
+  background:#fff;
+  text-align:center;
+  transition:.2s;
+}
+.template-card:hover,.template-card.active{
+  border-color:var(--primary);
+  background:#f1f5ff;
+}
+.template-card .sample{
+  height:66px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:7px;
+  border-radius:7px;
+  background:#f4f6fb;
+  overflow:hidden;
+}
+.template-card strong{font-size:11px}
+.template-card small{
+  display:block;
+  color:var(--muted);
+  font-size:10px;
+  margin-top:4px;
+}
+.template-sample{
+  font-size:23px;
+  font-weight:900;
+  color:#245bd5;
+}
+.shape-grid,.mark-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+.choice{
+  min-height:62px;
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:9px;
+  padding:8px 5px;
+  color:var(--muted);
+  font-size:11px;
+  font-weight:700;
+}
+.choice .shape-icon{
+  display:block;
+  margin:0 auto 6px;
+  width:23px;
+  height:23px;
+  background:#245bd5;
+}
+.choice.active{
+  border-color:var(--primary);
+  color:var(--primary);
+  background:#f1f5ff;
+}
+.choice[data-shape="circle"] .shape-icon{border-radius:50%}
+.choice[data-shape="rounded"] .shape-icon{border-radius:7px}
+.choice[data-shape="square"] .shape-icon{border-radius:0}
+.choice[data-shape="shield"] .shape-icon{
+  clip-path:polygon(0 0,100% 0,100% 65%,50% 100%,0 65%);
+}
+.choice[data-shape="hexagon"] .shape-icon{
+  clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);
+}
+.choice[data-shape="none"] .shape-icon{
+  background:transparent;
+  border:2px dashed #245bd5;
+  border-radius:3px;
+}
+.mark-choice{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:9px;
+  min-height:58px;
+  font-size:12px;
+  font-weight:700;
+  color:var(--muted);
+}
+.mark-choice span{
+  display:block;
+  font-size:21px;
+  color:var(--primary);
+  margin-bottom:4px;
+}
+.mark-choice.active{
+  border-color:var(--primary);
+  background:#f1f5ff;
+  color:var(--primary);
+}
+.preview-area{
+  padding:20px;
+  min-width:0;
+}
+.preview-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.preview-top h2{font-size:17px;margin:0}
+.preview-actions{display:flex;gap:8px;flex-wrap:wrap}
+.small-btn{
+  padding:9px 12px;
+  border:1px solid var(--border);
+  background:#fff;
+  color:var(--ink);
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700;
+}
+.small-btn:hover{border-color:var(--primary);color:var(--primary)}
+.canvas-wrap{
+  min-height:430px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:25px;
+  border:1px solid var(--border);
+  border-radius:13px;
+  background-color:#fff;
+  background-image:linear-gradient(45deg,#edf0f5 25%,transparent 25%),linear-gradient(-45deg,#edf0f5 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#edf0f5 75%),linear-gradient(-45deg,transparent 75%,#edf0f5 75%);
+  background-size:22px 22px;
+  background-position:0 0,0 11px,11px -11px,-11px 0;
+  overflow:hidden;
+}
+#logoPreview{
+  width:min(100%,680px);
+  max-height:350px;
+  display:block;
+  overflow:visible;
+}
+.preview-note{
+  color:var(--muted);
+  text-align:center;
+  font-size:12px;
+  margin:12px 0 0;
+}
+.export-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin-top:18px;
+}
+.export-card{
+  border:1px solid var(--border);
+  background:#fff;
+  border-radius:11px;
+  padding:15px 10px;
+  text-align:center;
+}
+.export-card strong{display:block;font-size:13px}
+.export-card small{display:block;color:var(--muted);font-size:11px;margin:6px 0 12px;line-height:1.4}
+.btn{
+  border:0;
+  background:var(--primary);
+  color:#fff;
+  padding:11px 15px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:800;
+  width:100%;
+}
+.btn:hover{background:var(--primary-dark)}
+.btn.secondary{
+  background:#edf2ff;
+  color:var(--primary);
+}
+.btn.secondary:hover{background:#dce7ff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.status{
+  margin-top:13px;
+  padding:11px 13px;
+  border-radius:8px;
+  background:#eef8f2;
+  color:var(--success);
+  font-size:12px;
+  line-height:1.5;
+  display:none;
+}
+.status.error{background:#fff0f0;color:#bd3030}
+.favicon-section{
+  margin-top:20px;
+  padding:20px;
+}
+.favicon-heading{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.favicon-heading h2{font-size:18px;margin:0}
+.favicon-heading p{color:var(--muted);font-size:13px;line-height:1.6;margin:8px 0 0}
+.favicon-preview-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:14px;
+  margin:20px 0;
+}
+.favicon-preview{
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:12px;
+  text-align:center;
+  min-width:100px;
+  background:#fff;
+}
+.favicon-preview img{
+  width:48px;
+  height:48px;
+  object-fit:contain;
+  display:block;
+  margin:0 auto 8px;
+}
+.favicon-preview small{color:var(--muted);font-size:11px}
+.favicon-options{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  align-items:center;
+}
+.checkbox-label{
+  display:flex;
+  gap:7px;
+  align-items:center;
+  font-size:12px;
+  color:var(--muted);
+}
+.checkbox-label input{accent-color:var(--primary)}
+.info-section{
+  margin-top:22px;
+  padding:24px;
+}
+.info-section h2{font-size:21px;margin:0 0 12px}
+.info-section p,.info-section li{
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.8;
+}
+.info-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-top:17px;
+}
+.info-card{
+  background:#f8faff;
+  border:1px solid var(--border);
+  padding:16px;
+  border-radius:11px;
+}
+.info-card h3{font-size:14px;margin:0 0 7px}
+.info-card p{font-size:12px;margin:0}
+.faq{border-top:1px solid var(--border);padding:14px 0}
+.faq strong{font-size:14px}
+.faq p{margin:7px 0 0;font-size:13px}
+.site-footer{
+  background:#fff;
+  border-top:1px solid var(--border);
+  padding:25px 20px;
+  text-align:center;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.8;
+}
+.site-footer a{color:var(--primary);font-weight:700}
+@media(max-width:950px){
+  .workspace{grid-template-columns:280px minmax(0,1fr)}
+  .canvas-wrap{min-height:350px}
+}
+@media(max-width:700px){
+  .site-header{padding:15px 18px}
+  .hero{padding:38px 18px 25px}
+  .app{padding:0 12px 35px}
+  .workspace{grid-template-columns:1fr}
+  .controls{order:2}
+  .preview-area{order:1;padding:14px}
+  .canvas-wrap{min-height:260px;padding:12px}
+  #logoPreview{max-height:260px}
+  .export-grid{grid-template-columns:1fr}
+  .info-grid{grid-template-columns:1fr}
+  .preview-actions{width:100%}
+  .preview-actions button{flex:1}
+}
+</style>
+</head>
+
+<body>
+
+<header class="site-header">
+  <a class="brand" href="index.html">CV <span>Tools</span></a>
+  <a class="header-link" href="index.html">← Back to Home</a>
+</header>
+
+<section class="hero">
+  <span class="eyebrow">Free Branding Tool</span>
+  <h1>Logo & Favicon Maker</h1>
+  <p>Create a professional logo for your business, website or personal brand. Customize the design, colors, typography and icon, then export your logo in PNG or SVG format.</p>
+</section>
+
+<main class="app">
+
+<div class="workspace">
+
+  <!-- EDITOR -->
+  <aside class="panel controls">
+    <h2 class="panel-title">Logo Editor</h2>
+
+    <div class="control-tabs">
+      <button class="control-tab active" data-tab="templates">Templates</button>
+      <button class="control-tab" data-tab="design">Design</button>
+      <button class="control-tab" data-tab="text">Typography</button>
+    </div>
+
+    <!-- TEMPLATES -->
+    <div class="tab-panel active" id="tab-templates">
+      <div class="field">
+        <label>Choose a logo starting style</label>
+        <div class="template-grid" id="templateGrid">
+
+          <button class="template-card active" data-template="modern">
+            <div class="sample"><span class="template-sample">A●</span></div>
+            <strong>Modern</strong>
+            <small>Clean & simple</small>
+          </button>
+
+          <button class="template-card" data-template="luxury">
+            <div class="sample"><span class="template-sample" style="font-family:Georgia;color:#9a783b">A◇</span></div>
+            <strong>Luxury</strong>
+            <small>Premium identity</small>
+          </button>
+
+          <button class="template-card" data-template="creative">
+            <div class="sample"><span class="template-sample" style="color:#e15b42">✦ A</span></div>
+            <strong>Creative</strong>
+            <small>Bold & expressive</small>
+          </button>
+
+          <button class="template-card" data-template="tech">
+            <div class="sample"><span class="template-sample" style="color:#12a5a0">⌘ A</span></div>
+            <strong>Technology</strong>
+            <small>Digital brand</small>
+          </button>
+
+          <button class="template-card" data-template="minimal">
+            <div class="sample"><span class="template-sample" style="color:#222">A.</span></div>
+            <strong>Minimal</strong>
+            <small>Elegant simplicity</small>
+          </button>
+
+          <button class="template-card" data-template="nature">
+            <div class="sample"><span class="template-sample" style="color:#26865c">❧ A</span></div>
+            <strong>Nature</strong>
+            <small>Organic identity</small>
+          </button>
+
+          <button class="template-card" data-template="bold">
+            <div class="sample"><span class="template-sample" style="color:#d23a57">A!</span></div>
+            <strong>Bold</strong>
+            <small>Strong presence</small>
+          </button>
+
+          <button class="template-card" data-template="corporate">
+            <div class="sample"><span class="template-sample" style="color:#254a82">▣ A</span></div>
+            <strong>Corporate</strong>
+            <small>Business ready</small>
+          </button>
+
+        </div>
+      </div>
+      <p style="font-size:11px;color:#64748b;line-height:1.6">Templates set a starting combination of colors, shape, typography and mark. You can customize everything afterwards.</p>
+    </div>
+
+    <!-- DESIGN -->
+    <div class="tab-panel" id="tab-design">
+
+      <div class="field">
+        <label>Logo arrangement</label>
+        <select id="layout">
+          <option value="horizontal">Icon + Text (Horizontal)</option>
+          <option value="stacked">Stacked (Icon Above Text)</option>
+          <option value="icon">Icon Only</option>
+          <option value="text">Text Only</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Logo background shape</label>
+        <div class="shape-grid">
+          <button class="choice active" data-shape="circle"><span class="shape-icon"></span>Circle</button>
+          <button class="choice" data-shape="rounded"><span class="shape-icon"></span>Rounded</button>
+          <button class="choice" data-shape="square"><span class="shape-icon"></span>Square</button>
+          <button class="choice" data-shape="shield"><span class="shape-icon"></span>Shield</button>
+          <button class="choice" data-shape="hexagon"><span class="shape-icon"></span>Hexagon</button>
+          <button class="choice" data-shape="none"><span class="shape-icon"></span>None</button>
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Logo symbol / mark</label>
+        <div class="mark-grid">
+          <button class="mark-choice active" data-mark="initial"><span>A</span>Initial</button>
+          <button class="mark-choice" data-mark="orbit"><span>◎</span>Orbit</button>
+          <button class="mark-choice" data-mark="diamond"><span>◇</span>Diamond</button>
+          <button class="mark-choice" data-mark="leaf"><span>❧</span>Leaf</button>
+          <button class="mark-choice" data-mark="bolt"><span>ϟ</span>Bolt</button>
+          <button class="mark-choice" data-mark="star"><span>✦</span>Star</button>
+          <button class="mark-choice" data-mark="crown"><span>♛</span>Crown</button>
+          <button class="mark-choice" data-mark="wave"><span>≋</span>Wave</button>
+          <button class="mark-choice" data-mark="grid"><span>▦</span>Grid</button>
+        </div>
+      </div>
+
+      <div class="two-fields">
+        <div class="field">
+          <label>Primary color</label>
+          <input type="color" id="primaryColor" value="#245bd5">
+        </div>
+        <div class="field">
+          <label>Secondary color</label>
+          <input type="color" id="secondaryColor" value="#17243a">
+        </div>
+      </div>
+
+      <div class="field">
+        <label>Background color</label>
+        <input type="color" id="backgroundColor" value="#ffffff">
+        <label class="checkbox-label" style="margin-top:9px">
+          <input type="checkbox" id="transparentBg" checked>
+          Transparent background
+        </label>
+      </div>
+
+      <div class="field">
+        <label>Symbol size <span id="symbolSizeValue">100%</span></label>
+        <input type="range" id="symbolSize" min="55" max="145" value="100">
+      </div>
+
+    </div>
+
+    <!-- TYPOGRAPHY -->
+    <div class="tab-panel" id="tab-text">
+
+      <div class="field">
+        <label>Business / Brand name</label>
+        <input type="text" id="brandName" value="YOUR BRAND" maxlength="28">
+      </div>
+
+      <div class="field">
+        <label>Tagline / Description</label>
+        <input type="text" id="tagline" value="YOUR CREATIVE IDENTITY" maxlength="48">
+      </div>
+
+      <div class="field">
+        <label>Logo initials</label>
+        <input type="text" id="initials" value="YB" maxlength="3">
+        <small>Used by the Initial symbol. Keep it short for a cleaner logo.</small>
+      </div>
+
+      <div class="field">
+        <label>Font family</label>
+        <select id="fontFamily">
+          <option value="Arial, Helvetica, sans-serif">Arial - Modern</option>
+          <option value="Georgia, serif">Georgia - Classic</option>
+          <option value="Verdana, sans-serif">Verdana - Clean</option>
+          <option value="Trebuchet MS, sans-serif">Trebuchet - Friendly</option>
+          <option value="Impact, sans-serif">Impact - Bold</option>
+          <option value="Courier New, monospace">Courier - Technical</option>
+          <option value="Times New Roman, serif">Times - Editorial</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Brand name size <span id="nameSizeValue">34</span></label>
+        <input type="range" id="nameSize" min="18" max="58" value="34">
+      </div>
+
+      <div class="field">
+        <label>Tagline size <span id="taglineSizeValue">11</span></label>
+        <input type="range" id="taglineSize" min="7" max="20" value="11">
+      </div>
+
+      <div class="field">
+        <label>Letter spacing <span id="letterSpacingValue">1</span></label>
+        <input type="range" id="letterSpacing" min="0" max="8" value="1">
+      </div>
+
+      <div class="field">
+        <label>Font weight</label>
+        <select id="fontWeight">
+          <option value="400">Regular</option>
+          <option value="500">Medium</option>
+          <option value="600">Semi Bold</option>
+          <option value="700" selected>Bold</option>
+          <option value="800">Extra Bold</option>
+          <option value="900">Black</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Text alignment</label>
+        <select id="textAlign">
+          <option value="left">Left</option>
+          <option value="center">Center</option>
+        </select>
+      </div>
+
+    </div>
+
+    <hr class="section-divider">
+
+    <button class="btn secondary" id="resetBtn" type="button">Reset Logo Design</button>
+  </aside>
+
+  <!-- PREVIEW AND EXPORT -->
+  <section class="panel preview-area">
+
+    <div class="preview-top">
+      <h2>Live Logo Preview</h2>
+      <div class="preview-actions">
+        <button class="small-btn" id="downloadSvgTop" type="button">Download SVG</button>
+        <button class="small-btn" id="downloadPngTop" type="button">Download PNG</button>
+      </div>
+    </div>
+
+    <div class="canvas-wrap" id="canvasWrap">
+      <svg id="logoPreview" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Logo preview"></svg>
+    </div>
+
+    <p class="preview-note">Preview updates automatically as you edit your logo. Checkerboard area represents transparency.</p>
+
+    <div class="export-grid">
+      <div class="export-card">
+        <strong>PNG Logo</strong>
+        <small>High-resolution image with transparent background support.</small>
+        <button class="btn" id="downloadPng" type="button">Export PNG</button>
+      </div>
+
+      <div class="export-card">
+        <strong>SVG Logo</strong>
+        <small>Scalable vector file for websites and design software.</small>
+        <button class="btn" id="downloadSvg" type="button">Export SVG</button>
+      </div>
+
+      <div class="export-card">
+        <strong>Favicon Pack</strong>
+        <small>Generate website icon sizes and download them together.</small>
+        <button class="btn" id="generateFavicons" type="button">Create Favicon Pack</button>
+      </div>
+    </div>
+
+    <div class="status" id="statusMessage" role="status"></div>
+
+  </section>
+</div>
+
+<!-- FAVICON SECTION -->
+<section class="panel favicon-section">
+  <div class="favicon-heading">
+    <div>
+      <h2>Website Favicon Generator</h2>
+      <p>Generate browser and website icons from your logo. The favicon pack includes common PNG sizes and an SVG icon.</p>
+    </div>
+  </div>
+
+  <div class="favicon-preview-row" id="faviconPreviews">
+    <div class="favicon-preview">
+      <img id="fav16" alt="16 pixel favicon preview">
+      <small>16 × 16</small>
+    </div>
+    <div class="favicon-preview">
+      <img id="fav32" alt="32 pixel favicon preview">
+      <small>32 × 32</small>
+    </div>
+    <div class="favicon-preview">
+      <img id="fav48" alt="48 pixel favicon preview">
+      <small>48 × 48</small>
+    </div>
+    <div class="favicon-preview">
+      <img id="fav180" alt="180 pixel favicon preview">
+      <small>180 × 180</small>
+    </div>
+    <div class="favicon-preview">
+      <img id="fav512" alt="512 pixel favicon preview">
+      <small>512 × 512</small>
+    </div>
+  </div>
+
+  <div class="favicon-options">
+    <label class="checkbox-label">
+      <input type="checkbox" id="faviconUseIcon" checked>
+      Use icon-only design for favicon
+    </label>
+    <label class="checkbox-label">
+      <input type="checkbox" id="faviconUseBackground" checked>
+      Use logo background color
+    </label>
+    <button class="btn" style="width:auto" id="refreshFavicons" type="button">Refresh Previews</button>
+  </div>
+</section>
+
+<!-- INFORMATION -->
+<section class="panel info-section">
+  <h2>Create a Brand Logo Without Design Software</h2>
+  <p>This free online logo maker helps small businesses, creators, freelancers and website owners create a visual identity directly in their browser. Start with a template, customize the design and export files for your website or brand materials.</p>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h3>Professional Logo Designs</h3>
+      <p>Start with different design directions and customize shapes, symbols, colors and typography.</p>
+    </div>
+    <div class="info-card">
+      <h3>PNG and SVG Exports</h3>
+      <p>Download a transparent PNG for everyday use or an SVG file for scalable vector graphics.</p>
+    </div>
+    <div class="info-card">
+      <h3>Website Favicon Pack</h3>
+      <p>Create multiple icon sizes for browser tabs, bookmarks and supported website platforms.</p>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <h2>Frequently Asked Questions</h2>
+
+  <div class="faq">
+    <strong>Is this logo maker free?</strong>
+    <p>Yes. You can create and export logos using this browser-based tool without paying for a subscription.</p>
+  </div>
+
+  <div class="faq">
+    <strong>Can I download a transparent logo?</strong>
+    <p>Yes. Enable the transparent background option and export your logo as a PNG or SVG.</p>
+  </div>
+
+  <div class="faq">
+    <strong>What is an SVG logo?</strong>
+    <p>SVG is a vector image format. It can scale to different sizes without the pixelation associated with ordinary raster images.</p>
+  </div>
+
+  <div class="faq">
+    <strong>What is a favicon?</strong>
+    <p>A favicon is a small icon associated with a website. It commonly appears in browser tabs and bookmarks.</p>
+  </div>
+
+  <div class="faq">
+    <strong>Are my designs uploaded to a server?</strong>
+    <p>No. Logo generation and image exports happen in your browser. This page does not upload your logo design to a server.</p>
+  </div>
+</section>
+
+</main>
+
+<footer class="site-footer">
+  <div>© 2026 CV Tools. Free online tools for your creative work.</div>
+  <div><a href="index.html">Home</a> · <a href="about.html">About</a> · <a href="contact.html">Contact</a> · <a href="privacy-policy.html">Privacy Policy</a> · <a href="terms-and-conditions.html">Terms</a></div>
+</footer>
+
+<script>
+(() => {
+"use strict";
+
+/* -----------------------------
+   ELEMENTS AND DEFAULT SETTINGS
+------------------------------ */
+
+const $ = id => document.getElementById(id);
+
+const defaults = {
+  brandName:"YOUR BRAND",
+  tagline:"YOUR CREATIVE IDENTITY",
+  initials:"YB",
+  primaryColor:"#245bd5",
+  secondaryColor:"#17243a",
+  backgroundColor:"#ffffff",
+  transparentBg:true,
+  shape:"circle",
+  mark:"initial",
+  layout:"horizontal",
+  fontFamily:"Arial, Helvetica, sans-serif",
+  nameSize:34,
+  taglineSize:11,
+  letterSpacing:1,
+  fontWeight:700,
+  symbolSize:100,
+  textAlign:"left"
+};
+
+let state = {...defaults};
+let activeTemplate = "modern";
+
+const templates = {
+  modern:{
+    primaryColor:"#245bd5",secondaryColor:"#17243a",
+    shape:"circle",mark:"initial",fontFamily:"Arial, Helvetica, sans-serif",
+    fontWeight:800,layout:"horizontal"
+  },
+  luxury:{
+    primaryColor:"#a17a37",secondaryColor:"#30271d",
+    shape:"shield",mark:"diamond",fontFamily:"Georgia, serif",
+    fontWeight:700,layout:"stacked"
+  },
+  creative:{
+    primaryColor:"#e15b42",secondaryColor:"#392c54",
+    shape:"none",mark:"star",fontFamily:"Trebuchet MS, sans-serif",
+    fontWeight:800,layout:"horizontal"
+  },
+  tech:{
+    primaryColor:"#12a5a0",secondaryColor:"#153b50",
+    shape:"hexagon",mark:"grid",fontFamily:"Verdana, sans-serif",
+    fontWeight:800,layout:"horizontal"
+  },
+  minimal:{
+    primaryColor:"#252525",secondaryColor:"#555555",
+    shape:"none",mark:"initial",fontFamily:"Arial, Helvetica, sans-serif",
+    fontWeight:500,layout:"horizontal"
+  },
+  nature:{
+    primaryColor:"#26865c",secondaryColor:"#314b3c",
+    shape:"circle",mark:"leaf",fontFamily:"Georgia, serif",
+    fontWeight:700,layout:"stacked"
+  },
+  bold:{
+    primaryColor:"#d23a57",secondaryColor:"#25213c",
+    shape:"rounded",mark:"bolt",fontFamily:"Impact, sans-serif",
+    fontWeight:800,layout:"horizontal"
+  },
+  corporate:{
+    primaryColor:"#254a82",secondaryColor:"#17243a",
+    shape:"square",mark:"grid",fontFamily:"Verdana, sans-serif",
+    fontWeight:700,layout:"horizontal"
+  }
+};
+
+function safeHex(value){
+  return /^#[0-9a-fA-F]{6}$/.test(value) ? value : "#245bd5";
+}
+function escapeXml(value){
+  return String(value).replace(/[<>&'"]/g, char => ({
+    "<":"&lt;",">":"&gt;","&":"&amp;","'":"&apos;",'"':"&quot;"
+  }[char]));
+}
+function fileName(){
+  const value = state.brandName.trim().toLowerCase()
+    .replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+  return value || "my-logo";
+}
+function showStatus(message,isError=false){
+  const box = $("statusMessage");
+  box.textContent = message;
+  box.className = "status" + (isError ? " error" : "");
+  box.style.display = "block";
+}
+function syncInputs(){
+  Object.keys(defaults).forEach(key=>{
+    const el = $(key);
+    if(!el) return;
+    if(el.type === "checkbox") el.checked = !!state[key];
+    else el.value = state[key];
+  });
+  $("symbolSizeValue").textContent = state.symbolSize + "%";
+  $("nameSizeValue").textContent = state.nameSize;
+  $("taglineSizeValue").textContent = state.taglineSize;
+  $("letterSpacingValue").textContent = state.letterSpacing;
+
+  document.querySelectorAll("[data-shape]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.shape === state.shape);
+  });
+  document.querySelectorAll("[data-mark]").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.mark === state.mark);
+  });
+}
+function readInputs(){
+  Object.keys(defaults).forEach(key=>{
+    const el = $(key);
+    if(!el) return;
+    if(el.type === "checkbox") state[key] = el.checked;
+    else if(el.type === "range" || el.type === "number") state[key] = Number(el.value);
+    else state[key] = el.value;
+  });
+  state.primaryColor = safeHex(state.primaryColor);
+  state.secondaryColor = safeHex(state.secondaryColor);
+  state.backgroundColor = safeHex(state.backgroundColor);
+}
+
+/* -----------------------------
+   SVG MARKS AND SHAPES
+------------------------------ */
+
+function getShapeMarkup(fill){
+  switch(state.shape){
+    case "circle":
+      return `<circle cx="110" cy="110" r="91" fill="${fill}"/>`;
+    case "rounded":
+      return `<rect x="19" y="19" width="182" height="182" rx="40" fill="${fill}"/>`;
+    case "square":
+      return `<rect x="19" y="19" width="182" height="182" fill="${fill}"/>`;
+    case "shield":
+      return `<path d="M20 20 H200 V126 Q110 218 20 126 Z" fill="${fill}"/>`;
+    case "hexagon":
+      return `<polygon points="65,15 155,15 205,110 155,205 65,205 15,110" fill="${fill}"/>`;
+    default:
+      return "";
+  }
+}
+
+function getMarkMarkup(color){
+  const initials = escapeXml((state.initials || state.brandName.slice(0,2) || "A").toUpperCase());
+  const size = state.symbolSize / 100;
+
+  if(state.mark === "initial"){
+    return `<text x="110" y="126" text-anchor="middle" dominant-baseline="middle"
+      font-family="${escapeXml(state.fontFamily)}" font-size="${54*size}"
+      font-weight="800" fill="${color}">${initials}</text>`;
+  }
+
+  const common = `fill="none" stroke="${color}" stroke-width="${7*size}" stroke-linecap="round" stroke-linejoin="round"`;
+
+  const marks = {
+    orbit:`
+      <circle cx="110" cy="110" r="${42*size}" ${common}/>
+      <ellipse cx="110" cy="110" rx="${78*size}" ry="${27*size}" transform="rotate(-35 110 110)" ${common}/>
+      <circle cx="169" cy="69" r="${9*size}" fill="${color}"/>`,
+    diamond:`
+      <path d="M110 28 L184 110 L110 192 L36 110 Z" ${common}/>
+      <path d="M36 110 H184 M110 28 L110 192" ${common}/>`,
+    leaf:`
+      <path d="M48 153 C40 74 109 34 174 44 C175 113 132 178 48 153 Z" ${common}/>
+      <path d="M48 153 C91 126 123 94 158 59" ${common}/>
+      <path d="M91 125 L87 87 M120 100 L151 103" ${common}/>`,
+    bolt:`
+      <path d="M126 22 L57 120 H104 L91 198 L165 92 H117 Z" fill="${color}" stroke="${color}" stroke-linejoin="round"/>`,
+    star:`
+      <path d="M110 23 L131 83 L194 85 L145 125 L162 188 L110 152 L58 188 L75 125 L26 85 L89 83 Z" fill="${color}"/>`,
+    crown:`
+      <path d="M28 72 L75 112 L110 35 L145 112 L192 72 L177 166 H43 Z" fill="${color}"/>
+      <path d="M43 184 H177" ${common}/>`,
+    wave:`
+      <path d="M24 80 C59 32 91 32 110 80 C129 128 161 128 196 80" ${common}/>
+      <path d="M24 139 C59 91 91 91 110 139 C129 187 161 187 196 139" ${common}/>`,
+    grid:`
+      <rect x="37" y="37" width="58" height="58" rx="8" fill="${color}"/>
+      <rect x="125" y="37" width="58" height="58" rx="8" fill="${color}"/>
+      <rect x="37" y="125" width="58" height="58" rx="8" fill="${color}"/>
+      <rect x="125" y="125" width="58" height="58" rx="8" fill="${color}"/>`
+  };
+  return marks[state.mark] || marks.diamond;
+}
+
+/* -----------------------------
+   LOGO SVG BUILDER
+------------------------------ */
+
+function makeLogoSVG(options={}){
+  const layout = options.iconOnly ? "icon" : (options.layout || state.layout);
+  const transparent = options.transparent !== undefined
+    ? options.transparent : state.transparentBg;
+
+  const primary = options.primary || state.primaryColor;
+  const secondary = options.secondary || state.secondaryColor;
+  const bg = options.background || state.backgroundColor;
+
+  const showShape = state.shape !== "none";
+  const shapeFill = transparent ? primary : (state.shape === "none" ? bg : primary);
+
+  const symbolColor = transparent ? primary : "#ffffff";
+  const brandColor = secondary;
+  const name = escapeXml(state.brandName.trim() || "YOUR BRAND");
+  const tagline = escapeXml(state.tagline.trim());
+  const font = escapeXml(state.fontFamily);
+  const weight = state.fontWeight;
+  const nameSize = state.nameSize;
+  const tagSize = state.taglineSize;
+  const spacing = state.letterSpacing;
+
+  let width=680,height=240;
+  let symbolX=110,symbolY=110,symbolScale=1;
+  let nameX=245,nameY=111,tagX=245,tagY=146;
+  let anchor="start";
+
+  if(layout==="stacked"){
+    width=440;height=360;
+    symbolX=220;symbolY=100;
+    nameX=220;nameY=255;tagX=220;tagY=289;anchor="middle";
+  }else if(layout==="icon"){
+    width=240;height=240;
+    symbolX=120;symbolY=120;
+  }else if(layout==="text"){
+    width=680;height=150;
+    nameX=340;nameY=78;tagX=340;tagY=111;anchor="middle";
+  }
+
+  const shape = showShape
+    ? `<g transform="translate(${symbolX-110} ${symbolY-110})">${getShapeMarkup(shapeFill)}</g>`
+    : "";
+
+  const mark = `<g transform="translate(${symbolX-110} ${symbolY-110})">${getMarkMarkup(symbolColor)}</g>`;
+
+  let content="";
+  if(layout!=="icon"){
+    content += `<text x="${nameX}" y="${nameY}" text-anchor="${anchor}"
+      font-family="${font}" font-size="${nameSize}" font-weight="${weight}"
+      letter-spacing="${spacing}" fill="${brandColor}">${name}</text>`;
+
+    if(tagline && layout!=="text" || (tagline && layout==="text")){
+      content += `<text x="${tagX}" y="${tagY}" text-anchor="${anchor}"
+        font-family="${font}" font-size="${tagSize}" font-weight="600"
+        letter-spacing="2" fill="${secondary}" opacity=".78">${tagline}</text>`;
+    }
+  }
+
+  const background = transparent ? "" :
+    `<rect x="0" y="0" width="${width}" height="${height}" fill="${bg}"/>`;
+
+  const symbolGroup = layout==="text" ? "" : shape + mark;
+
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
+    ${background}
+    ${symbolGroup}
+    ${content}
+  </svg>`;
+
+  return svg;
+}
+
+function renderLogo(){
+  const svg = makeLogoSVG();
+  $("logoPreview").innerHTML = svg.replace(/^<svg[^>]*>|<\/svg>$/g,"");
+  $("logoPreview").setAttribute("viewBox",svg.match(/viewBox="([^"]+)"/)[1]);
+  $("logoPreview").setAttribute("width","100%");
+  $("logoPreview").setAttribute("height","auto");
+  $("logoPreview").setAttribute("preserveAspectRatio","xMidYMid meet");
+  updateFaviconPreviews();
+}
+
+function updateFaviconPreviews(){
+  const svg = makeLogoSVG({
+    iconOnly:$("faviconUseIcon").checked,
+    transparent:false,
+    background:$("faviconUseBackground").checked ? state.primaryColor : "#ffffff"
+  });
+  [16,32,48,180,512].forEach(size=>{
+    svgToDataURL(svg,size).then(url=>{
+      const img = $("fav"+size);
+      if(img) img.src = url;
+    }).catch(()=>{});
+  });
+}
+
+/* -----------------------------
+   SVG / PNG EXPORT
+------------------------------ */
+
+function svgToBlob(svg){
+  return new Blob([svg],{type:"image/svg+xml;charset=utf-8"});
+}
+function svgToDataURL(svg,size){
+  return new Promise((resolve,reject)=>{
+    const blob = svgToBlob(svg);
+    const url = URL.createObjectURL(blob);
+    const img = new Image();
+    img.onload = ()=>{
+      const canvas = document.createElement("canvas");
+      canvas.width=size;
+      canvas.height=size;
+      const ctx=canvas.getContext("2d");
+      ctx.clearRect(0,0,size,size);
+      const scale=Math.min(size/img.width,size/img.height);
+      const w=img.width*scale;
+      const h=img.height*scale;
+      ctx.drawImage(img,(size-w)/2,(size-h)/2,w,h);
+      URL.revokeObjectURL(url);
+      resolve(canvas.toDataURL("image/png"));
+    };
+    img.onerror=()=>{
+      URL.revokeObjectURL(url);
+      reject(new Error("Could not render the SVG image."));
+    };
+    img.src=url;
+  });
+}
+function downloadBlob(blob,name){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function downloadSVG(){
+  const svg=makeLogoSVG();
+  downloadBlob(svgToBlob(svg),fileName()+".svg");
+  showStatus("Your SVG logo has been exported.");
+}
+async function downloadPNG(){
+  try{
+    const svg=makeLogoSVG();
+    const blob=svgToBlob(svg);
+    const url=URL.createObjectURL(blob);
+    const img=new Image();
+    await new Promise((resolve,reject)=>{
+      img.onload=resolve;
+      img.onerror=()=>reject(new Error("Logo could not be rendered."));
+      img.src=url;
+    });
+    const canvas=document.createElement("canvas");
+    const scale=3;
+    canvas.width=img.width*scale;
+    canvas.height=img.height*scale;
+    const ctx=canvas.getContext("2d");
+    if(!state.transparentBg){
+      ctx.fillStyle=state.backgroundColor;
+      ctx.fillRect(0,0,canvas.width,canvas.height);
+    }
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);
+    URL.revokeObjectURL(url);
+    const png=await new Promise(resolve=>canvas.toBlob(resolve,"image/png"));
+    if(!png) throw new Error("PNG export failed.");
+    downloadBlob(png,fileName()+".png");
+    showStatus("Your high-resolution PNG logo has been exported.");
+  }catch(error){
+    showStatus(error.message || "PNG export failed.",true);
+  }
+}
+
+/* -----------------------------
+   FAVICON PACK
+------------------------------ */
+
+async function generateFaviconPack(){
+  const button=$("generateFavicons");
+  button.disabled=true;
+  button.textContent="Creating...";
+
+  try{
+    if(typeof JSZip==="undefined"){
+      throw new Error("The ZIP library could not load. Check your internet connection and try again.");
+    }
+
+    const zip=new JSZip();
+    const folder=zip.folder("favicon");
+
+    const svg=makeLogoSVG({
+      iconOnly:$("faviconUseIcon").checked,
+      transparent:false,
+      background:$("faviconUseBackground").checked ? state.primaryColor : "#ffffff"
+    });
+
+    folder.file("favicon.svg",svg);
+
+    const sizes=[16,32,48,180,192,512];
+
+    for(const size of sizes){
+      const dataURL=await svgToDataURL(svg,size);
+      const base64=dataURL.split(",")[1];
+      folder.file(`favicon-${size}x${size}.png`,base64,{base64:true});
+    }
+
+    const html=`<!-- Add these tags inside the <head> of your website -->
+<link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/favicon-180x180.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/favicon/favicon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/favicon/favicon-512x512.png">`;
+
+    folder.file("favicon-html-code.txt",html);
+
+    const blob=await zip.generateAsync({type:"blob"});
+    downloadBlob(blob,fileName()+"-favicon-pack.zip");
+    showStatus("Favicon pack created successfully. ZIP includes SVG, six PNG sizes and HTML installation code.");
+  }catch(error){
+    showStatus(error.message || "Could not create the favicon pack.",true);
+  }finally{
+    button.disabled=false;
+    button.textContent="Create Favicon Pack";
+  }
+}
+
+/* -----------------------------
+   TEMPLATE AND CONTROL EVENTS
+------------------------------ */
+
+document.querySelectorAll(".control-tab").forEach(button=>{
+  button.addEventListener("click",()=>{
+    document.querySelectorAll(".control-tab").forEach(b=>b.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(p=>p.classList.remove("active"));
+    button.classList.add("active");
+    $("tab-"+button.dataset.tab).classList.add("active");
+  });
+});
+
+document.querySelectorAll(".template-card").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const key=button.dataset.template;
+    const preset=templates[key];
+    if(!preset) return;
+
+    activeTemplate=key;
+    state={...state,...preset};
+
+    document.querySelectorAll(".template-card").forEach(b=>{
+      b.classList.toggle("active",b===button);
+    });
+
+    syncInputs();
+    renderLogo();
+    showStatus(key.charAt(0).toUpperCase()+key.slice(1)+" template applied. You can customize it now.");
+  });
+});
+
+document.querySelectorAll("[data-shape]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    state.shape=button.dataset.shape;
+    syncInputs();
+    renderLogo();
+  });
+});
+
+document.querySelectorAll("[data-mark]").forEach(button=>{
+  button.addEventListener("click",()=>{
+    state.mark=button.dataset.mark;
+    syncInputs();
+    renderLogo();
+  });
+});
+
+const inputIds=[
+  "brandName","tagline","initials","primaryColor","secondaryColor",
+  "backgroundColor","transparentBg","layout","fontFamily","nameSize",
+  "taglineSize","letterSpacing","fontWeight","symbolSize","textAlign"
+];
+
+inputIds.forEach(id=>{
+  const el=$(id);
+  if(!el) return;
+  el.addEventListener("input",()=>{
+    readInputs();
+    syncRangeLabels();
+    renderLogo();
+  });
+  el.addEventListener("change",()=>{
+    readInputs();
+    syncRangeLabels();
+    renderLogo();
+  });
+});
+
+function syncRangeLabels(){
+  $("symbolSizeValue").textContent=state.symbolSize+"%";
+  $("nameSizeValue").textContent=state.nameSize;
+  $("taglineSizeValue").textContent=state.taglineSize;
+  $("letterSpacingValue").textContent=state.letterSpacing;
+}
+
+$("downloadSvg").addEventListener("click",downloadSVG);
+$("downloadSvgTop").addEventListener("click",downloadSVG);
+$("downloadPng").addEventListener("click",downloadPNG);
+$("downloadPngTop").addEventListener("click",downloadPNG);
+$("generateFavicons").addEventListener("click",generateFaviconPack);
+
+$("refreshFavicons").addEventListener("click",()=>{
+  readInputs();
+  updateFaviconPreviews();
+  showStatus("Favicon previews refreshed.");
+});
+
+$("faviconUseIcon").addEventListener("change",updateFaviconPreviews);
+$("faviconUseBackground").addEventListener("change",updateFaviconPreviews);
+
+$("resetBtn").addEventListener("click",()=>{
+  state={...defaults};
+  activeTemplate="modern";
+  syncInputs();
+  document.querySelectorAll(".template-card").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.template==="modern");
+  });
+  renderLogo();
+  showStatus("Logo design has been reset.");
+});
+
+/* -----------------------------
+   INITIALIZE
+------------------------------ */
+
+syncInputs();
+renderLogo();
+
+})();
+</script>
+
+</body>
+</html>
