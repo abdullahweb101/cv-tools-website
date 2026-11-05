@@ -4,688 +4,961 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Create a professional portfolio with free templates, a visual drag-and-drop editor and an automatic portfolio form.">
 <title>Free Portfolio Maker | CV Tools</title>
-<meta name="description" content="Create a professional portfolio with free templates and a visual drag-and-drop portfolio editor. Download your portfolio as a website or PDF.">
-<meta name="robots" content="index,follow">
-<link rel="canonical" href="https://cv-tools-website.pages.dev/portfolio-maker.html">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+
 <style>
-:root{--blue:#315eea;--ink:#172033;--muted:#64748b;--line:#e5eaf2;--soft:#f5f7fb}
-*{box-sizing:border-box}
-body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--ink);background:#f5f7fb}
-button,input,select,textarea{font:inherit}
-button{cursor:pointer}
-a{text-decoration:none;color:inherit}
-.site-header{height:64px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 5%;position:sticky;top:0;z-index:50}
-.brand{font-size:21px;font-weight:800}.brand span{color:var(--blue)}
-.header-links{display:flex;gap:22px;font-size:14px;font-weight:600;color:#536078}
-.header-links a:hover{color:var(--blue)}
-.screen{display:none}.screen.active{display:block}
-.gallery{max-width:1240px;margin:0 auto;padding:45px 24px 70px}
-.eyebrow{color:var(--blue);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px}
-.gallery h1{font-size:clamp(30px,4vw,46px);margin:12px 0}
-.gallery-intro{color:var(--muted);max-width:720px;line-height:1.7}
-.category-row{display:flex;gap:9px;flex-wrap:wrap;margin:28px 0}
-.category-btn{border:1px solid var(--line);background:white;border-radius:30px;padding:9px 16px;color:#536078;font-weight:700;font-size:13px}
-.category-btn.active,.category-btn:hover{background:var(--ink);color:#fff;border-color:var(--ink)}
-.template-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
-.template-card{background:white;border:1px solid var(--line);border-radius:13px;overflow:hidden;transition:.2s;cursor:pointer}
-.template-card:hover{transform:translateY(-4px);box-shadow:0 12px 30px #17203313}
-.template-preview{height:190px;padding:15px;background:#e9edf5;display:flex;align-items:center;justify-content:center}
-.mini-page{width:100%;height:100%;background:white;box-shadow:0 4px 12px #17203318;padding:17px;overflow:hidden;position:relative}
-.mini-top{height:8px;width:42%;border-radius:5px;background:var(--c);margin-bottom:10px}
-.mini-title{height:13px;width:75%;background:#202b40;border-radius:3px;margin:9px 0}
-.mini-line{height:5px;width:90%;background:#dce2eb;border-radius:4px;margin:6px 0}
-.mini-line.short{width:58%}
-.mini-block{height:45px;background:var(--p);margin-top:12px;border-radius:4px}
-.mini-split{display:grid;grid-template-columns:32% 1fr;gap:10px;height:100%}
-.mini-side{background:var(--c);height:100%;padding:9px}
-.mini-side .mini-line{background:#ffffff9c}
-.mini-main{padding:4px}
-.template-meta{padding:15px 16px 17px}
-.template-meta h3{font-size:16px;margin:0 0 5px}
-.template-meta p{font-size:12px;color:var(--muted);margin:0 0 13px}
-.template-meta button{width:100%;border:0;border-radius:7px;padding:10px;background:var(--blue);color:white;font-weight:700}
-.gallery-note{margin-top:28px;color:#64748b;font-size:13px;line-height:1.7}
-.btn{border:0;border-radius:7px;padding:10px 14px;font-weight:700;font-size:13px}
-.btn-primary{background:var(--blue);color:white}.btn-dark{background:#172033;color:white}
-.btn-light{background:white;border:1px solid var(--line);color:#334155}
-.btn-danger{background:#fff0f0;color:#c62828}
-.editor-screen{height:calc(100vh - 64px);min-height:650px;display:flex;flex-direction:column}
-.editor-toolbar{height:58px;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 15px;gap:12px}
-.toolbar-group{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.toolbar-title{font-size:14px;font-weight:800}
-.toolbar-btn{padding:8px 11px;border:1px solid var(--line);background:#fff;border-radius:6px;font-size:12px;font-weight:700;color:#334155}
-.toolbar-btn:hover{border-color:var(--blue);color:var(--blue)}
-.editor-layout{display:grid;grid-template-columns:245px minmax(0,1fr) 260px;min-height:0;flex:1}
-.left-panel,.right-panel{background:#fff;overflow:auto;padding:17px;border-right:1px solid var(--line)}
-.right-panel{border-right:0;border-left:1px solid var(--line)}
-.panel-heading{font-size:14px;font-weight:800;margin:2px 0 14px}
-.panel-section{padding-bottom:17px;margin-bottom:17px;border-bottom:1px solid var(--line)}
-.panel-section:last-child{border:0}
-.panel-label{display:block;font-size:12px;font-weight:700;color:#526078;margin:12px 0 6px}
-.field{width:100%;padding:10px;border:1px solid #dce2eb;border-radius:7px;background:#fff;color:#172033;font-size:13px;outline:none}
-.field:focus{border-color:var(--blue)}
-textarea.field{resize:vertical;min-height:75px}
-.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.tool-tile{border:1px solid var(--line);border-radius:8px;background:#fff;padding:12px 7px;text-align:center;font-size:12px;font-weight:700;color:#34425a}
-.tool-tile span{display:block;font-size:21px;margin-bottom:5px}
-.tool-tile:hover{border-color:var(--blue);color:var(--blue)}
-.canvas-area{background:#e9edf3;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:28px 20px;gap:16px}
-.canvas-instruction{font-size:12px;color:#64748b;text-align:center}
-.canvas-frame{width:min(100%,900px);background:#fff;box-shadow:0 8px 30px #17203322;flex:none}
-.canvas-frame .canvas-container{width:100%!important}
-.canvas-frame canvas{width:100%!important;height:auto!important;display:block}
-.page-controls{display:flex;gap:7px;align-items:center;justify-content:center;flex-wrap:wrap}
-.page-pill{padding:7px 11px;border-radius:6px;background:white;border:1px solid var(--line);font-size:12px}
-.page-pill.active{background:var(--ink);color:white}
-.action-row{display:flex;gap:7px;flex-wrap:wrap}
-.action-row .btn{flex:1}
-.small-help{font-size:11px;line-height:1.6;color:#778398;margin-top:8px}
-.layer-list{display:flex;flex-direction:column;gap:6px}
-.layer-item{border:1px solid var(--line);padding:8px;border-radius:6px;font-size:12px;display:flex;justify-content:space-between;gap:8px;cursor:pointer}
-.layer-item.selected{border-color:var(--blue);background:#f0f4ff}
-.status{font-size:11px;color:#64748b;min-height:16px;margin-top:8px}
-.hidden{display:none!important}
-@media(max-width:1050px){.template-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.editor-layout{grid-template-columns:210px minmax(0,1fr) 220px}}
-@media(max-width:760px){
- .site-header{height:auto;min-height:60px;padding:12px 16px;flex-wrap:wrap;gap:10px}
- .header-links{gap:13px;font-size:12px}
- .gallery{padding:30px 15px}
- .template-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
- .template-preview{height:145px;padding:10px}
- .template-meta{padding:12px}
- .editor-screen{height:auto;min-height:calc(100vh - 60px)}
- .editor-toolbar{height:auto;min-height:55px;padding:9px;flex-wrap:wrap}
- .editor-layout{display:flex;flex-direction:column}
- .left-panel,.right-panel{overflow:visible;border:0;border-bottom:1px solid var(--line)}
- .left-panel{order:1}.canvas-area{order:2;min-height:430px;padding:18px 8px}.right-panel{order:3}
- .tool-grid{grid-template-columns:repeat(4,1fr)}
- .tool-tile{padding:9px 3px;font-size:10px}
- .tool-tile span{font-size:18px}
- .canvas-frame{width:100%}
+:root{
+  --blue:#2563eb;--blue-dark:#1d4ed8;--ink:#172033;--muted:#64748b;
+  --line:#e2e8f0;--soft:#f1f5f9;--white:#fff;--sidebar:260px;
 }
-@media(max-width:420px){.template-grid{grid-template-columns:1fr 1fr}.toolbar-btn{padding:7px;font-size:11px}}
+*{box-sizing:border-box}
+body{margin:0;background:#f1f5f9;color:var(--ink);font-family:Inter,Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.topbar{
+  height:62px;background:#fff;border-bottom:1px solid var(--line);
+  display:flex;align-items:center;justify-content:space-between;padding:0 22px;
+  position:sticky;top:0;z-index:100
+}
+.brand{font-weight:800;font-size:19px;color:#14213d;text-decoration:none}
+.brand span{color:var(--blue)}
+.top-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--line);background:#fff;color:#263449;padding:9px 13px;
+  border-radius:8px;font-weight:650;font-size:13px
+}
+.btn:hover{background:#f8fafc}
+.btn.primary{background:var(--blue);border-color:var(--blue);color:#fff}
+.btn.primary:hover{background:var(--blue-dark)}
+.btn.danger{color:#dc2626}
+.btn.small{padding:7px 9px;font-size:12px}
+.hidden{display:none!important}
+
+/* Template gallery */
+.gallery{max-width:1250px;margin:35px auto;padding:0 22px}
+.gallery h1{font-size:34px;margin:0 0 9px}
+.subheading{color:var(--muted);margin:0 0 25px;line-height:1.6}
+.gallery-toolbar{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:22px}
+.filter-btn{border:1px solid var(--line);background:#fff;border-radius:30px;padding:9px 16px;color:#334155}
+.filter-btn.active{background:#172033;color:#fff;border-color:#172033}
+.template-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.template-card{background:#fff;border:1px solid var(--line);border-radius:13px;overflow:hidden;transition:.2s}
+.template-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px #0f172a12}
+.template-preview{height:290px;background:#e8edf4;padding:17px;display:flex;justify-content:center;overflow:hidden}
+.mini-page{width:165px;height:235px;background:#fff;box-shadow:0 4px 15px #0f172a20;padding:13px;overflow:hidden;color:#172033}
+.mini-photo{width:43px;height:43px;border-radius:50%;background:#cbd5e1;margin-bottom:8px}
+.mini-line{height:4px;background:#cbd5e1;margin:6px 0;border-radius:3px}
+.mini-title{font-size:10px;font-weight:800;margin:8px 0 5px}
+.mini-small{font-size:6px;color:#64748b;line-height:1.5}
+.template-info{padding:13px 15px}
+.template-info strong{display:block;font-size:14px;margin-bottom:5px}
+.template-info span{font-size:12px;color:var(--muted)}
+.template-info button{width:100%;margin-top:12px}
+
+/* Editor */
+.editor-shell{display:grid;grid-template-columns:245px minmax(0,1fr) 275px;height:calc(100vh - 62px);min-height:650px;overflow:hidden}
+.left-panel,.right-panel{background:#fff;overflow-y:auto;border-right:1px solid var(--line)}
+.right-panel{border-right:0;border-left:1px solid var(--line)}
+.panel-section{padding:16px;border-bottom:1px solid var(--line)}
+.panel-title{font-size:12px;text-transform:uppercase;letter-spacing:.7px;font-weight:800;color:#64748b;margin:0 0 13px}
+.tool-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.tool{
+  min-height:65px;background:#fff;border:1px solid var(--line);border-radius:9px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  color:#334155;font-size:12px;font-weight:650
+}
+.tool:hover{border-color:#93b4ff;background:#f5f8ff}
+.tool .tool-icon{font-size:20px}
+.field{margin:0 0 12px}
+.field label{display:block;font-size:12px;font-weight:700;color:#475569;margin-bottom:6px}
+.field input,.field textarea,.field select{
+  width:100%;border:1px solid #dbe2ea;border-radius:7px;padding:9px;
+  color:#1e293b;background:#fff;outline:none;font-size:13px
+}
+.field textarea{min-height:75px;resize:vertical}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.upload-label{display:block;border:1px dashed #94a3b8;padding:13px;text-align:center;border-radius:8px;font-size:12px;color:#475569;cursor:pointer}
+.upload-label:hover{background:#f8fafc}
+.upload-label input{display:none}
+.page-list,.layer-list{display:flex;flex-direction:column;gap:7px}
+.page-item,.layer-item{
+  display:flex;align-items:center;justify-content:space-between;padding:9px;
+  border:1px solid var(--line);border-radius:7px;font-size:12px;cursor:pointer
+}
+.page-item.active,.layer-item.active{border-color:var(--blue);background:#eff6ff}
+.layer-item span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:175px}
+.workspace{background:#e8edf4;overflow:auto;display:flex;flex-direction:column;align-items:center;padding:20px;gap:15px}
+.workspace-toolbar{width:100%;max-width:850px;display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.workspace-toolbar .group{display:flex;gap:7px;align-items:center;flex-wrap:wrap}
+.zoom-label{font-size:12px;color:#475569}
+.canvas-stage{background:#fff;box-shadow:0 8px 35px #0f172a24;align-self:center}
+.canvas-stage .canvas-container{display:block!important}
+.canvas-stage canvas{display:block}
+.status{font-size:12px;color:#64748b;min-height:17px}
+.right-empty{color:#94a3b8;font-size:12px;line-height:1.6}
+.color-input{height:36px;padding:3px!important}
+.divider{height:1px;background:var(--line);margin:12px 0}
+.mode-tabs{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:14px}
+.mode-tabs button{font-size:11px;padding:9px 4px;border:1px solid var(--line);background:#fff;border-radius:7px}
+.mode-tabs button.active{background:#172033;color:#fff;border-color:#172033}
+.form-mode{max-width:900px;margin:25px auto;padding:0 20px 45px}
+.form-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px;margin-bottom:17px}
+.form-card h2{font-size:17px;margin:0 0 16px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid .full{grid-column:1/-1}
+.form-note{background:#eff6ff;padding:12px;border-radius:8px;color:#1e40af;font-size:13px;line-height:1.5;margin-bottom:15px}
+.project-form-row{border:1px solid var(--line);padding:12px;border-radius:8px;margin-bottom:10px}
+.mobile-close{display:none}
+@media(max-width:1100px){
+ .template-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .editor-shell{grid-template-columns:215px minmax(0,1fr) 245px}
+}
+@media(max-width:800px){
+ .template-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+ .editor-shell{grid-template-columns:190px minmax(0,1fr);height:auto;min-height:calc(100vh - 62px);overflow:visible}
+ .right-panel{grid-column:1/-1;border-left:0;border-top:1px solid var(--line);max-height:420px}
+ .workspace{min-height:750px;padding:12px}
+}
+@media(max-width:540px){
+ .topbar{padding:0 10px;height:auto;min-height:60px}
+ .brand{font-size:16px}
+ .top-actions .btn{padding:7px;font-size:11px}
+ .template-grid{grid-template-columns:1fr 1fr;gap:10px}
+ .template-preview{height:210px;padding:12px}
+ .mini-page{transform:scale(.78);transform-origin:top center}
+ .gallery{padding:0 12px;margin:24px auto}
+ .gallery h1{font-size:26px}
+ .editor-shell{display:flex;flex-direction:column;height:auto}
+ .left-panel{max-height:none;border-right:0;border-bottom:1px solid var(--line)}
+ .workspace{order:2;min-height:650px}
+ .right-panel{order:3}
+ .form-grid{grid-template-columns:1fr}
+ .form-grid .full{grid-column:auto}
+}
 </style>
 </head>
+
 <body>
-<header class="site-header">
+<header class="topbar">
   <a class="brand" href="index.html">CV <span>Tools</span></a>
-  <nav class="header-links">
-    <a href="index.html">Home</a>
-    <a href="cv-maker.html">CV Maker</a>
-    <a href="portfolio-maker.html">Portfolio Maker</a>
-    <a href="blog.html">Blog</a>
-  </nav>
+  <div class="top-actions">
+    <button class="btn" id="backGalleryBtn">← Templates</button>
+    <button class="btn" id="saveBtn">Save Draft</button>
+    <button class="btn" id="backupBtn">Backup</button>
+    <button class="btn primary" id="pdfBtn">Export PDF</button>
+  </div>
 </header>
 
-<!-- TEMPLATE GALLERY: user chooses a design before opening the editor -->
-<section id="galleryScreen" class="screen active">
- <div class="gallery">
-  <div class="eyebrow">Free portfolio design studio</div>
-  <h1>Choose a portfolio design</h1>
-  <p class="gallery-intro">Start with a professionally styled portfolio for your career. Choose a design for your profile, then customize the text, images, colors and layout in the visual editor.</p>
-  <div class="category-row" id="categoryFilters"></div>
+<!-- TEMPLATE GALLERY: ready-made portfolios with sample content -->
+<main id="galleryView" class="gallery">
+  <h1>Create Your Professional Portfolio</h1>
+  <p class="subheading">Choose a ready-made design, build your own portfolio from a blank A4 page, or enter your details in the automatic form editor.</p>
+
+  <div class="gallery-toolbar">
+    <button class="filter-btn active" data-filter="All">All Templates</button>
+    <button class="filter-btn" data-filter="Student">Student</button>
+    <button class="filter-btn" data-filter="Developer">Developer</button>
+    <button class="filter-btn" data-filter="Designer">Designer</button>
+    <button class="filter-btn" data-filter="Freelancer">Freelancer</button>
+    <button class="filter-btn" data-filter="Professional">Professional</button>
+  </div>
+
   <div class="template-grid" id="templateGrid"></div>
-  <p class="gallery-note">All templates are free to customize. Your work is saved in this browser when you choose Save Draft. You can export your design as a standalone HTML website or print it to PDF.</p>
- </div>
+
+  <div class="form-card" style="margin-top:25px">
+    <h2>Start from scratch</h2>
+    <p class="subheading" style="margin:0 0 13px">Open an empty A4 page and design your portfolio with the visual editor.</p>
+    <button class="btn primary" id="customStartBtn">Open Custom Editor</button>
+    <button class="btn" id="formStartBtn">Create with Form Fields</button>
+  </div>
+</main>
+
+<!-- AUTOMATIC FORM EDITOR -->
+<section id="formView" class="form-mode hidden">
+  <h1>Build Portfolio with Your Details</h1>
+  <p class="subheading">Edit these fields. Your portfolio canvas will update automatically. You can switch to the visual editor at any time.</p>
+  <div class="form-note">Tip: Sample information is already filled in. Replace it with your own details. Add project images using the image upload fields.</div>
+
+  <div class="form-card">
+    <h2>Personal Information</h2>
+    <div class="form-grid">
+      <div class="field"><label>Full Name</label><input id="fName" value="Alex Morgan"></div>
+      <div class="field"><label>Professional Title</label><input id="fTitle" value="UI/UX Designer & Creative Developer"></div>
+      <div class="field"><label>Email</label><input id="fEmail" value="alex.morgan@example.com"></div>
+      <div class="field"><label>Location</label><input id="fLocation" value="New York, USA"></div>
+      <div class="field full"><label>About Me</label><textarea id="fAbout">I am a creative professional who enjoys solving problems through thoughtful design and technology. I create clean, accessible and user-friendly digital experiences.</textarea></div>
+      <div class="field"><label>Website</label><input id="fWebsite" value="www.alexmorgan.com"></div>
+      <div class="field"><label>LinkedIn / Social</label><input id="fSocial" value="linkedin.com/in/alexmorgan"></div>
+      <div class="field full"><label>Profile Photo</label><input type="file" id="fProfileImage" accept="image/*"></div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>Skills & Experience</h2>
+    <div class="form-grid">
+      <div class="field full"><label>Skills (separate with commas)</label><textarea id="fSkills">UI Design, UX Research, Figma, HTML, CSS, JavaScript, Prototyping</textarea></div>
+      <div class="field"><label>Experience / Role</label><input id="fExperience" value="UI/UX Designer — Creative Studio"></div>
+      <div class="field"><label>Experience Dates</label><input id="fExperienceDate" value="2023 – Present"></div>
+      <div class="field full"><label>Experience Description</label><textarea id="fExperienceText">Designed responsive interfaces, created prototypes and collaborated with developers to improve user experience.</textarea></div>
+      <div class="field"><label>Education</label><input id="fEducation" value="Bachelor of Design — City University"></div>
+      <div class="field"><label>Education Dates</label><input id="fEducationDate" value="2019 – 2023"></div>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <h2>Projects</h2>
+    <div id="projectFields"></div>
+    <button class="btn" id="addProjectField">+ Add Another Project</button>
+  </div>
+
+  <div class="form-card">
+    <h2>Portfolio Design</h2>
+    <div class="form-grid">
+      <div class="field"><label>Accent Color</label><input type="color" id="fAccent" value="#2563eb" class="color-input"></div>
+      <div class="field"><label>Font Family</label>
+        <select id="fFont">
+          <option>Arial</option><option>Georgia</option><option>Verdana</option><option>Trebuchet MS</option><option>Times New Roman</option>
+        </select>
+      </div>
+    </div>
+    <button class="btn primary" id="formToEditor">Open Visual Editor</button>
+  </div>
 </section>
 
 <!-- VISUAL EDITOR -->
-<section id="editorScreen" class="screen editor-screen">
- <div class="editor-toolbar">
-  <div class="toolbar-group">
-   <button class="toolbar-btn" id="backGallery">← Templates</button>
-   <span class="toolbar-title">Portfolio Studio</span>
-  </div>
-  <div class="toolbar-group">
-   <button class="toolbar-btn" id="undoBtn">↶ Undo</button>
-   <button class="toolbar-btn" id="redoBtn">↷ Redo</button>
-   <button class="toolbar-btn" id="saveBtn">Save Draft</button>
-   <button class="toolbar-btn" id="previewBtn">Preview</button>
-   <button class="btn btn-primary" id="downloadMenuBtn">Download ▾</button>
-  </div>
- </div>
-
- <div class="editor-layout">
+<section id="editorView" class="editor-shell hidden">
   <aside class="left-panel">
-   <div class="panel-section">
-    <div class="panel-heading">Add elements</div>
-    <div class="tool-grid">
-     <button class="tool-tile" id="addHeading"><span>H</span>Heading</button>
-     <button class="tool-tile" id="addText"><span>¶</span>Text</button>
-     <button class="tool-tile" id="addShape"><span>▢</span>Shape</button>
-     <button class="tool-tile" id="uploadImageBtn"><span>▧</span>Image</button>
+    <div class="panel-section">
+      <div class="mode-tabs">
+        <button class="active" data-mode="design">Design</button>
+        <button data-mode="uploads">Uploads</button>
+        <button data-mode="pages">Pages</button>
+      </div>
+      <div id="designTools">
+        <p class="panel-title">Add Elements</p>
+        <div class="tool-grid">
+          <button class="tool" data-add="heading"><span class="tool-icon">T</span>Heading</button>
+          <button class="tool" data-add="text"><span class="tool-icon">≡</span>Body Text</button>
+          <button class="tool" data-add="subheading"><span class="tool-icon">Tt</span>Subheading</button>
+          <button class="tool" data-add="rect"><span class="tool-icon">▰</span>Rectangle</button>
+          <button class="tool" data-add="circle"><span class="tool-icon">◯</span>Circle</button>
+          <button class="tool" data-add="triangle"><span class="tool-icon">△</span>Triangle</button>
+          <button class="tool" data-add="line"><span class="tool-icon">／</span>Line</button>
+          <button class="tool" data-add="star"><span class="tool-icon">☆</span>Star</button>
+          <button class="tool" data-add="arrow"><span class="tool-icon">➜</span>Arrow</button>
+          <button class="tool" data-add="badge"><span class="tool-icon">⬡</span>Badge</button>
+          <button class="tool" data-add="photo"><span class="tool-icon">▧</span>Photo Frame</button>
+          <button class="tool" data-add="divider"><span class="tool-icon">━</span>Divider</button>
+        </div>
+      </div>
+
+      <div id="uploadTools" class="hidden">
+        <p class="panel-title">Upload Images</p>
+        <label class="upload-label">＋ Upload one or multiple images<input type="file" id="imageUpload" accept="image/*" multiple></label>
+        <p class="right-empty">Select a photo frame on the page before uploading to replace it. Otherwise, the image will be added to the page.</p>
+        <div id="uploadList"></div>
+      </div>
+
+      <div id="pageTools" class="hidden">
+        <p class="panel-title">Your Pages</p>
+        <div class="page-list" id="pageList"></div>
+        <div class="divider"></div>
+        <button class="btn small" id="addPageBtn">+ Add A4 Page</button>
+        <button class="btn small" id="duplicatePageBtn">Duplicate Page</button>
+        <button class="btn small danger" id="deletePageBtn">Delete Page</button>
+      </div>
     </div>
-    <input type="file" id="imageUpload" accept="image/*" multiple class="hidden">
-    <p class="small-help">Select an element on the canvas to move or resize it. Upload multiple project images one at a time or together.</p>
-   </div>
-   <div class="panel-section">
-    <div class="panel-heading">Pages</div>
-    <div id="pageList" class="page-controls"></div>
-    <div class="action-row" style="margin-top:10px">
-     <button class="btn btn-light" id="addPageBtn">+ Add page</button>
-     <button class="btn btn-light" id="duplicatePageBtn">Duplicate</button>
+
+    <div class="panel-section">
+      <p class="panel-title">Quick Actions</p>
+      <div class="tool-grid">
+        <button class="tool" id="undoBtn"><span class="tool-icon">↶</span>Undo</button>
+        <button class="tool" id="redoBtn"><span class="tool-icon">↷</span>Redo</button>
+        <button class="tool" id="duplicateBtn"><span class="tool-icon">▣</span>Duplicate</button>
+        <button class="tool" id="deleteBtn"><span class="tool-icon">⌫</span>Delete</button>
+        <button class="tool" id="frontBtn"><span class="tool-icon">⬆</span>Bring Front</button>
+        <button class="tool" id="backBtn"><span class="tool-icon">⬇</span>Send Back</button>
+      </div>
     </div>
-    <button class="btn btn-danger" id="deletePageBtn" style="width:100%;margin-top:7px">Delete current page</button>
-   </div>
-   <div class="panel-section">
-    <div class="panel-heading">Uploads & files</div>
-    <div class="action-row">
-     <button class="btn btn-light" id="jsonExportBtn">Backup JSON</button>
-     <button class="btn btn-light" id="jsonImportBtn">Import JSON</button>
-    </div>
-    <input type="file" id="jsonUpload" accept="application/json,.json" class="hidden">
-    <p class="small-help">Drafts are stored locally in this browser. JSON backup lets you move your project to another device.</p>
-   </div>
   </aside>
 
-  <main class="canvas-area">
-   <div class="canvas-instruction">Select an object to edit it • Drag to move • Use corner handles to resize</div>
-   <div class="canvas-frame"><canvas id="portfolioCanvas" width="1100" height="780"></canvas></div>
-   <div id="canvasStatus" class="status">Ready</div>
+  <main class="workspace">
+    <div class="workspace-toolbar">
+      <div class="group">
+        <button class="btn small" id="zoomOut">−</button>
+        <span class="zoom-label" id="zoomLabel">65%</span>
+        <button class="btn small" id="zoomIn">+</button>
+        <button class="btn small" id="fitBtn">Fit</button>
+      </div>
+      <div class="group">
+        <button class="btn small" id="previewBtn">Preview</button>
+        <button class="btn small" id="websiteBtn">Export Website</button>
+      </div>
+    </div>
+    <div class="canvas-stage" id="canvasStage">
+      <canvas id="portfolioCanvas" width="794" height="1123"></canvas>
+    </div>
+    <div class="status" id="statusText">Select an element to edit its properties.</div>
   </main>
 
   <aside class="right-panel">
-   <div class="panel-section">
-    <div class="panel-heading">Element settings</div>
-    <label class="panel-label">Text content</label>
-    <textarea class="field" id="textValue" placeholder="Select a text element..." rows="3"></textarea>
-    <label class="panel-label">Font family</label>
-    <select class="field" id="fontFamily">
-     <option>Arial</option><option>Georgia</option><option>Verdana</option><option>Tahoma</option><option>Trebuchet MS</option><option>Courier New</option>
-    </select>
-    <label class="panel-label">Font size</label>
-    <input class="field" type="number" id="fontSize" min="8" max="120" value="30">
-    <label class="panel-label">Text / object color</label>
-    <input class="field" type="color" id="objectColor" value="#172033" style="height:42px;padding:4px">
-    <label class="panel-label">Background color</label>
-    <input class="field" type="color" id="objectBackground" value="#ffffff" style="height:42px;padding:4px">
-    <div class="action-row" style="margin-top:12px">
-     <button class="btn btn-light" id="boldBtn"><b>B</b></button>
-     <button class="btn btn-light" id="italicBtn"><i>I</i></button>
-     <button class="btn btn-light" id="frontBtn">To front</button>
-     <button class="btn btn-light" id="backBtn">To back</button>
+    <div class="panel-section">
+      <p class="panel-title">Element Properties</p>
+      <div id="noSelection" class="right-empty">Select any text, shape or image on your page to see its editing options here.</div>
+      <div id="propertyControls" class="hidden">
+        <div class="field"><label>Text Content</label><textarea id="pText"></textarea></div>
+        <div class="field"><label>Font Family</label>
+          <select id="pFont">
+            <option>Arial</option><option>Georgia</option><option>Verdana</option><option>Trebuchet MS</option><option>Times New Roman</option><option>Courier New</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Font Size</label><input type="number" id="pSize" min="6" max="150"></div>
+          <div class="field"><label>Text Color</label><input type="color" id="pColor" class="color-input"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Fill Color</label><input type="color" id="pFill" class="color-input"></div>
+          <div class="field"><label>Opacity</label><input type="range" id="pOpacity" min="0" max="100"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Width</label><input type="number" id="pWidth" min="1"></div>
+          <div class="field"><label>Height</label><input type="number" id="pHeight" min="1"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Position X</label><input type="number" id="pLeft"></div>
+          <div class="field"><label>Position Y</label><input type="number" id="pTop"></div>
+        </div>
+        <div class="field-row">
+          <div class="field"><label>Rotation</label><input type="number" id="pAngle"></div>
+          <div class="field"><label>Stroke Color</label><input type="color" id="pStroke" class="color-input"></div>
+        </div>
+        <div class="field">
+          <label>Stroke Width</label><input type="number" id="pStrokeWidth" min="0" max="30">
+        </div>
+        <div class="field-row">
+          <button class="btn small" id="boldBtn"><b>B</b> Bold</button>
+          <button class="btn small" id="italicBtn"><i>I</i> Italic</button>
+          <button class="btn small" id="underlineBtn"><u>U</u> Underline</button>
+          <button class="btn small" id="alignBtn">Align Center</button>
+        </div>
+        <div class="divider"></div>
+        <button class="btn small" id="lockBtn">Lock / Unlock</button>
+        <button class="btn small danger" id="removeSelectedBtn">Delete Element</button>
+      </div>
     </div>
-    <div class="action-row" style="margin-top:8px">
-     <button class="btn btn-light" id="duplicateBtn">Duplicate</button>
-     <button class="btn btn-danger" id="deleteBtn">Delete</button>
+
+    <div class="panel-section">
+      <p class="panel-title">Page Background</p>
+      <div class="field"><label>Background Color</label><input type="color" id="pageBg" value="#ffffff" class="color-input"></div>
+      <button class="btn small" id="applyBgBtn">Apply Background</button>
     </div>
-   </div>
-   <div class="panel-section">
-    <div class="panel-heading">Page design</div>
-    <label class="panel-label">Page background</label>
-    <input class="field" type="color" id="pageBackground" value="#ffffff" style="height:42px;padding:4px">
-    <label class="panel-label">Accent color</label>
-    <input class="field" type="color" id="accentColor" value="#315eea" style="height:42px;padding:4px">
-    <p class="small-help">Page background changes the whole canvas. Accent color is a quick setting for newly added objects.</p>
-   </div>
-   <div class="panel-section">
-    <div class="panel-heading">Layers</div>
-    <div id="layerList" class="layer-list"></div>
-   </div>
+
+    <div class="panel-section">
+      <p class="panel-title">Layers</p>
+      <div class="layer-list" id="layerList"></div>
+      <p class="right-empty">Select a layer to edit it. Use the arrows to change its position.</p>
+    </div>
   </aside>
- </div>
 </section>
 
 <script>
-"use strict";
+/* =========================================================
+   PORTFOLIO MAKER
+   A4 portrait canvas, template gallery, form mode and editor
+========================================================= */
+const A4_W=794, A4_H=1123;
+const $=id=>document.getElementById(id);
+let canvas=null, currentPage=0, pages=[], zoom=.62, history=[], historyIndex=-1;
+let uploadedImages=[], activeMode="design", suppressHistory=false;
+let projectCount=0;
+const accentDefault="#2563eb";
 
-/* -------------------------------------------------------
-   PORTFOLIO MAKER - core settings and template collection
-------------------------------------------------------- */
-const W = 1100, H = 780;
-const $ = id => document.getElementById(id);
-const canvas = new fabric.Canvas("portfolioCanvas",{
-  preserveObjectStacking:true,
-  selection:true,
-  backgroundColor:"#ffffff"
-});
-let pages = [];
-let currentPage = 0;
-let activeTemplate = null;
-let history = [];
-let historyIndex = -1;
-let restoring = false;
-let accent = "#315eea";
-
-const templates = [
- {id:1,name:"Developer Pro",category:"Developer",desc:"Bold dark developer introduction",bg:"#101827",fg:"#ffffff",accent:"#55d6be",layout:"dark"},
- {id:2,name:"Minimal Portfolio",category:"Personal",desc:"Clean, spacious minimalist design",bg:"#ffffff",fg:"#172033",accent:"#315eea",layout:"minimal"},
- {id:3,name:"Full Stack Developer",category:"Developer",desc:"Modern technical profile layout",bg:"#f4f7fb",fg:"#172033",accent:"#6c63ff",layout:"split"},
- {id:4,name:"Creative Designer",category:"Designer",desc:"Expressive color and creative typography",bg:"#fff8ed",fg:"#27211c",accent:"#f06b48",layout:"creative"},
- {id:5,name:"Photographer",category:"Creative",desc:"Image-led editorial presentation",bg:"#111111",fg:"#ffffff",accent:"#d7b77a",layout:"photo"},
- {id:6,name:"UI/UX Designer",category:"Designer",desc:"Modern product designer portfolio",bg:"#f5f1ff",fg:"#211a38",accent:"#805ad5",layout:"split"},
- {id:7,name:"Corporate Professional",category:"Professional",desc:"Polished and business focused",bg:"#ffffff",fg:"#172c45",accent:"#1676a8",layout:"corporate"},
- {id:8,name:"Freelancer Studio",category:"Freelancer",desc:"Service-focused freelance profile",bg:"#f2fbf8",fg:"#173b35",accent:"#13a889",layout:"creative"},
- {id:9,name:"Executive Profile",category:"Professional",desc:"Elegant leadership profile",bg:"#f8f6f1",fg:"#252525",accent:"#9a7948",layout:"executive"},
- {id:10,name:"Consultant",category:"Professional",desc:"Clear consulting and expertise layout",bg:"#f5f8fc",fg:"#1d2b42",accent:"#2864a5",layout:"corporate"},
- {id:11,name:"Student Portfolio",category:"Student",desc:"Friendly academic and project profile",bg:"#f4f8ff",fg:"#1b2b49",accent:"#3d75dc",layout:"student"},
- {id:12,name:"Educator",category:"Professional",desc:"Knowledge, teaching and credentials",bg:"#fffaf2",fg:"#2b2925",accent:"#bd7a32",layout:"minimal"},
- {id:13,name:"Architect",category:"Creative",desc:"Structured visual architecture profile",bg:"#f2f0ec",fg:"#252525",accent:"#8c725b",layout:"architect"},
- {id:14,name:"Writer & Creator",category:"Creative",desc:"Editorial style for writers and creators",bg:"#fffdf8",fg:"#28231f",accent:"#b45b48",layout:"editorial"},
- {id:15,name:"Personal Brand",category:"Personal",desc:"Confident modern personal website",bg:"#17172a",fg:"#ffffff",accent:"#e4a8ff",layout:"dark"}
+/* Starter templates. Each one includes realistic sample content. */
+const templates=[
+ {name:"Modern Developer",category:"Developer",style:"developer",accent:"#2563eb"},
+ {name:"Minimal Resume Portfolio",category:"Professional",style:"minimal",accent:"#0f766e"},
+ {name:"Full Stack Developer",category:"Developer",style:"dark",accent:"#7c3aed"},
+ {name:"Creative Designer",category:"Designer",style:"creative",accent:"#db2777"},
+ {name:"Photography Portfolio",category:"Freelancer",style:"photo",accent:"#b45309"},
+ {name:"UI/UX Designer",category:"Designer",style:"uiux",accent:"#0891b2"},
+ {name:"Corporate Professional",category:"Professional",style:"corporate",accent:"#1d4ed8"},
+ {name:"Freelancer Studio",category:"Freelancer",style:"freelancer",accent:"#059669"},
+ {name:"Executive Profile",category:"Professional",style:"executive",accent:"#334155"},
+ {name:"Consultant Portfolio",category:"Professional",style:"consultant",accent:"#0f766e"},
+ {name:"Student Portfolio",category:"Student",style:"student",accent:"#2563eb"},
+ {name:"Educator Portfolio",category:"Professional",style:"educator",accent:"#9333ea"},
+ {name:"Architect Portfolio",category:"Designer",style:"architect",accent:"#b45309"},
+ {name:"Writer & Creator",category:"Freelancer",style:"writer",accent:"#be123c"},
+ {name:"Personal Brand",category:"Student",style:"personal",accent:"#4f46e5"}
 ];
 
-const categories=["All","Student","Developer","Designer","Freelancer","Creative","Professional","Personal"];
-function renderGallery(filter="All"){
- $("categoryFilters").innerHTML="";
- categories.forEach(cat=>{
-  const b=document.createElement("button");
-  b.className="category-btn"+(filter===cat?" active":"");
-  b.textContent=cat;
-  b.onclick=()=>renderGallery(cat);
-  $("categoryFilters").appendChild(b);
- });
- $("templateGrid").innerHTML="";
- templates.filter(t=>filter==="All"||t.category===filter).forEach(t=>{
-  const card=document.createElement("article");
-  card.className="template-card";
-  const split=["split","student","corporate","executive","architect"].includes(t.layout);
-  card.innerHTML=`
-   <div class="template-preview" style="--c:${t.accent};--p:${t.bg}">
-    <div class="mini-page" style="background:${t.bg}">
-     ${split?`<div class="mini-split"><div class="mini-side"><div class="mini-line"></div><div class="mini-line short"></div></div><div class="mini-main"><div class="mini-top"></div><div class="mini-title" style="background:${t.fg}"></div><div class="mini-line"></div><div class="mini-line short"></div><div class="mini-block"></div></div></div>`:`<div class="mini-top"></div><div class="mini-title" style="background:${t.fg}"></div><div class="mini-line"></div><div class="mini-line short"></div><div class="mini-block"></div><div class="mini-line"></div>`}
-    </div>
-   </div>
-   <div class="template-meta"><h3>${t.name}</h3><p>${t.category} · ${t.desc}</p><button type="button">Use this design</button></div>`;
-  card.querySelector("button").onclick=()=>startTemplate(t.id);
-  card.onclick=e=>{if(e.target.tagName!=="BUTTON")startTemplate(t.id)};
-  $("templateGrid").appendChild(card);
- });
+function miniPreview(t){
+ const dark=t.style==="dark";
+ return `<div class="mini-page" style="border-top:5px solid ${t.accent};${dark?'background:#172033;color:#fff':''}">
+ <div class="mini-photo" style="background:${t.accent};${t.style==='photo'?'border-radius:4px;width:100%;height:48px':''}"></div>
+ <div class="mini-title" style="color:${t.accent}">ALEX MORGAN</div>
+ <div class="mini-small">Creative Professional · Portfolio</div>
+ <div class="mini-title">ABOUT ME</div><div class="mini-line" style="width:95%"></div><div class="mini-line" style="width:85%"></div>
+ <div class="mini-title">MY SKILLS</div><div class="mini-small">Design · Development · Research</div>
+ <div class="mini-title">SELECTED PROJECTS</div>
+ <div style="display:flex;gap:5px"><div style="height:35px;background:${t.accent};opacity:.7;flex:1"></div><div style="height:35px;background:#cbd5e1;flex:1"></div></div>
+ <div class="mini-title">EXPERIENCE & EDUCATION</div><div class="mini-line" style="width:90%"></div><div class="mini-line" style="width:70%"></div>
+ </div>`;
 }
+function renderGallery(filter="All"){
+ const grid=$("templateGrid");grid.innerHTML="";
+ templates.filter(t=>filter==="All"||t.category===filter).forEach((t,i)=>{
+  const card=document.createElement("article");card.className="template-card";
+  card.innerHTML=`<div class="template-preview">${miniPreview(t)}</div><div class="template-info"><strong>${t.name}</strong><span>${t.category} · A4 Portrait</span><button class="btn primary" data-template="${templates.indexOf(t)}">Use This Template</button></div>`;
+  grid.appendChild(card);
+ });
+ grid.querySelectorAll("[data-template]").forEach(b=>b.addEventListener("click",()=>startTemplate(templates[Number(b.dataset.template)])));
+}
+document.querySelectorAll(".filter-btn").forEach(b=>b.addEventListener("click",()=>{
+ document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active"));
+ b.classList.add("active");renderGallery(b.dataset.filter);
+}));
 renderGallery();
 
-/* -------------------------------------------------------
-   Canvas helpers
-------------------------------------------------------- */
-function addText(text,x,y,size,color,weight="normal",width=800){
- const obj=new fabric.Textbox(text,{left:x,top:y,width:width,fontSize:size,fill:color,fontFamily:"Arial",fontWeight:weight,lineHeight:1.2,editable:true});
- canvas.add(obj);return obj;
+/* View switching */
+function showView(view){
+ $("galleryView").classList.toggle("hidden",view!=="gallery");
+ $("formView").classList.toggle("hidden",view!=="form");
+ $("editorView").classList.toggle("hidden",view!=="editor");
+ $("backGalleryBtn").classList.toggle("hidden",view==="gallery");
 }
-function addRect(x,y,w,h,fill,rx=0){
- const obj=new fabric.Rect({left:x,top:y,width:w,height:h,fill:fill,rx:rx,ry:rx});
- canvas.add(obj);return obj;
-}
-function addCircle(x,y,r,fill){
- const obj=new fabric.Circle({left:x,top:y,radius:r,fill:fill});
- canvas.add(obj);return obj;
-}
-function addLine(x,y,w,color,thickness=3){
- const obj=new fabric.Rect({left:x,top:y,width:w,height:thickness,fill:color});
- canvas.add(obj);return obj;
-}
-function addBase(t){
- canvas.clear();
- canvas.backgroundColor=t.bg;
- accent=t.accent;
- const dark=["dark","photo"].includes(t.layout);
- const fg=t.fg, a=t.accent, bg=t.bg;
- const layout=t.layout;
+$("backGalleryBtn").onclick=()=>{showView("gallery")};
+$("customStartBtn").onclick=()=>startCustom();
+$("formStartBtn").onclick=()=>{setupProjectFields();showView("form")};
+$("formToEditor").onclick=()=>{buildFromForm();showView("editor");fitCanvas()};
 
- if(layout==="dark"){
-  addRect(0,0,18,H,a);
-  addText("YOUR NAME",75,65,17,a,"bold",850);
-  addText("Your Professional Title",75,150,53,fg,"bold",900);
-  addText("A short statement that explains what you do and the value you create.",78,235,22,fg,"normal",800);
-  addLine(78,330,940,a,4);
-  addText("ABOUT ME",78,375,17,a,"bold",800);
-  addText("Write a short introduction about your background, strengths and professional goals.",78,415,20,fg,"normal",850);
-  addText("SELECTED WORK",78,555,17,a,"bold",800);
-  addText("Project One     •     Project Two     •     Project Three",78,600,18,fg,"normal",900);
- }else if(layout==="split"||layout==="student"||layout==="corporate"||layout==="executive"||layout==="architect"){
-  const side=layout==="student"?270:300;
-  addRect(0,0,side,H,a);
-  addCircle(75,65,48,"#ffffff");
-  addText("YOUR NAME",side+55,65,43,fg,"bold",700);
-  addText("Your Professional Title",side+58,125,21,a,"bold",700);
-  addText("ABOUT",35,190,16,"#ffffff","bold",220);
-  addText("A brief introduction about yourself and your professional journey.",35,225,15,"#ffffff","normal",225);
-  addText("CONTACT",35,390,16,"#ffffff","bold",220);
-  addText("email@example.com\nYour City\nwww.yoursite.com",35,425,14,"#ffffff","normal",225);
-  addText("SKILLS",35,555,16,"#ffffff","bold",220);
-  addText("Skill One\nSkill Two\nSkill Three",35,590,14,"#ffffff","normal",225);
-  addText("PROFILE",side+60,220,17,a,"bold",700);
-  addText("Describe your experience, interests and the kind of opportunities you are looking for.",side+60,260,18,fg,"normal",700);
-  addLine(side+60,360,700,a,3);
-  addText("EXPERIENCE / EDUCATION",side+60,395,17,a,"bold",700);
-  addText("Role or qualification  •  Organization\nAdd a short description of your work, learning or achievements.",side+60,435,17,fg,"normal",700);
-  addText("FEATURED PROJECTS",side+60,565,17,a,"bold",700);
-  addText("Project One     |     Project Two",side+60,605,17,fg,"normal",700);
- }else if(layout==="creative"||layout==="freelancer"){
-  addRect(0,0,W,18,a);
-  addText("PORTFOLIO / 2026",65,55,15,fg,"bold",900);
-  addText("Hello, I'm\nYOUR NAME.",65,125,65,fg,"bold",850);
-  addText("Creative professional · Your City",70,300,20,a,"bold",850);
-  addText("I help people and businesses turn ideas into meaningful digital experiences.",70,360,23,fg,"normal",800);
-  addRect(70,490,280,135,a,a);
-  addRect(375,490,280,135,"#e5d9c9",a);
-  addRect(680,490,350,135,"#d8e7df",a);
-  addText("SELECTED PROJECTS",70,665,17,fg,"bold",900);
- }else if(layout==="photo"){
-  addRect(0,0,W,18,a);
-  addText("PHOTOGRAPHY / CREATIVE PORTFOLIO",65,55,15,a,"bold",900);
-  addText("YOUR NAME",65,135,58,fg,"bold",900);
-  addText("Photographer · Visual storyteller",70,220,20,fg,"normal",900);
-  addRect(65,315,460,270,"#292929",a);
-  addRect(545,315,490,125,"#333333",a);
-  addRect(545,460,490,125,"#333333",a);
-  addText("SELECTED WORK",65,635,17,a,"bold",900);
- }else if(layout==="editorial"){
-  addText("THE CREATIVE PORTFOLIO",70,55,15,a,"bold",900);
-  addLine(70,95,950,fg,2);
-  addText("Words, ideas\n& meaningful work.",70,145,61,fg,"bold",900);
-  addText("YOUR NAME  /  Writer & Creator",75,330,18,a,"bold",900);
-  addText("Introduce your voice, your work and the stories you want to tell.",75,390,22,fg,"normal",850);
-  addLine(75,510,950,"#d8d1c8",2);
-  addText("SELECTED WRITING",75,550,17,a,"bold",900);
-  addText("Article One       Article Two       Article Three",75,600,18,fg,"normal",900);
- }else{
-  addText("YOUR NAME",70,60,18,a,"bold",900);
-  addText("Your Professional Portfolio",70,145,55,fg,"bold",900);
-  addText("Your role · Your location",75,235,20,a,"bold",900);
-  addText("Write a compelling introduction that tells visitors who you are and what you do.",75,300,22,fg,"normal",850);
-  addLine(75,410,950,a,3);
-  addText("EXPERIENCE  /  PROJECTS  /  SKILLS",75,460,18,a,"bold",900);
-  addText("Add your best work, experience and professional achievements here.",75,510,20,fg,"normal",850);
- }
- canvas.renderAll();
-}
-function startTemplate(id){
- const t=templates.find(x=>x.id===id);
- if(!t)return;
- activeTemplate=t;
+/* Create canvas once */
+function initCanvas(){
+ if(canvas)return;
+ canvas=new fabric.Canvas("portfolioCanvas",{width:A4_W,height:A4_H,backgroundColor:"#ffffff",preserveObjectStacking:true,selection:true});
+ canvas.on("selection:created",updateProperties);
+ canvas.on("selection:updated",updateProperties);
+ canvas.on("selection:cleared",()=>{$("propertyControls").classList.add("hidden");$("noSelection").classList.remove("hidden")});
+ canvas.on("object:modified",()=>{updateProperties();saveHistory();renderLayers()});
+ canvas.on("object:added",()=>{renderLayers()});
+ canvas.on("object:removed",()=>{renderLayers()});
  pages=[{name:"Page 1",json:null}];
  currentPage=0;
- addBase(t);
- saveHistory();
- $("galleryScreen").classList.remove("active");
- $("editorScreen").classList.add("active");
- renderPageList();renderLayers();syncPageSettings();
- setStatus(t.name+" template loaded. Select text on the canvas to edit.");
+ applyZoom();
+}
+function applyZoom(){
+ if(!canvas)return;
+ canvas.setZoom(1);
+
+ const wrapper=canvas.wrapperEl;
+ wrapper.style.transform=`scale(${zoom})`;
+ wrapper.style.transformOrigin="top left";
+ wrapper.style.width=A4_W+"px";
+ wrapper.style.height=A4_H+"px";
+
+ $("canvasStage").style.width=(A4_W*zoom)+"px";
+ $("canvasStage").style.height=(A4_H*zoom)+"px";
+
+ $("zoomLabel").textContent=Math.round(zoom*100)+"%";
+ canvas.calcOffset();
+ canvas.requestRenderAll();
+}
+function fitCanvas(){
+ const workspace=$(".workspace");
+ if(!workspace||!canvas)return;
+ const available=Math.max(250,workspace.clientWidth-45);
+ zoom=Math.min(.82,available/A4_W);
+ applyZoom();
+}
+function setStatus(msg){$("statusText").textContent=msg}
+
+/* Template content helpers */
+function addText(text,left,top,size,color="#172033",opts={}){
+ const obj=new fabric.Textbox(text,{left,top,width:opts.width||590,fontSize:size,fill:color,fontFamily:opts.font||"Arial",fontWeight:opts.weight||"normal",lineHeight:opts.lineHeight||1.2,textAlign:opts.align||"left",editable:true,splitByGrapheme:true});
+ obj.customLabel=opts.label||text.slice(0,22);canvas.add(obj);return obj;
+}
+function addRect(left,top,width,height,fill,opts={}){
+ const o=new fabric.Rect({left,top,width,height,fill,rx:opts.rx||0,ry:opts.rx||0,stroke:opts.stroke||null,strokeWidth:opts.strokeWidth||0});
+ o.customLabel=opts.label||"Shape";canvas.add(o);return o;
+}
+function addCircle(left,top,radius,fill){
+ const o=new fabric.Circle({left,top,radius,fill});o.customLabel="Circle";canvas.add(o);return o;
+}
+function addPlaceholder(left,top,width,height,label,accent){
+ const r=new fabric.Rect({left,top,width,height,fill:"#e8eef7",stroke:"#a8b7ca",strokeDashArray:[7,5],strokeWidth:2,rx:8,ry:8});
+ r.isPlaceholder=true;r.customLabel=label;canvas.add(r);
+ const t=new fabric.Textbox("＋\n"+label,{left:left+8,top:top+height/2-23,width:width-16,fontSize:15,fill:"#64748b",textAlign:"center",fontFamily:"Arial",selectable:false,evented:false});
+ t.isPlaceholderLabel=true;canvas.add(t);return r;
+}
+function addRule(y,accent){
+ addRect(65,y,664,3,accent,{label:"Section divider"});
+}
+function clearCanvas(){
+ canvas.clear();canvas.setWidth(A4_W);canvas.setHeight(A4_H);canvas.backgroundColor="#ffffff";
+}
+function startCustom(){
+ initCanvas();clearCanvas();
+ pages=[{name:"Page 1",json:null}];currentPage=0;
+ canvas.backgroundColor="#ffffff";
+ addText("YOUR NAME",65,75,38,"#172033",{weight:"bold",label:"Your name"});
+ addText("Your Professional Title",67,125,18,"#64748b",{label:"Professional title"});
+ addText("Add your contact details here",67,165,13,"#475569",{label:"Contact details"});
+ addRule(205,accentDefault);
+ addText("ABOUT ME",65,230,19,accentDefault,{weight:"bold",label:"About heading"});
+ addText("Write a short introduction about yourself, your interests and your professional goals.",65,265,15,"#475569",{width:650,label:"About description"});
+ addText("SKILLS",65,365,19,accentDefault,{weight:"bold",label:"Skills heading"});
+ addText("Add your skills, tools and areas of expertise.",65,400,15,"#475569",{label:"Skills"});
+ addText("PROJECTS",65,485,19,accentDefault,{weight:"bold",label:"Projects heading"});
+ addPlaceholder(65,530,195,135,"Project image 1",accentDefault);
+ addPlaceholder(285,530,195,135,"Project image 2",accentDefault);
+ addPlaceholder(505,530,195,135,"Project image 3",accentDefault);
+ addText("EXPERIENCE & EDUCATION",65,720,19,accentDefault,{weight:"bold",label:"Experience heading"});
+ addText("Add your work experience, education and achievements.",65,755,15,"#475569",{label:"Experience details"});
+ addText("CONTACT",65,900,19,accentDefault,{weight:"bold",label:"Contact heading"});
+ addText("Email · Website · LinkedIn",65,935,15,"#475569",{label:"Contact details"});
+ canvas.renderAll();saveHistory();showView("editor");renderPages();renderLayers();fitCanvas();
 }
 
-/* -------------------------------------------------------
-   Page management and project history
-------------------------------------------------------- */
-function snapshot(){return JSON.stringify({pages:pages,currentPage,activeTemplate:activeTemplate?activeTemplate.id:null,accent});}
+/* Load a selected starter design with sample/dummy information and image placeholders */
+function startTemplate(t){
+ initCanvas();clearCanvas();pages=[{name:"Page 1",json:null}];currentPage=0;
+ const a=t.accent;
+ const dark=t.style==="dark";
+ canvas.backgroundColor=dark?"#111827":"#ffffff";
+ if(dark){
+  addRect(0,0,A4_W,270,"#1f2937");
+  addText("ALEX MORGAN",55,55,37,"#ffffff",{weight:"bold",label:"Name"});
+  addText("CREATIVE DEVELOPER  ·  UI/UX DESIGNER",58,112,14,"#d1d5db",{label:"Professional title"});
+  addText("alex.morgan@example.com  |  New York, USA  |  alexmorgan.com",58,158,12,"#cbd5e1",{label:"Contact details"});
+  addPlaceholder(580,45,145,155,"Profile photo",a);
+ }else if(t.style==="photo"||t.style==="creative"||t.style==="architect"){
+  addRect(0,0,A4_W,205,a);
+  addText("ALEX MORGAN",55,42,36,"#ffffff",{weight:"bold",label:"Name"});
+  addText("CREATIVE PROFESSIONAL",58,96,15,"#ffffff",{label:"Professional title"});
+  addText("Portfolio · 2026",58,135,13,"#ffffff",{label:"Portfolio date"});
+  addPlaceholder(570,35,155,135,"Profile photo",a);
+ }else{
+  addRect(0,0,13,A4_H,a);
+  addText("ALEX MORGAN",55,50,37,"#172033",{weight:"bold",label:"Name"});
+  addText(t.category==="Student"?"STUDENT · CREATIVE THINKER":"UI/UX DESIGNER & CREATIVE DEVELOPER",58,105,15,a,{weight:"bold",label:"Professional title"});
+  addText("alex.morgan@example.com  |  New York, USA  |  www.alexmorgan.com",58,145,12,"#64748b",{label:"Contact details"});
+  addPlaceholder(620,35,105,110,"Profile photo",a);
+ }
+ const startY=(dark||t.style==="photo"||t.style==="creative"||t.style==="architect")?245:215;
+ addText("ABOUT ME",55,startY,19,a,{weight:"bold",label:"About heading"});
+ addText("I am a creative professional who enjoys solving problems through thoughtful design and technology. I create clean, accessible and user-friendly digital experiences.",55,startY+34,14,dark?"#e5e7eb":"#475569",{width:665,label:"About description"});
+ addText("CORE SKILLS",55,startY+125,19,a,{weight:"bold",label:"Skills heading"});
+ addText("UI Design  ·  UX Research  ·  Figma  ·  HTML  ·  CSS  ·  JavaScript  ·  Prototyping",55,startY+160,14,dark?"#e5e7eb":"#475569",{width:665,label:"Skills"});
+ addText("SELECTED PROJECTS",55,startY+225,19,a,{weight:"bold",label:"Projects heading"});
+ addPlaceholder(55,startY+265,195,130,"Project image 1",a);
+ addPlaceholder(280,startY+265,195,130,"Project image 2",a);
+ addPlaceholder(505,startY+265,195,130,"Project image 3",a);
+ addText("E-Commerce Website",55,startY+402,13,dark?"#fff":"#172033",{weight:"bold",label:"Project 1 title"});
+ addText("Mobile App Design",280,startY+402,13,dark?"#fff":"#172033",{weight:"bold",label:"Project 2 title"});
+ addText("Brand Identity",505,startY+402,13,dark?"#fff":"#172033",{weight:"bold",label:"Project 3 title"});
+ addText("EXPERIENCE",55,startY+465,19,a,{weight:"bold",label:"Experience heading"});
+ addText("UI/UX Designer — Creative Studio  |  2023 – Present",55,startY+500,14,dark?"#fff":"#172033",{weight:"bold",label:"Experience role"});
+ addText("Designed responsive interfaces, built prototypes and worked with developers to improve user experience.",55,startY+527,13,dark?"#d1d5db":"#475569",{label:"Experience description"});
+ addText("EDUCATION",55,startY+600,19,a,{weight:"bold",label:"Education heading"});
+ addText("Bachelor of Design — City University  |  2019 – 2023",55,startY+635,14,dark?"#fff":"#172033",{label:"Education"});
+ addText("CONTACT",55,startY+700,19,a,{weight:"bold",label:"Contact heading"});
+ addText("alex.morgan@example.com  ·  www.alexmorgan.com  ·  linkedin.com/in/alexmorgan",55,startY+735,13,dark?"#d1d5db":"#475569",{label:"Contact"});
+ canvas.renderAll();saveHistory();showView("editor");renderPages();renderLayers();fitCanvas();
+}
+
+/* Add elements from left toolbar */
+document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>addElement(b.dataset.add)));
+function addElement(type){
+ if(!canvas)initCanvas();
+ let o;
+ const centerX= A4_W/2-90, top=150+Math.random()*100;
+ if(type==="heading")o=addText("Your Heading",65,top,34,"#172033",{weight:"bold",label:"Heading"});
+ if(type==="subheading")o=addText("Your Subheading",65,top,22,accentDefault,{weight:"bold",label:"Subheading"});
+ if(type==="text")o=addText("Write your text here. Double-click to edit.",65,top,16,"#475569",{label:"Body text"});
+ if(type==="rect")o=addRect(centerX,top,180,110,accentDefault,{rx:5,label:"Rectangle"});
+ if(type==="circle")o=addCircle(centerX,top,65,accentDefault);
+ if(type==="triangle")o=new fabric.Triangle({left:centerX,top,width:140,height:120,fill:accentDefault});
+ if(type==="line"||type==="divider")o=new fabric.Line([0,0,260,0],{left:65,top,stroke:accentDefault,strokeWidth:type==="divider"?4:2});
+ if(type==="star")o=new fabric.Polygon(starPoints(55,5),{left:centerX,top,fill:accentDefault});
+ if(type==="arrow")o=new fabric.Text("➜",{left:centerX,top,fontSize:75,fill:accentDefault});
+ if(type==="badge")o=new fabric.Polygon(starPoints(48,6),{left:centerX,top,fill:accentDefault});
+ if(type==="photo")o=addPlaceholder(100,top,240,170,"Add your photo",accentDefault);
+ if(o){o.customLabel=o.customLabel||type[0].toUpperCase()+type.slice(1);canvas.setActiveObject(o);canvas.renderAll();saveHistory();updateProperties();renderLayers();setStatus(type+" added. Drag and resize it on the page.");}
+}
+function starPoints(r,n){
+ const pts=[];for(let i=0;i<n*2;i++){const rr=i%2===0?r:r*.48;const ang=(Math.PI*i/n)-Math.PI/2;pts.push({x:r+rr*Math.cos(ang),y:r+rr*Math.sin(ang)});}return pts;
+}
+
+/* Upload multiple photos. A selected placeholder is replaced automatically. */
+$("imageUpload").addEventListener("change",async e=>{
+ const files=[...e.target.files];if(!files.length)return;
+ for(const file of files){
+  if(!file.type.startsWith("image/"))continue;
+  const data=await fileToDataURL(file);
+  uploadedImages.push({name:file.name,data});
+  const active=canvas.getActiveObject();
+  if(active&&active.isPlaceholder)replacePlaceholder(active,data,file.name);
+  else addImage(data,file.name);
+ }
+ renderUploads();saveHistory();e.target.value="";
+});
+function fileToDataURL(file){return new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(r.result);r.onerror=reject;r.readAsDataURL(file)})}
+function addImage(data,name){
+ fabric.Image.fromURL(data,img=>{
+  const maxW=340,maxH=260,scale=Math.min(maxW/img.width,maxH/img.height,1);
+  img.set({left:100,top:180,scaleX:scale,scaleY:scale,crossOrigin:"anonymous"});
+  img.customLabel=name||"Uploaded image";canvas.add(img);canvas.setActiveObject(img);canvas.renderAll();updateProperties();saveHistory();renderLayers();
+ });
+}
+function replacePlaceholder(rect,data,name){
+ const x=rect.left,y=rect.top,w=rect.width,h=rect.height;
+ const label=canvas.getObjects().find(o=>o.isPlaceholderLabel&&Math.abs(o.left-(x+8))<2&&Math.abs(o.top-(y+h/2-23))<3);
+ canvas.remove(rect);if(label)canvas.remove(label);
+ fabric.Image.fromURL(data,img=>{
+  const scale=Math.max(w/img.width,h/img.height);
+  img.set({left:x,top:y,scaleX:scale,scaleY:scale});
+  img.customLabel=name||"Project image";img.clipPath=new fabric.Rect({width:w,height:h,rx:7,ry:7,originX:"center",originY:"center"});
+  canvas.add(img);canvas.setActiveObject(img);canvas.renderAll();saveHistory();renderLayers();
+ });
+}
+function renderUploads(){
+ const list=$("uploadList");list.innerHTML="";
+ uploadedImages.forEach((im,i)=>{
+  const b=document.createElement("button");b.className="btn small";b.style.display="block";b.style.width="100%";b.style.marginTop="7px";b.textContent="＋ "+im.name;
+  b.onclick=()=>addImage(im.data,im.name);list.appendChild(b);
+ });
+}
+
+/* Right-side property inspector */
+function updateProperties(){
+ const o=canvas&&canvas.getActiveObject();
+ if(!o){$("propertyControls").classList.add("hidden");$("noSelection").classList.remove("hidden");return}
+ $("noSelection").classList.add("hidden");$("propertyControls").classList.remove("hidden");
+ $("pText").value=(o.type==="textbox"||o.type==="text"||o.type==="i-text")?o.text||"": "";
+ $("pFont").value=o.fontFamily||"Arial";
+ $("pSize").value=Math.round(o.fontSize||16);
+ $("pColor").value=toHex(o.fill,"#172033");
+ $("pFill").value=toHex(o.fill,"#ffffff");
+ $("pOpacity").value=Math.round((o.opacity??1)*100);
+ $("pWidth").value=Math.round(o.getScaledWidth());
+ $("pHeight").value=Math.round(o.getScaledHeight());
+ $("pLeft").value=Math.round(o.left);
+ $("pTop").value=Math.round(o.top);
+ $("pAngle").value=Math.round(o.angle||0);
+ $("pStroke").value=toHex(o.stroke,"#000000");
+ $("pStrokeWidth").value=o.strokeWidth||0;
+}
+function toHex(value,fallback){
+ if(typeof value==="string"&&/^#[0-9a-f]{6}$/i.test(value))return value;
+ return fallback;
+}
+function active(){return canvas&&canvas.getActiveObject()}
+function changeActive(fn){const o=active();if(!o)return;fn(o);o.setCoords();canvas.requestRenderAll();saveHistory();updateProperties();renderLayers()}
+$("pText").oninput=e=>changeActive(o=>{if(o.type==="textbox"||o.type==="text"||o.type==="i-text")o.set("text",e.target.value)});
+$("pFont").onchange=e=>changeActive(o=>o.set("fontFamily",e.target.value));
+$("pSize").onchange=e=>changeActive(o=>o.set("fontSize",Math.max(6,Number(e.target.value)||16)));
+$("pColor").oninput=e=>changeActive(o=>{if(o.type.includes("text"))o.set("fill",e.target.value);});
+$("pFill").oninput=e=>changeActive(o=>o.set("fill",e.target.value));
+$("pOpacity").oninput=e=>changeActive(o=>o.set("opacity",Number(e.target.value)/100));
+$("pWidth").onchange=e=>changeActive(o=>o.set("scaleX",Math.max(1,Number(e.target.value))/Math.max(1,o.width||1)));
+$("pHeight").onchange=e=>changeActive(o=>o.set("scaleY",Math.max(1,Number(e.target.value))/Math.max(1,o.height||1)));
+$("pLeft").onchange=e=>changeActive(o=>o.set("left",Number(e.target.value)));
+$("pTop").onchange=e=>changeActive(o=>o.set("top",Number(e.target.value)));
+$("pAngle").onchange=e=>changeActive(o=>o.set("angle",Number(e.target.value)));
+$("pStroke").oninput=e=>changeActive(o=>o.set("stroke",e.target.value));
+$("pStrokeWidth").onchange=e=>changeActive(o=>o.set("strokeWidth",Number(e.target.value)||0));
+$("boldBtn").onclick=()=>changeActive(o=>o.set("fontWeight",o.fontWeight==="bold"?"normal":"bold"));
+$("italicBtn").onclick=()=>changeActive(o=>o.set("fontStyle",o.fontStyle==="italic"?"normal":"italic"));
+$("underlineBtn").onclick=()=>changeActive(o=>o.set("underline",!o.underline));
+$("alignBtn").onclick=()=>changeActive(o=>o.set("textAlign",o.textAlign==="center"?"left":"center"));
+$("lockBtn").onclick=()=>changeActive(o=>{const lock=!o.lockMovementX;o.set({lockMovementX:lock,lockMovementY:lock,lockScalingX:lock,lockScalingY:lock,lockRotation:lock,hasControls:!lock,selectable:true});});
+$("removeSelectedBtn").onclick=()=>deleteSelected();
+
+/* Quick actions */
+function deleteSelected(){const o=active();if(!o)return;canvas.remove(o);canvas.discardActiveObject();canvas.renderAll();saveHistory();updateProperties();renderLayers()}
+$("deleteBtn").onclick=deleteSelected;
+$("duplicateBtn").onclick=()=>{
+ const o=active();if(!o)return;o.clone(clone=>{clone.set({left:o.left+20,top:o.top+20});clone.customLabel=(o.customLabel||"Element")+" copy";canvas.add(clone);canvas.setActiveObject(clone);canvas.renderAll();saveHistory();renderLayers()});
+};
+$("frontBtn").onclick=()=>changeActive(o=>canvas.bringToFront(o));
+$("backBtn").onclick=()=>changeActive(o=>canvas.sendToBack(o));
+
+/* Background */
+$("applyBgBtn").onclick=()=>{canvas.backgroundColor=$("pageBg").value;canvas.renderAll();saveHistory();setStatus("Page background updated.")};
+$("pageBg").onchange=()=>{};
+
+/* Layer list */
+function renderLayers(){
+ if(!canvas)return;
+ const list=$("layerList");list.innerHTML="";
+ [...canvas.getObjects()].reverse().forEach((o,revIndex)=>{
+  if(o.isPlaceholderLabel)return;
+  const item=document.createElement("div");item.className="layer-item";
+  if(active()===o)item.classList.add("active");
+  const label=document.createElement("span");label.textContent=o.customLabel||o.type;
+  const actions=document.createElement("div");
+  const up=document.createElement("button");up.className="btn small";up.textContent="↑";up.title="Bring forward";
+  const down=document.createElement("button");down.className="btn small";down.textContent="↓";down.title="Send backward";
+  up.onclick=ev=>{ev.stopPropagation();canvas.bringForward(o);canvas.renderAll();saveHistory();renderLayers()};
+  down.onclick=ev=>{ev.stopPropagation();canvas.sendBackwards(o);canvas.renderAll();saveHistory();renderLayers()};
+  actions.append(up,down);item.append(label,actions);
+  item.onclick=()=>{canvas.setActiveObject(o);canvas.renderAll();updateProperties();renderLayers()};
+  list.appendChild(item);
+ });
+}
+
+/* Page management */
+function storeCurrentPage(){if(!canvas||!pages[currentPage])return;pages[currentPage].json=canvas.toJSON(["customLabel","isPlaceholder","isPlaceholderLabel"])}
+function renderPages(){
+ const list=$("pageList");list.innerHTML="";
+ pages.forEach((p,i)=>{
+  const b=document.createElement("button");b.className="page-item"+(i===currentPage?" active":"");
+  b.textContent=p.name;b.onclick=()=>switchPage(i);list.appendChild(b);
+ });
+}
+function switchPage(i){
+ if(i===currentPage)return;storeCurrentPage();currentPage=i;
+ const data=pages[i].json;
+ canvas.loadFromJSON(data||{objects:[],background:"#ffffff"},()=>{canvas.renderAll();renderPages();renderLayers();updateProperties()});
+}
+$("addPageBtn").onclick=()=>{
+ storeCurrentPage();pages.push({name:"Page "+(pages.length+1),json:{version:"5.3.1",objects:[],background:"#ffffff"}});
+ switchPage(pages.length-1);renderPages();
+};
+$("duplicatePageBtn").onclick=()=>{
+ storeCurrentPage();const copy=JSON.parse(JSON.stringify(pages[currentPage]));copy.name="Page "+(pages.length+1);pages.splice(currentPage+1,0,copy);switchPage(currentPage+1);renderPages();
+};
+$("deletePageBtn").onclick=()=>{
+ if(pages.length===1){alert("At least one page is required.");return}
+ pages.splice(currentPage,1);currentPage=Math.max(0,currentPage-1);const p=pages[currentPage];
+ canvas.loadFromJSON(p.json||{objects:[],background:"#ffffff"},()=>{canvas.renderAll();renderPages();renderLayers()});
+};
+
+/* Undo / redo */
 function saveHistory(){
- if(restoring)return;
- const state=JSON.stringify(canvas.toJSON(["name"]));
- if(historyIndex<history.length-1)history=history.slice(0,historyIndex+1);
- history.push(state);
+ if(!canvas||suppressHistory)return;
+ const state=JSON.stringify(canvas.toJSON(["customLabel","isPlaceholder","isPlaceholderLabel"]));
+ if(history[historyIndex]===state)return;
+ history=history.slice(0,historyIndex+1);history.push(state);
  if(history.length>40)history.shift();
  historyIndex=history.length-1;
 }
 function restoreHistory(index){
  if(index<0||index>=history.length)return;
- restoring=true;
- canvas.loadFromJSON(history[index],()=>{
-  canvas.renderAll();restoring=false;historyIndex=index;updateLayersAndControls();
- });
+ historyIndex=index;suppressHistory=true;
+ canvas.loadFromJSON(JSON.parse(history[index]),()=>{canvas.renderAll();suppressHistory=false;renderLayers();updateProperties()});
 }
-function switchPage(index){
- if(index<0||index>=pages.length)return;
- pages[currentPage].json=canvas.toJSON(["name"]);
- currentPage=index;
- const data=pages[index].json;
- if(data){
-  restoring=true;
-  canvas.loadFromJSON(data,()=>{canvas.renderAll();restoring=false;renderPageList();updateLayersAndControls();syncPageSettings();});
- }else{
-  canvas.clear();canvas.backgroundColor="#ffffff";canvas.renderAll();renderPageList();updateLayersAndControls();
- }
-}
-function renderPageList(){
- $("pageList").innerHTML="";
- pages.forEach((p,i)=>{
-  const b=document.createElement("button");
-  b.className="page-pill"+(i===currentPage?" active":"");
-  b.textContent="Page "+(i+1);
-  b.onclick=()=>switchPage(i);
-  $("pageList").appendChild(b);
- });
-}
-function addPage(){
- pages[currentPage].json=canvas.toJSON(["name"]);
- pages.push({name:"Page "+(pages.length+1),json:null});
- switchPage(pages.length-1);
- setStatus("New blank page added.");
-}
-function duplicatePage(){
- pages[currentPage].json=canvas.toJSON(["name"]);
- const copy=JSON.parse(JSON.stringify(pages[currentPage]));
- pages.splice(currentPage+1,0,{name:"Page "+(currentPage+2),json:copy.json});
- switchPage(currentPage+1);
-}
-function deletePage(){
- if(pages.length===1){setStatus("Your portfolio must have at least one page.");return;}
- pages.splice(currentPage,1);currentPage=Math.max(0,currentPage-1);switchPage(currentPage);
-}
-function updateLayersAndControls(){renderLayers();syncSelection();}
-function setStatus(message){$("canvasStatus").textContent=message;}
-function syncPageSettings(){
- $("pageBackground").value=canvas.backgroundColor||"#ffffff";
- $("accentColor").value=accent;
-}
-$("addPageBtn").onclick=addPage;
-$("duplicatePageBtn").onclick=duplicatePage;
-$("deletePageBtn").onclick=deletePage;
-
-/* -------------------------------------------------------
-   Add and upload canvas elements
-------------------------------------------------------- */
-$("addHeading").onclick=()=>{
- const o=addText("Your Heading",90,100,42,accent,"bold",800);canvas.setActiveObject(o);canvas.renderAll();saveHistory();updateLayersAndControls();
-};
-$("addText").onclick=()=>{
- const o=addText("Write your text here",90,180,22,"#172033","normal",750);canvas.setActiveObject(o);canvas.renderAll();saveHistory();updateLayersAndControls();
-};
-$("addShape").onclick=()=>{
- const o=addRect(100,250,220,100,accent,12);canvas.setActiveObject(o);canvas.renderAll();saveHistory();updateLayersAndControls();
-};
-$("uploadImageBtn").onclick=()=>$("imageUpload").click();
-$("imageUpload").onchange=async e=>{
- const files=Array.from(e.target.files||[]);
- for(const file of files){
-  if(!file.type.startsWith("image/"))continue;
-  if(file.size>8*1024*1024){setStatus(file.name+" is larger than 8 MB and was skipped.");continue;}
-  const data=await new Promise((resolve,reject)=>{
-   const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(file);
-  });
-  fabric.Image.fromURL(data,img=>{
-   const maxW=440,maxH=330,scale=Math.min(maxW/img.width,maxH/img.height,1);
-   img.set({left:100,top:100,scaleX:scale,scaleY:scale,cornerStyle:"circle",transparentCorners:false});
-   img.name=file.name;canvas.add(img);canvas.setActiveObject(img);canvas.renderAll();saveHistory();updateLayersAndControls();
-   setStatus(file.name+" added to canvas.");
-  });
- }
- e.target.value="";
-};
-
-/* -------------------------------------------------------
-   Selected element controls
-------------------------------------------------------- */
-function selected(){return canvas.getActiveObject();}
-function syncSelection(){
- const o=selected();
- $("textValue").value=o&&(["textbox","i-text","text"].includes(o.type))?o.text||"": "";
- $("fontFamily").value=o&&o.fontFamily?o.fontFamily:"Arial";
- $("fontSize").value=o&&o.fontSize?Math.round(o.fontSize):30;
- $("objectColor").value=toHex(o&&(o.fill||o.stroke))||"#172033";
- $("objectBackground").value=toHex(o&&o.backgroundColor)||"#ffffff";
-}
-function toHex(value){
- if(typeof value!=="string"||!value.startsWith("#"))return null;
- if(/^#[0-9a-f]{6}$/i.test(value))return value;
- if(/^#[0-9a-f]{3}$/i.test(value))return "#"+value[1]+value[1]+value[2]+value[2]+value[3]+value[3];
- return null;
-}
-function applyToSelected(fn){
- const o=selected();if(!o)return setStatus("Select an element on the canvas first.");
- fn(o);o.setCoords();canvas.requestRenderAll();saveHistory();syncSelection();renderLayers();
-}
-$("textValue").oninput=e=>{const o=selected();if(o&&["textbox","i-text","text"].includes(o.type)){o.set("text",e.target.value);canvas.requestRenderAll();}};
-$("textValue").onchange=()=>saveHistory();
-$("fontFamily").onchange=e=>applyToSelected(o=>o.set("fontFamily",e.target.value));
-$("fontSize").onchange=e=>applyToSelected(o=>o.set("fontSize",Math.max(8,Math.min(120,Number(e.target.value)||30))));
-$("objectColor").oninput=e=>{const o=selected();if(!o)return;if(o.type==="rect"||o.type==="circle")o.set("fill",e.target.value);else o.set("fill",e.target.value);canvas.requestRenderAll();};
-$("objectColor").onchange=()=>saveHistory();
-$("objectBackground").oninput=e=>{const o=selected();if(o){o.set("backgroundColor",e.target.value);canvas.requestRenderAll();}};
-$("objectBackground").onchange=()=>saveHistory();
-$("pageBackground").oninput=e=>{canvas.backgroundColor=e.target.value;canvas.requestRenderAll();};
-$("pageBackground").onchange=()=>saveHistory();
-$("accentColor").oninput=e=>{accent=e.target.value;};
-$("accentColor").onchange=()=>saveHistory();
-$("boldBtn").onclick=()=>applyToSelected(o=>o.set("fontWeight",o.fontWeight==="bold"?"normal":"bold"));
-$("italicBtn").onclick=()=>applyToSelected(o=>o.set("fontStyle",o.fontStyle==="italic"?"normal":"italic"));
-$("frontBtn").onclick=()=>applyToSelected(o=>canvas.bringToFront(o));
-$("backBtn").onclick=()=>applyToSelected(o=>canvas.sendToBack(o));
-$("duplicateBtn").onclick=()=>applyToSelected(o=>o.clone(clone=>{
- clone.set({left:o.left+25,top:o.top+25});canvas.add(clone);canvas.setActiveObject(clone);canvas.requestRenderAll();saveHistory();renderLayers();
-}));
-$("deleteBtn").onclick=()=>applyToSelected(o=>{canvas.remove(o);canvas.discardActiveObject();saveHistory();syncSelection();renderLayers();});
-canvas.on("selection:created",syncSelection);
-canvas.on("selection:updated",syncSelection);
-canvas.on("selection:cleared",syncSelection);
-canvas.on("object:modified",()=>{saveHistory();renderLayers();});
-canvas.on("object:added",()=>renderLayers());
-canvas.on("object:removed",()=>renderLayers());
-
-function renderLayers(){
- const list=$("layerList");if(!list)return;
- list.innerHTML="";
- const objects=canvas.getObjects().slice().reverse();
- objects.forEach((o,revIndex)=>{
-  const actual=canvas.getObjects().length-1-revIndex;
-  const row=document.createElement("div");
-  row.className="layer-item"+(selected()===o?" selected":"");
-  const label=o.name||(["textbox","i-text","text"].includes(o.type)?(o.text||"Text").slice(0,22):o.type==="image"?"Image":o.type==="rect"?"Shape":"Element");
-  row.innerHTML=`<span>${label}</span><span>↕</span>`;
-  row.onclick=()=>{canvas.setActiveObject(o);canvas.requestRenderAll();syncSelection();renderLayers();};
-  list.appendChild(row);
- });
-}
-
-/* -------------------------------------------------------
-   Undo / redo, save draft and JSON backup
-------------------------------------------------------- */
 $("undoBtn").onclick=()=>restoreHistory(historyIndex-1);
 $("redoBtn").onclick=()=>restoreHistory(historyIndex+1);
-function currentProject(){
- pages[currentPage].json=canvas.toJSON(["name"]);
- return {version:1,template:activeTemplate?activeTemplate.id:null,accent,pages:pages,currentPage};
-}
-$("saveBtn").onclick=()=>{
- try{localStorage.setItem("cvtools_portfolio_draft",JSON.stringify(currentProject()));setStatus("Draft saved in this browser.");}
- catch(err){setStatus("Could not save. Your browser storage may be full; try smaller images.");}
-};
-function downloadFile(filename,content,type){
- const blob=new Blob([content],{type:type});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");a.href=url;a.download=filename;a.click();
- setTimeout(()=>URL.revokeObjectURL(url),1500);
-}
-$("jsonExportBtn").onclick=()=>downloadFile("portfolio-backup.json",JSON.stringify(currentProject(),null,2),"application/json");
-$("jsonImportBtn").onclick=()=>$("jsonUpload").click();
-$("jsonUpload").onchange=e=>{
- const file=e.target.files[0];if(!file)return;
- const reader=new FileReader();
- reader.onload=()=>{
-  try{
-   const data=JSON.parse(reader.result);
-   if(!Array.isArray(data.pages)||!data.pages.length)throw new Error("Invalid portfolio backup");
-   pages=data.pages;currentPage=Math.min(data.currentPage||0,pages.length-1);
-   activeTemplate=templates.find(t=>t.id===data.template)||templates[0];accent=data.accent||activeTemplate.accent;
-   switchPage(currentPage);saveHistory();setStatus("Portfolio backup imported.");
-  }catch(err){alert("This JSON file is not a valid Portfolio Maker backup.");}
- };
- reader.readAsText(file);e.target.value="";
-};
-function loadDraft(){
- const raw=localStorage.getItem("cvtools_portfolio_draft");
- if(!raw)return false;
- try{
-  const data=JSON.parse(raw);
-  if(!Array.isArray(data.pages)||!data.pages.length)return false;
-  pages=data.pages;currentPage=Math.min(data.currentPage||0,pages.length-1);
-  activeTemplate=templates.find(t=>t.id===data.template)||templates[0];accent=data.accent||activeTemplate.accent;
-  switchPage(currentPage);saveHistory();return true;
- }catch(e){return false;}
-}
-
-/* -------------------------------------------------------
-   Export canvas pages as standalone SVG website / PDF
-------------------------------------------------------- */
-function getAllSvgs(){
- const original=currentPage;
- const saved=canvas.toJSON(["name"]);
- const output=[];
- pages.forEach((page,i)=>{
-  if(i===original){
-   output.push(canvas.toSVG());
-  }else if(page.json){
-   const temp=document.createElement("canvas");
-   const tempCanvas=new fabric.StaticCanvas(temp,{width:W,height:H});
-   tempCanvas.loadFromJSON(page.json,()=>{
-    tempCanvas.renderAll();output[i]=tempCanvas.toSVG();tempCanvas.dispose();
-   });
-  }else{
-   output[i]=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}"><rect width="${W}" height="${H}" fill="#ffffff"/></svg>`;
-  }
- });
- return new Promise(resolve=>{
-  const wait=()=>{if(output.length===pages.length&&output.every(Boolean))resolve(output);else setTimeout(wait,100);};
-  wait();
- });
-}
-async function exportWebsite(){
- pages[currentPage].json=canvas.toJSON(["name"]);
- const svgs=await getAllSvgs();
- const sections=svgs.map((svg,i)=>`<section class="portfolio-page" aria-label="Portfolio page ${i+1}">${svg}</section>`).join("\n");
- const html=`<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Professional Portfolio</title><meta name="description" content="Explore my professional portfolio, projects and experience."><style>*{box-sizing:border-box}body{margin:0;background:#f1f3f6;font-family:Arial,sans-serif}.portfolio-page{width:min(1100px,100%);margin:30px auto;background:#fff;box-shadow:0 4px 22px #0001;page-break-after:always}.portfolio-page svg{display:block;width:100%;height:auto}@media(max-width:600px){.portfolio-page{margin:0 auto;box-shadow:none}}@media print{body{background:#fff}.portfolio-page{width:100%;margin:0;box-shadow:none;break-after:page}}</style></head><body>${sections}</body></html>`;
- downloadFile("my-portfolio.html",html,"text/html");
- setStatus("Standalone portfolio website downloaded.");
-}
-async function exportPDF(){
- pages[currentPage].json=canvas.toJSON(["name"]);
- const svgs=await getAllSvgs();
- const w=window.open("","_blank");
- if(!w){alert("Please allow pop-ups to print your portfolio.");return;}
- w.document.write(`<!DOCTYPE html><html><head><title>Portfolio PDF</title><style>@page{size:A4 landscape;margin:0}*{box-sizing:border-box}body{margin:0}.page{width:297mm;height:210mm;page-break-after:always;display:flex;align-items:center;justify-content:center;overflow:hidden}.page svg{width:100%;height:100%;max-width:100%;max-height:100%}@media screen{body{background:#ddd}.page{margin:15px auto;background:white;box-shadow:0 2px 10px #999}}</style></head><body>${svgs.map(s=>`<div class="page">${s}</div>`).join("")}<script>window.onload=()=>setTimeout(()=>window.print(),700)<\/script></body></html>`);
- w.document.close();
- setStatus("Print window opened. Choose Save as PDF in the printer destination.");
-}
-$("downloadMenuBtn").onclick=()=>{
- const choice=prompt("Type 1 for Website (HTML) or 2 for PDF:\n\n1 - Download Website\n2 - Save as PDF");
- if(choice==="1")exportWebsite();
- else if(choice==="2")exportPDF();
-};
-$("previewBtn").onclick=async()=>{
- pages[currentPage].json=canvas.toJSON(["name"]);
- const svgs=await getAllSvgs();
- const w=window.open("","_blank");
- if(!w){alert("Please allow pop-ups to preview.");return;}
- w.document.write("<!DOCTYPE html><html><head><title>Portfolio Preview</title><meta name='viewport' content='width=device-width,initial-scale=1'><style>body{margin:0;background:#eef1f5}.page{max-width:1100px;margin:25px auto;background:#fff;box-shadow:0 4px 20px #0002}.page svg{display:block;width:100%;height:auto}@media(max-width:600px){.page{margin:0}}</style></head><body>"+svgs.map(s=>"<div class='page'>"+s+"</div>").join("")+"</body></html>");
- w.document.close();
-};
-
-/* -------------------------------------------------------
-   Restore page, template navigation and keyboard shortcuts
-------------------------------------------------------- */
-$("backGallery").onclick=()=>{
- if(!confirm("Return to templates? Save your draft first if you want to keep your latest changes."))return;
- $("editorScreen").classList.remove("active");$("galleryScreen").classList.add("active");
-};
 document.addEventListener("keydown",e=>{
- if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="s"){e.preventDefault();$("saveBtn").click();}
- if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="z"){e.preventDefault();$("undoBtn").click();}
- if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="y"){e.preventDefault();$("redoBtn").click();}
- if((e.key==="Delete"||e.key==="Backspace")&&selected()&&document.activeElement.tagName!=="TEXTAREA"&&document.activeElement.tagName!=="INPUT"){
-  e.preventDefault();$("deleteBtn").click();
- }
+ const mod=e.ctrlKey||e.metaKey;
+ if(mod&&e.key.toLowerCase()==="z"){e.preventDefault();restoreHistory(historyIndex-1)}
+ if(mod&&e.key.toLowerCase()==="y"){e.preventDefault();restoreHistory(historyIndex+1)}
+ if(mod&&e.key.toLowerCase()==="s"){e.preventDefault();saveDraft()}
+ if((e.key==="Delete"||e.key==="Backspace")&&document.activeElement.tagName!=="INPUT"&&document.activeElement.tagName!=="TEXTAREA")deleteSelected();
 });
+
+/* Zoom */
+$("zoomIn").onclick=()=>{zoom=Math.min(1.2,zoom+.08);applyZoom()};
+$("zoomOut").onclick=()=>{zoom=Math.max(.25,zoom-.08);applyZoom()};
+$("fitBtn").onclick=fitCanvas;
+window.addEventListener("resize",()=>{if(!$("editorView").classList.contains("hidden"))fitCanvas()});
+
+/* Editor tabs */
+document.querySelectorAll("[data-mode]").forEach(b=>b.onclick=()=>{
+ activeMode=b.dataset.mode;
+ document.querySelectorAll("[data-mode]").forEach(x=>x.classList.toggle("active",x===b));
+ $("designTools").classList.toggle("hidden",activeMode!=="design");
+ $("uploadTools").classList.toggle("hidden",activeMode!=="uploads");
+ $("pageTools").classList.toggle("hidden",activeMode!=="pages");
+});
+
+/* Form-based portfolio builder */
+function setupProjectFields(){
+ if($("projectFields").children.length)return;
+ addProjectInput("Website Redesign","A responsive website redesign focused on clarity and usability.");
+ addProjectInput("Mobile App Concept","A simple mobile app concept with user-friendly navigation.");
+}
+function addProjectInput(title="",description=""){
+ projectCount++;const id=projectCount;
+ const row=document.createElement("div");row.className="project-form-row";
+ row.innerHTML=`<div class="field"><label>Project ${id} Title</label><input class="project-title" value="${escapeAttr(title)}"></div>
+ <div class="field"><label>Project Description</label><textarea class="project-description">${escapeHtml(description)}</textarea></div>
+ <div class="field"><label>Project Image</label><input class="project-image" type="file" accept="image/*"></div>`;
+ $("projectFields").appendChild(row);
+}
+$("addProjectField").onclick=()=>addProjectInput("New Project","Describe what you created and the result.");
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function escapeAttr(s){return escapeHtml(s)}
+async function buildFromForm(){
+ initCanvas();clearCanvas();pages=[{name:"Portfolio",json:null}];currentPage=0;
+ const name=$("fName").value||"Your Name",title=$("fTitle").value||"Professional Title",accent=$("fAccent").value,font=$("fFont").value;
+ canvas.backgroundColor="#ffffff";
+ addRect(0,0,17,A4_H,accent);
+ addText(name.toUpperCase(),60,55,34,"#172033",{weight:"bold",font,label:"Full name"});
+ addText(title,62,105,18,accent,{weight:"bold",font,label:"Professional title"});
+ addText([$("fEmail").value,$("fLocation").value,$("fWebsite").value,$("fSocial").value].filter(Boolean).join("  |  "),62,145,11,"#64748b",{font,label:"Contact"});
+ const profileFile=$("fProfileImage").files[0];
+
+if(profileFile){
+ const profileData=await fileToDataURL(profileFile);
+ await addFormImage(profileData,650,35,90,105,profileFile.name);
+}else{
+ addPlaceholder(650,35,90,105,"Profile photo",accent);
+}
+ addRule(185,accent);
+ addText("ABOUT ME",60,210,19,accent,{weight:"bold",font,label:"About heading"});
+ addText($("fAbout").value,60,245,14,"#475569",{font,width:670,label:"About"});
+ addText("SKILLS",60,355,19,accent,{weight:"bold",font,label:"Skills heading"});
+ addText($("fSkills").value,60,390,14,"#475569",{font,label:"Skills"});
+ addText("EXPERIENCE",60,465,19,accent,{weight:"bold",font,label:"Experience heading"});
+ addText($("fExperience").value+"  |  "+$("fExperienceDate").value,60,500,14,"#172033",{weight:"bold",font,label:"Experience role"});
+ addText($("fExperienceText").value,60,530,13,"#475569",{font,label:"Experience description"});
+ addText("EDUCATION",60,625,19,accent,{weight:"bold",font,label:"Education heading"});
+ addText($("fEducation").value+"  |  "+$("fEducationDate").value,60,660,14,"#475569",{font,label:"Education"});
+ addText("SELECTED PROJECTS",60,730,19,accent,{weight:"bold",font,label:"Projects heading"});
+ const rows=[...$("projectFields").querySelectorAll(".project-form-row")];
+ let x=60,y=775,col=0;
+ for(let i=0;i<rows.length;i++){
+  const titleText=rows[i].querySelector(".project-title").value||"Project";
+  const desc=rows[i].querySelector(".project-description").value||"Project description";
+  addText(titleText,x,y,13,"#172033",{weight:"bold",font,label:"Project title"});
+  addText(desc,x,y+24,11,"#64748b",{width:205,font,label:"Project description"});
+  const file=rows[i].querySelector(".project-image").files[0];
+  if(file){const data=await fileToDataURL(file);await addFormImage(data,x,y+62,205,110,file.name)}
+  else addPlaceholder(x,y+62,205,110,"Upload project image",accent);
+  col++;x+=225;if(col===3){col=0;x=60;y+=205}
+ }
+ addText("GET IN TOUCH",60,Math.min(1040,y+210),18,accent,{weight:"bold",font,label:"Contact heading"});
+ addText($("fEmail").value+"  |  "+$("fWebsite").value,60,Math.min(1075,y+245),13,"#475569",{font,label:"Contact"});
+ canvas.renderAll();saveHistory();renderPages();renderLayers();
+}
+function addFormImage(data,x,y,w,h,label){
+ return new Promise(resolve=>fabric.Image.fromURL(data,img=>{
+  const s=Math.max(w/img.width,h/img.height);img.set({left:x,top:y,scaleX:s,scaleY:s});
+  img.clipPath=new fabric.Rect({width:w,height:h,originX:"center",originY:"center"});
+  img.customLabel=label;canvas.add(img);resolve();
+ }));
+}
+let formRefreshTimer;
+
+function scheduleFormRefresh(){
+ if($("formView").classList.contains("hidden"))return;
+
+ clearTimeout(formRefreshTimer);
+
+ formRefreshTimer=setTimeout(()=>{
+   buildFromForm();
+ },500);
+}
+
+[
+ "fName","fTitle","fEmail","fLocation","fAbout",
+ "fWebsite","fSocial","fSkills","fExperience",
+ "fExperienceDate","fExperienceText","fEducation",
+ "fEducationDate","fAccent","fFont"
+].forEach(id=>{
+ $(id).addEventListener("input",scheduleFormRefresh);
+ $(id).addEventListener("change",scheduleFormRefresh);
+});
+
+$("projectFields").addEventListener("input",scheduleFormRefresh);
+$("projectFields").addEventListener("change",scheduleFormRefresh);
+
+/* Profile image is inserted on form submit and available in uploads */
+$("fProfileImage").addEventListener("change",async e=>{
+ const f=e.target.files[0];if(!f)return;
+ const data=await fileToDataURL(f);uploadedImages.push({name:f.name,data});renderUploads();
+});
+
+/* Save/load local draft */
+function saveDraft(){
+ if(!canvas){alert("Open a portfolio first.");return}
+ storeCurrentPage();
+ const data={pages,images:uploadedImages};
+ try{localStorage.setItem("cvtools_portfolio_draft",JSON.stringify(data));setStatus("Draft saved in this browser.");alert("Your draft has been saved in this browser.");}
+ catch(e){alert("Draft could not be saved. The images may be too large. Use Backup to download a project file.");}
+}
+$("saveBtn").onclick=saveDraft;
+function loadDraft(){
+ const raw=localStorage.getItem("cvtools_portfolio_draft");if(!raw)return false;
+ try{
+  const data=JSON.parse(raw);pages=data.pages||[];uploadedImages=data.images||[];
+  if(!pages.length)return false;
+  currentPage=0;initCanvas();
+  canvas.loadFromJSON(pages[0].json||{objects:[],background:"#ffffff"},()=>{canvas.renderAll();renderPages();renderLayers();renderUploads();showView("editor");fitCanvas()});
+  return true;
+ }catch(e){return false}
+}
+const loadBtn=document.createElement("button");loadBtn.className="btn";loadBtn.textContent="Load Draft";$("backGalleryBtn").after(loadBtn);
+loadBtn.onclick=()=>{if(!loadDraft())alert("No saved draft was found in this browser.")};
+
+/* JSON backup and import */
+$("backupBtn").onclick=()=>{
+ if(!canvas){alert("Open a portfolio first.");return}
+ storeCurrentPage();const blob=new Blob([JSON.stringify({pages,images:uploadedImages},null,2)],{type:"application/json"});
+ downloadBlob(blob,"portfolio-project-backup.json");
+};
+function downloadBlob(blob,name){const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+const importInput=document.createElement("input");importInput.type="file";importInput.accept=".json,application/json";importInput.style.display="none";document.body.appendChild(importInput);
+const importBtn=document.createElement("button");importBtn.className="btn";importBtn.textContent="Import Backup";$("backupBtn").after(importBtn);
+importBtn.onclick=()=>importInput.click();
+importInput.onchange=async e=>{
+ const file=e.target.files[0];if(!file)return;
+ try{const d=JSON.parse(await file.text());if(!d.pages?.length)throw Error("Invalid file");
+ pages=d.pages;uploadedImages=d.images||[];currentPage=0;initCanvas();
+ canvas.loadFromJSON(pages[0].json,()=>{canvas.renderAll();showView("editor");renderPages();renderLayers();renderUploads();fitCanvas()});
+ }catch(err){alert("This backup file is not valid.");}
+};
+
+/* Export pages as SVG-based website */
+async function getAllSvgs(){
+ storeCurrentPage();
+ const results=[];
+ for(let i=0;i<pages.length;i++){
+  if(i===currentPage){results.push(canvas.toSVG());continue}
+  const tempEl=document.createElement("canvas");
+  const temp=new fabric.StaticCanvas(tempEl,{width:A4_W,height:A4_H});
+  await new Promise(resolve=>temp.loadFromJSON(pages[i].json||{objects:[],background:"#fff"},()=>{temp.renderAll();results[i]=temp.toSVG();temp.dispose();resolve()}));
+ }
+ return results;
+}
+$("websiteBtn").onclick=async()=>{
+ if(!canvas)return;
+ setStatus("Preparing website export...");
+ try{
+  const svgs=await getAllSvgs();
+  const html=`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>My Portfolio</title><style>body{margin:0;background:#eef2f7;font-family:Arial,sans-serif}.pages{display:flex;flex-direction:column;align-items:center;gap:25px;padding:25px}.page{width:min(794px,100%);background:white;box-shadow:0 5px 25px #0002}.page svg{width:100%;height:auto;display:block}@media print{body{background:white}.pages{padding:0;gap:0}.page{box-shadow:none;break-after:page}}</style></head><body><main class="pages">${svgs.map(s=>`<section class="page">${s}</section>`).join("")}</main></body></html>`;
+  downloadBlob(new Blob([html],{type:"text/html"}),"my-portfolio.html");
+  setStatus("Website HTML downloaded.");
+ }catch(e){alert("Website export failed. Please try again.");setStatus("Export failed.");}
+};
+
+/* PDF export: browser print dialog, choose Save as PDF */
+$("pdfBtn").onclick=async()=>{
+ if(!canvas){alert("Open a portfolio first.");return}
+ setStatus("Preparing PDF pages...");
+ try{
+  const svgs=await getAllSvgs();
+  const w=window.open("","_blank");
+  if(!w){alert("Please allow pop-ups for this website and try again.");return}
+  w.document.write(`<!doctype html><html><head><title>Portfolio PDF</title><style>@page{size:A4 portrait;margin:0}*{box-sizing:border-box}body{margin:0}.page{width:210mm;height:297mm;page-break-after:always;overflow:hidden}.page svg{width:210mm;height:297mm;display:block}@media screen{body{background:#ddd}.page{margin:15px auto;background:white;box-shadow:0 2px 12px #0003}}</style></head><body>${svgs.map(s=>`<div class="page">${s}</div>`).join("")}<script>window.onload=()=>setTimeout(()=>window.print(),500)<\/script></body></html>`);
+  w.document.close();setStatus("Print window opened. Choose Save as PDF.");
+ }catch(e){alert("PDF export failed.");}
+};
+
+/* Preview */
+$("previewBtn").onclick=async()=>{
+ const svgs=await getAllSvgs();const w=window.open("","_blank");
+ if(!w){alert("Allow pop-ups to preview.");return}
+ w.document.write(`<html><head><title>Portfolio Preview</title><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{margin:0;background:#eef2f7}.page{max-width:794px;margin:20px auto;background:white;box-shadow:0 4px 20px #0002}.page svg{width:100%;height:auto;display:block}</style></head><body>${svgs.map(s=>`<div class="page">${s}</div>`).join("")}</body></html>`);
+ w.document.close();
+};
+
+/* Start with gallery; restore canvas on editor open */
 </script>
 </body>
 </html>
