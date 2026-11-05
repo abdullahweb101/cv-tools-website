@@ -4,464 +4,1028 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Advanced Image Studio - Free Online Image Editor | CV Tools</title>
-<meta name="description" content="Resize, compress and convert images online. Process multiple images, control quality and download optimized images privately in your browser.">
+<title>Advanced Image Studio - Free Online Image & GIF Tools</title>
+<meta name="description" content="Free online image studio to resize, compress, convert, edit images, create GIFs, extract GIF frames and add watermarks.">
+<meta name="keywords" content="image editor, image compressor, image resizer, GIF maker, GIF compressor, JPG converter, PNG converter, WebP converter">
 <meta name="robots" content="index,follow">
-<link rel="canonical" href="https://cv-tools-website.pages.dev/image-studio.html">
-<meta name="theme-color" content="#ffffff">
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gifuct-js@2.1.2/dist/gifuct-js.min.js"></script>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#f6f8fc;color:#172033;line-height:1.6}
+:root {
+  --primary:#3563e9;
+  --primary-dark:#244bc1;
+  --navy:#172033;
+  --muted:#64748b;
+  --bg:#f5f7fb;
+  --white:#fff;
+  --border:#e3e8f1;
+  --green:#15966b;
+  --radius:15px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--bg);color:var(--navy);
+  font-family:Arial,Helvetica,sans-serif;
+}
 button,input,select{font:inherit}
 button{cursor:pointer}
 a{text-decoration:none;color:inherit}
-header{background:#fff;border-bottom:1px solid #e6ebf2;position:sticky;top:0;z-index:20}
-.nav{max-width:1250px;margin:auto;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
-.logo{font-size:23px;font-weight:800;letter-spacing:-.7px}
-.logo span{color:#3563e9}
-.navlinks{display:flex;gap:23px;flex-wrap:wrap}
-.navlinks a{font-size:14px;font-weight:600;color:#536078}
-.navlinks a:hover{color:#3563e9}
-.hero{background:linear-gradient(135deg,#edf3ff,#f9fbff);padding:54px 20px 48px;text-align:center}
-.hero .tag{display:inline-block;padding:6px 13px;background:#e1eaff;color:#2855c5;border-radius:30px;font-size:12px;font-weight:700;margin-bottom:15px}
-.hero h1{font-size:clamp(30px,4vw,43px);line-height:1.2;letter-spacing:-1px;margin-bottom:13px}
-.hero p{max-width:690px;margin:auto;color:#657087;font-size:16px}
-.wrap{max-width:1250px;margin:35px auto;padding:0 20px 65px}
-.workspace{display:grid;grid-template-columns:340px minmax(0,1fr);gap:22px;align-items:start}
-.panel,.preview-panel{background:#fff;border:1px solid #e4e9f1;border-radius:15px;box-shadow:0 5px 20px rgba(22,38,70,.035)}
-.panel{padding:23px}
-.panel h2,.preview-panel h2{font-size:19px;margin-bottom:5px}
-.sub{font-size:13px;color:#78849a;margin-bottom:20px}
-.field{margin-bottom:18px}
-.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#354158}
-input[type=file]{display:none}
-.upload{border:2px dashed #bdcbea;border-radius:12px;padding:25px 14px;text-align:center;background:#f8faff;cursor:pointer;transition:.2s}
-.upload:hover,.upload.drag{border-color:#3563e9;background:#f0f5ff}
-.upload .big{font-size:30px;margin-bottom:7px}
-.upload strong{display:block;font-size:14px}
-.upload small{color:#77839a;font-size:12px}
-.control,select{width:100%;height:43px;border:1px solid #dce3ed;border-radius:8px;padding:0 11px;background:#fff;color:#253149;outline:none}
-.control:focus,select:focus{border-color:#3563e9;box-shadow:0 0 0 3px rgba(53,99,233,.1)}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.checkrow{display:flex;align-items:center;gap:9px;font-size:13px;color:#4d5a71;margin-top:9px}
-input[type=checkbox]{accent-color:#3563e9;width:16px;height:16px}
-.range-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
-input[type=range]{width:100%;accent-color:#3563e9}
-.hint{font-size:11px;color:#8290a5;margin-top:5px}
-.btn{border:0;border-radius:8px;padding:12px 15px;font-size:13px;font-weight:700;transition:.2s}
-.primary{background:#3563e9;color:#fff}
-.primary:hover{background:#244dc5}
-.secondary{background:#edf2ff;color:#2d57c7}
-.secondary:hover{background:#e0e9ff}
-.outline{background:#fff;border:1px solid #dce3ed;color:#344158}
-.danger{background:#fff0f0;color:#c43d3d}
-.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:19px}
-.actions .primary{grid-column:1/-1;padding:14px}
-button:disabled{opacity:.5;cursor:not-allowed}
-.preview-panel{padding:22px;min-height:590px}
-.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}
-.preview-top p{font-size:12px;color:#7a879c}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
-.stat{background:#f6f8fc;border:1px solid #e9edf3;border-radius:9px;padding:11px}
-.stat small{display:block;color:#7b8799;font-size:11px}
-.stat strong{font-size:17px}
-.empty{min-height:350px;border:1px dashed #d5deeb;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:#8591a5;padding:25px}
-.empty .big{font-size:40px;margin-bottom:8px}
-.empty strong{display:block;color:#4a5870}
-.empty p{font-size:13px;max-width:330px;margin:6px auto}
-.file-list{display:grid;gap:12px}
-.file-card{border:1px solid #e7ebf2;border-radius:11px;padding:13px;display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}
-.thumb{height:78px;background:#f2f5fa;border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.thumb img{max-width:100%;max-height:100%;object-fit:contain}
-.file-info{min-width:0}
-.file-name{font-size:13px;font-weight:700;overflow-wrap:anywhere}
-.file-meta{font-size:11px;color:#7a879b;margin-top:4px}
-.file-result{font-size:12px;color:#21834f;margin-top:5px;font-weight:700}
-.file-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
-.file-actions button{font-size:11px;padding:6px 9px}
-.progress{height:7px;background:#e9edf5;border-radius:20px;overflow:hidden;margin-top:15px;display:none}
-.progress span{height:100%;width:0;background:#3563e9;display:block;transition:width .2s}
-.status{font-size:12px;color:#64728a;margin-top:9px;min-height:18px}
-.notice{background:#f0f6ff;border:1px solid #dce8ff;border-radius:9px;padding:12px;font-size:12px;color:#526580;margin-top:17px}
-.section{max-width:1000px;margin:0 auto;padding:15px 20px 60px}
-.section h2{text-align:center;font-size:26px;margin-bottom:22px}
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.feature{background:#fff;border:1px solid #e6ebf2;border-radius:12px;padding:20px}
-.feature b{display:block;margin:7px 0}
-.feature p{font-size:13px;color:#738097}
-footer{background:#172033;color:#fff;padding:28px 20px;text-align:center;font-size:13px}
-footer p{color:#bdc7d7;margin-top:5px}
-@media(max-width:900px){.workspace{grid-template-columns:1fr}.panel{order:1}.preview-panel{order:2}}
-@media(max-width:600px){
-.nav{flex-direction:column}.navlinks{justify-content:center;gap:14px}
-.hero{padding:40px 17px}.wrap{padding:0 13px 45px;margin-top:20px}
-.panel,.preview-panel{padding:16px}.preview-panel{min-height:400px}
-.stats{gap:6px}.stat{padding:8px}.stat strong{font-size:14px}
-.features{grid-template-columns:1fr}.file-card{grid-template-columns:70px minmax(0,1fr);gap:10px}
-.thumb{height:65px}.actions{grid-template-columns:1fr 1fr}
+.topbar{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:17px 5%;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;flex-wrap:wrap;
+}
+.brand{font-size:22px;font-weight:800;color:var(--navy)}
+.brand span{color:var(--primary)}
+.navlinks{display:flex;gap:22px;flex-wrap:wrap;color:#475569;font-size:14px}
+.navlinks a:hover{color:var(--primary)}
+.hero{
+  background:linear-gradient(120deg,#172b58,#3563e9);
+  color:white;padding:52px 20px;text-align:center;
+}
+.hero h1{font-size:clamp(29px,5vw,43px);margin:0 0 13px}
+.hero p{max-width:720px;margin:auto;color:#e1eaff;line-height:1.7}
+.hero-tags{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:22px}
+.hero-tags span{background:#ffffff1b;border:1px solid #ffffff38;padding:8px 13px;border-radius:30px;font-size:12px}
+.container{width:min(1200px,94%);margin:30px auto 65px}
+.workspace{
+  display:grid;grid-template-columns:235px minmax(0,1fr);
+  gap:22px;align-items:start;
+}
+.sidebar,.main-panel,.info-card{
+  background:#fff;border:1px solid var(--border);
+  border-radius:var(--radius);
+}
+.sidebar{padding:15px;position:sticky;top:15px}
+.side-title{font-size:12px;color:#94a3b8;font-weight:800;letter-spacing:1px;padding:7px 10px 12px}
+.tool-tab{
+  width:100%;border:0;background:transparent;text-align:left;
+  padding:12px 11px;border-radius:10px;color:#475569;
+  display:flex;align-items:center;gap:10px;margin:3px 0;font-weight:600;
+}
+.tool-tab:hover{background:#f1f5ff;color:var(--primary)}
+.tool-tab.active{background:#eaf0ff;color:var(--primary)}
+.tool-tab .ico{font-size:19px;width:23px;text-align:center}
+.main-panel{padding:25px;min-width:0}
+.panel-head{display:flex;justify-content:space-between;align-items:flex-start;gap:15px;flex-wrap:wrap;margin-bottom:22px}
+.panel-head h2{margin:0 0 7px;font-size:24px}
+.panel-head p{margin:0;color:var(--muted);font-size:14px;line-height:1.6}
+.badge{background:#eaf8f2;color:#087b53;padding:7px 10px;border-radius:30px;font-size:11px;font-weight:700}
+.tool-section{display:none}
+.tool-section.active{display:block}
+.upload-box{
+  border:2px dashed #bdc9dc;background:#f8faff;
+  border-radius:14px;padding:30px 18px;text-align:center;
+  transition:.2s;cursor:pointer;
+}
+.upload-box:hover{border-color:var(--primary);background:#f2f6ff}
+.upload-box .upload-icon{font-size:34px;margin-bottom:8px}
+.upload-box h3{margin:5px 0 8px;font-size:17px}
+.upload-box p{margin:0;color:var(--muted);font-size:13px;line-height:1.6}
+.upload-box input{display:none}
+.primary-btn,.secondary-btn,.danger-btn{
+  border:0;border-radius:9px;padding:11px 17px;
+  font-weight:700;font-size:13px;display:inline-flex;
+  align-items:center;justify-content:center;gap:7px;
+}
+.primary-btn{background:var(--primary);color:white}
+.primary-btn:hover{background:var(--primary-dark)}
+.secondary-btn{background:#edf2ff;color:#244bc1}
+.secondary-btn:hover{background:#dfe8ff}
+.danger-btn{background:#fff0f0;color:#c43c3c}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
+.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:15px;margin:19px 0}
+.field{min-width:0}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input:not([type=checkbox]):not([type=range]),.field select{
+  width:100%;padding:11px 12px;border:1px solid #dce3ee;
+  border-radius:9px;background:#fff;color:var(--navy);outline:none;
+}
+.field input:focus,.field select:focus{border-color:var(--primary)}
+.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px}
+.checkline{display:flex;align-items:center;gap:8px;font-size:13px;color:#475569;margin:12px 0}
+.range-line{display:flex;gap:12px;align-items:center}
+.range-line input{flex:1}
+.range-value{min-width:45px;text-align:right;font-size:13px;font-weight:700}
+.preview-area{
+  background:#f3f6fb;border:1px solid var(--border);
+  border-radius:12px;padding:15px;margin-top:18px;
+}
+.preview-area h3{font-size:14px;margin:0 0 12px}
+.preview-img{
+  max-width:100%;max-height:340px;object-fit:contain;
+  display:block;margin:auto;border-radius:7px;
+}
+.empty-preview{color:#94a3b8;text-align:center;padding:30px 10px;font-size:13px}
+.file-list{display:grid;gap:9px;margin-top:15px}
+.file-item{
+  display:flex;align-items:center;gap:12px;
+  padding:10px;border:1px solid var(--border);
+  border-radius:10px;background:#fff;min-width:0;
+}
+.file-thumb{
+  width:54px;height:54px;object-fit:cover;border-radius:7px;
+  background:#f1f5f9;flex-shrink:0;
+}
+.file-info{min-width:0;flex:1}
+.file-info strong{display:block;font-size:12px;overflow-wrap:anywhere}
+.file-info small{display:block;color:var(--muted);margin-top:5px;font-size:11px}
+.file-status{font-size:11px;color:var(--green);font-weight:700}
+.file-item button{border:0;background:#fff0f0;color:#c43c3c;border-radius:7px;padding:7px 9px}
+.result-box{
+  display:none;background:#effaf5;border:1px solid #ccebdc;
+  border-radius:11px;padding:14px;margin-top:17px;
+  color:#176a4c;font-size:13px;line-height:1.6;
+}
+.result-box.show{display:block}
+.notice{
+  background:#fff8e8;border:1px solid #f3dfac;color:#805c12;
+  padding:12px 14px;border-radius:10px;font-size:12px;line-height:1.6;margin-top:15px;
+}
+.info-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:25px}
+.info-card{padding:19px}
+.info-card .big{font-size:25px}
+.info-card h3{font-size:15px;margin:10px 0 7px}
+.info-card p{font-size:12px;color:var(--muted);line-height:1.6;margin:0}
+.section-title{font-size:24px;margin:38px 0 16px}
+footer{text-align:center;background:#fff;border-top:1px solid var(--border);padding:24px;color:var(--muted);font-size:12px}
+footer a{color:var(--primary)}
+.progress{height:7px;background:#e8edf5;border-radius:20px;overflow:hidden;margin-top:12px;display:none}
+.progress>div{height:100%;width:0;background:var(--primary);transition:width .2s}
+.canvas-wrap{background:#edf1f7;border-radius:10px;padding:12px;overflow:auto;text-align:center}
+.canvas-wrap canvas{max-width:100%;height:auto;background:white;box-shadow:0 3px 15px #00000015}
+@media(max-width:850px){
+ .workspace{grid-template-columns:1fr}
+ .sidebar{position:static;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px}
+ .side-title{grid-column:1/-1}
+ .tool-tab{font-size:12px}
+}
+@media(max-width:560px){
+ .topbar{padding:14px 4%}
+ .navlinks{gap:12px;font-size:12px}
+ .hero{padding:38px 17px}
+ .container{width:94%;margin-top:18px}
+ .main-panel{padding:17px}
+ .field-grid{grid-template-columns:1fr}
+ .info-grid{grid-template-columns:1fr}
+ .sidebar{grid-template-columns:1fr 1fr;padding:10px}
+ .tool-tab{padding:10px 7px}
+ .panel-head h2{font-size:21px}
 }
 </style>
 </head>
 <body>
 
-<header>
-<nav class="nav">
-<a href="index.html" class="logo">CV <span>Tools</span></a>
-<div class="navlinks">
-<a href="index.html">Home</a>
-<a href="index.html#tools">Our Tools</a>
-<a href="portfolio-maker.html">Portfolio Maker</a>
-<a href="pdf-tools.html">PDF Tools</a>
-</div>
-</nav>
+<header class="topbar">
+  <a class="brand" href="index.html">CV <span>Tools</span></a>
+  <nav class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Our Tools</a>
+    <a href="portfolio-maker.html">Portfolio Maker</a>
+    <a href="blog.html">Blog</a>
+  </nav>
 </header>
 
 <section class="hero">
-<div class="tag">FREE ONLINE IMAGE PROCESSING</div>
-<h1>Advanced Image Studio</h1>
-<p>Resize, compress and convert your images with precision. Process multiple files together and download optimized results without uploading your images to a server.</p>
+  <h1>Advanced Image Studio</h1>
+  <p>Resize, compress, convert, edit and optimize your images. Create animated GIFs, extract frames and add professional watermarks — all in one place.</p>
+  <div class="hero-tags">
+    <span>JPG</span><span>PNG</span><span>WebP</span><span>GIF</span><span>Batch Processing</span><span>Free Online Tools</span>
+  </div>
 </section>
 
-<main class="wrap">
+<main class="container">
 <div class="workspace">
 
-<aside class="panel">
-<h2>Image Settings</h2>
-<p class="sub">Choose your files and configure processing options.</p>
-
-<div class="field">
-<label>Select Images</label>
-<label class="upload" id="dropZone" for="imageInput">
-<div class="big">📤</div>
-<strong>Click or drag images here</strong>
-<small>JPG, JPEG, PNG and WebP · Up to 20 MB per image</small>
-</label>
-<input id="imageInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
-<div class="hint" id="selectionHint">No images selected</div>
-</div>
-
-<div class="field">
-<label for="format">Output Format</label>
-<select id="format">
-<option value="image/jpeg">JPG</option>
-<option value="image/webp">WebP</option>
-<option value="image/png">PNG</option>
-</select>
-<div class="hint">PNG does not use lossy quality compression.</div>
-</div>
-
-<div class="field">
-<label>Resize Dimensions (pixels)</label>
-<div class="two">
-<div><input class="control" id="width" type="number" min="1" max="12000" placeholder="Width"></div>
-<div><input class="control" id="height" type="number" min="1" max="12000" placeholder="Height"></div>
-</div>
-<label class="checkrow"><input type="checkbox" id="lockRatio" checked> Maintain original aspect ratio</label>
-<div class="hint">Leave both fields empty to keep original dimensions.</div>
-</div>
-
-<div class="field">
-<label for="preset">Quick Resize Presets</label>
-<select id="preset">
-<option value="">Custom dimensions</option>
-<option value="1920x1080">Full HD · 1920 × 1080</option>
-<option value="1280x720">HD · 1280 × 720</option>
-<option value="1080x1080">Square · 1080 × 1080</option>
-<option value="1080x1350">Portrait · 1080 × 1350</option>
-<option value="1200x628">Social preview · 1200 × 628</option>
-<option value="800x800">Web image · 800 × 800</option>
-<option value="512x512">Small image · 512 × 512</option>
-</select>
-<div class="hint">Presets fit the complete image inside the selected dimensions without cropping.</div>
-</div>
-
-<div class="field">
-<div class="range-row"><label for="quality">Output Quality</label><strong id="qualityValue">85%</strong></div>
-<input id="quality" type="range" min="10" max="100" value="85">
-<div class="hint">Applies to JPG and WebP exports. Higher quality generally means larger files.</div>
-</div>
-
-<div class="field">
-<label>Output Filename</label>
-<select id="suffix">
-<option value="-optimized">Add -optimized suffix</option>
-<option value="-resized">Add -resized suffix</option>
-<option value="-converted">Add -converted suffix</option>
-<option value="">Keep original filename</option>
-</select>
-</div>
-
-<div class="actions">
-<button class="btn primary" id="processBtn" disabled>Process Images</button>
-<button class="btn secondary" id="downloadAllBtn" disabled>Download All ZIP</button>
-<button class="btn outline" id="clearBtn">Clear All</button>
-</div>
-<div class="progress" id="progress"><span id="progressBar"></span></div>
-<div class="status" id="status" aria-live="polite"></div>
-<div class="notice">🔒 Privacy: image processing happens locally in your browser. Your selected images are not sent to our server.</div>
+<aside class="sidebar">
+  <div class="side-title">IMAGE TOOLS</div>
+  <button class="tool-tab active" data-tab="resize"><span class="ico">↔️</span> Image Resize</button>
+  <button class="tool-tab" data-tab="compress"><span class="ico">📦</span> Image Compressor</button>
+  <button class="tool-tab" data-tab="convert"><span class="ico">🔄</span> Format Converter</button>
+  <button class="tool-tab" data-tab="gif"><span class="ico">🎞️</span> GIF Studio</button>
+  <button class="tool-tab" data-tab="editor"><span class="ico">🎨</span> Image Editor</button>
+  <button class="tool-tab" data-tab="watermark"><span class="ico">©️</span> Watermark Studio</button>
+  <button class="tool-tab" data-tab="batch"><span class="ico">🗂️</span> Batch Processing</button>
 </aside>
 
-<section class="preview-panel">
-<div class="preview-top">
-<div><h2>Your Images</h2><p id="resultSummary">Add images to begin processing.</p></div>
-<button class="btn outline" id="downloadAllTop" disabled>Download ZIP ↓</button>
+<section class="main-panel">
+
+<!-- RESIZE -->
+<div class="tool-section active" id="resize">
+  <div class="panel-head">
+    <div><h2>Image Resizer</h2><p>Change image dimensions with aspect ratio control and useful presets.</p></div>
+    <span class="badge">Browser Processing</span>
+  </div>
+  <label class="upload-box" for="resizeFile">
+    <div class="upload-icon">🖼️</div>
+    <h3>Upload an image</h3>
+    <p>JPG, PNG or WebP · Maximum 20 MB</p>
+    <input type="file" id="resizeFile" accept="image/jpeg,image/png,image/webp">
+  </label>
+  <div class="field-grid">
+    <div class="field"><label>Width (px)</label><input type="number" id="resizeWidth" min="1" max="12000" placeholder="e.g. 1200"></div>
+    <div class="field"><label>Height (px)</label><input type="number" id="resizeHeight" min="1" max="12000" placeholder="e.g. 800"></div>
+    <div class="field"><label>Quick Presets</label>
+      <select id="resizePreset">
+        <option value="">Choose a preset</option>
+        <option value="1920x1080">Full HD – 1920 × 1080</option>
+        <option value="1280x720">HD – 1280 × 720</option>
+        <option value="1080x1080">Square – 1080 × 1080</option>
+        <option value="1080x1350">Instagram Portrait – 1080 × 1350</option>
+        <option value="1080x1920">Story / Reel – 1080 × 1920</option>
+        <option value="1200x628">Social Link – 1200 × 628</option>
+        <option value="800x800">Small Square – 800 × 800</option>
+      </select>
+    </div>
+    <div class="field"><label>Output Format</label>
+      <select id="resizeFormat"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select>
+    </div>
+  </div>
+  <label class="checkline"><input type="checkbox" id="resizeLock" checked> Maintain original aspect ratio (fit inside dimensions)</label>
+  <div class="field">
+    <label>Output Quality: <span id="resizeQualityLabel">90%</span></label>
+    <div class="range-line"><input type="range" id="resizeQuality" min="10" max="100" value="90"><span class="range-value" id="resizeQualityValue">90%</span></div>
+  </div>
+  <div class="btn-row"><button class="primary-btn" id="resizeRun">Resize Image</button><button class="secondary-btn" id="resizeDownload" disabled>Download Image</button></div>
+  <div class="preview-area"><h3>Preview</h3><div id="resizePreview" class="empty-preview">Your resized image will appear here.</div></div>
+  <div class="result-box" id="resizeResult"></div>
 </div>
 
-<div class="stats">
-<div class="stat"><small>Selected Images</small><strong id="countStat">0</strong></div>
-<div class="stat"><small>Original Size</small><strong id="originalStat">0 KB</strong></div>
-<div class="stat"><small>Processed</small><strong id="processedStat">0</strong></div>
+<!-- COMPRESS -->
+<div class="tool-section" id="compress">
+  <div class="panel-head">
+    <div><h2>Image Compressor</h2><p>Reduce image file size while controlling output quality.</p></div>
+    <span class="badge">Quality Control</span>
+  </div>
+  <label class="upload-box" for="compressFile">
+    <div class="upload-icon">📦</div><h3>Select image to compress</h3>
+    <p>JPG, PNG or WebP · Maximum 20 MB</p>
+    <input type="file" id="compressFile" accept="image/jpeg,image/png,image/webp">
+  </label>
+  <div class="field-grid">
+    <div class="field"><label>Output Format</label><select id="compressFormat"><option value="image/webp">WebP (recommended)</option><option value="image/jpeg">JPG</option><option value="image/png">PNG</option></select></div>
+    <div class="field"><label>Quality: <span id="compressQualityLabel">75%</span></label><div class="range-line"><input type="range" id="compressQuality" min="10" max="100" value="75"><span class="range-value" id="compressQualityValue">75%</span></div></div>
+  </div>
+  <div class="notice">PNG is a lossless format, so the quality slider does not reduce PNG file size in the same way as JPG or WebP. WebP or JPG may provide smaller files.</div>
+  <div class="btn-row"><button class="primary-btn" id="compressRun">Compress Image</button><button class="secondary-btn" id="compressDownload" disabled>Download Compressed</button></div>
+  <div class="preview-area"><h3>Compressed Preview</h3><div id="compressPreview" class="empty-preview">Your compressed image will appear here.</div></div>
+  <div class="result-box" id="compressResult"></div>
 </div>
 
-<div class="empty" id="emptyState">
-<div><div class="big">🖼️</div><strong>Your workspace is ready</strong><p>Upload one or more images. Your previews and processing results will appear here.</p></div>
+<!-- CONVERT -->
+<div class="tool-section" id="convert">
+  <div class="panel-head">
+    <div><h2>Image Format Converter</h2><p>Convert supported static images between JPG, PNG and WebP formats.</p></div>
+    <span class="badge">Format Conversion</span>
+  </div>
+  <label class="upload-box" for="convertFile">
+    <div class="upload-icon">🔄</div><h3>Upload image to convert</h3>
+    <p>JPG, PNG or WebP · Maximum 20 MB</p>
+    <input type="file" id="convertFile" accept="image/jpeg,image/png,image/webp">
+  </label>
+  <div class="field-grid">
+    <div class="field"><label>Convert To</label><select id="convertFormat"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option><option value="image/webp">WebP</option></select></div>
+    <div class="field"><label>Quality</label><input type="range" id="convertQuality" min="10" max="100" value="90"><small id="convertQualityValue">90%</small></div>
+  </div>
+  <div class="notice">When converting transparent PNG to JPG, transparent areas are filled with white because JPG does not support transparency. Animated GIF conversion is handled separately in GIF Studio.</div>
+  <div class="btn-row"><button class="primary-btn" id="convertRun">Convert Image</button><button class="secondary-btn" id="convertDownload" disabled>Download Converted</button></div>
+  <div class="preview-area"><h3>Converted Preview</h3><div id="convertPreview" class="empty-preview">Converted image will appear here.</div></div>
+  <div class="result-box" id="convertResult"></div>
 </div>
-<div class="file-list" id="fileList"></div>
+
+<!-- GIF -->
+<div class="tool-section" id="gif">
+  <div class="panel-head">
+    <div><h2>GIF Studio</h2><p>Create animated GIFs, resize GIFs, optimize file size and extract animation frames.</p></div>
+    <span class="badge">Animated GIF Tools</span>
+  </div>
+
+  <div class="field">
+    <label>Choose GIF Tool</label>
+    <select id="gifMode">
+      <option value="make">Create GIF from multiple images</option>
+      <option value="optimize">Compress / Resize existing GIF</option>
+      <option value="frames">Extract GIF frames as images</option>
+    </select>
+  </div>
+
+  <div id="gifMakePanel">
+    <label class="upload-box" for="gifImages">
+      <div class="upload-icon">🎞️</div><h3>Select multiple images</h3>
+      <p>Choose JPG, PNG or WebP images in animation order</p>
+      <input type="file" id="gifImages" accept="image/jpeg,image/png,image/webp" multiple>
+    </label>
+    <div class="field-grid">
+      <div class="field"><label>Frame Delay (milliseconds)</label><input type="number" id="gifDelay" value="400" min="50" max="5000"></div>
+      <div class="field"><label>GIF Width (px)</label><input type="number" id="gifWidth" value="600" min="50" max="1200"></div>
+      <div class="field"><label>Repeat Animation</label><select id="gifRepeat"><option value="0">Loop forever</option><option value="1">Play once</option><option value="3">Play 3 times</option></select></div>
+      <div class="field"><label>GIF Quality (1 best, 20 smaller)</label><input type="number" id="gifQuality" value="10" min="1" max="20"></div>
+    </div>
+    <div id="gifImageList" class="file-list"></div>
+    <button class="primary-btn" id="gifCreate">Create Animated GIF</button>
+  </div>
+
+  <div id="gifOptimizePanel" style="display:none">
+    <label class="upload-box" for="gifOptimizeFile">
+      <div class="upload-icon">🗜️</div><h3>Upload an animated GIF</h3>
+      <p>GIF files · Recommended maximum 20 MB</p>
+      <input type="file" id="gifOptimizeFile" accept="image/gif">
+    </label>
+    <div class="field-grid">
+      <div class="field"><label>Output Width (px)</label><input type="number" id="gifOptWidth" placeholder="Original width"></div>
+      <div class="field"><label>Frame Delay Multiplier (%)</label><input type="number" id="gifOptSpeed" value="100" min="25" max="400"></div>
+      <div class="field"><label>GIF Quality (1 best, 20 smaller)</label><input type="number" id="gifOptQuality" value="15" min="1" max="20"></div>
+    </div>
+    <button class="primary-btn" id="gifOptimize">Optimize / Resize GIF</button>
+  </div>
+
+  <div id="gifFramesPanel" style="display:none">
+    <label class="upload-box" for="gifFrameFile">
+      <div class="upload-icon">🖼️</div><h3>Upload GIF to extract frames</h3>
+      <p>Each animation frame will be saved as an image</p>
+      <input type="file" id="gifFrameFile" accept="image/gif">
+    </label>
+    <div class="field-grid"><div class="field"><label>Frame Output Format</label><select id="gifFrameFormat"><option value="image/png">PNG</option><option value="image/jpeg">JPG</option></select></div></div>
+    <button class="primary-btn" id="gifExtract">Extract Frames</button>
+  </div>
+
+  <div class="progress" id="gifProgress"><div id="gifProgressBar"></div></div>
+  <div class="preview-area"><h3>GIF Preview / Results</h3><div id="gifPreview" class="empty-preview">Your GIF or extracted frames will appear here.</div></div>
+  <div class="btn-row"><button class="secondary-btn" id="gifDownload" disabled>Download GIF</button><button class="secondary-btn" id="gifZip" disabled>Download Frames ZIP</button></div>
+  <div class="result-box" id="gifResult"></div>
+  <div class="notice">GIF processing uses browser libraries loaded from public CDNs. Very large or complex GIFs may use significant memory. Animated WebP is not converted here; this GIF Studio works with GIF files.</div>
+</div>
+
+<!-- EDITOR -->
+<div class="tool-section" id="editor">
+  <div class="panel-head">
+    <div><h2>Image Editor</h2><p>Crop, rotate, flip and apply basic visual adjustments.</p></div>
+    <span class="badge">Quick Editing</span>
+  </div>
+  <label class="upload-box" for="editFile">
+    <div class="upload-icon">🎨</div><h3>Upload image for editing</h3>
+    <p>JPG, PNG or WebP · Maximum 20 MB</p>
+    <input type="file" id="editFile" accept="image/jpeg,image/png,image/webp">
+  </label>
+  <div class="field-grid">
+    <div class="field"><label>Crop X (px)</label><input type="number" id="cropX" value="0" min="0"></div>
+    <div class="field"><label>Crop Y (px)</label><input type="number" id="cropY" value="0" min="0"></div>
+    <div class="field"><label>Crop Width (px)</label><input type="number" id="cropW" placeholder="Original width"></div>
+    <div class="field"><label>Crop Height (px)</label><input type="number" id="cropH" placeholder="Original height"></div>
+  </div>
+  <div class="field-grid">
+    <div class="field"><label>Brightness: <span id="brightnessValue">100%</span></label><input type="range" id="brightness" min="0" max="200" value="100"></div>
+    <div class="field"><label>Contrast: <span id="contrastValue">100%</span></label><input type="range" id="contrast" min="0" max="200" value="100"></div>
+    <div class="field"><label>Saturation: <span id="saturationValue">100%</span></label><input type="range" id="saturation" min="0" max="200" value="100"></div>
+    <div class="field"><label>Blur: <span id="blurValue">0px</span></label><input type="range" id="blur" min="0" max="10" value="0"></div>
+    <div class="field"><label>Rotation</label><select id="rotation"><option value="0">No rotation</option><option value="90">90° clockwise</option><option value="180">180°</option><option value="270">270° clockwise</option></select></div>
+    <div class="field"><label>Flip</label><select id="flip"><option value="none">No flip</option><option value="horizontal">Horizontal</option><option value="vertical">Vertical</option></select></div>
+  </div>
+  <div class="btn-row"><button class="primary-btn" id="editApply">Apply Edits</button><button class="secondary-btn" id="editReset">Reset Settings</button><button class="secondary-btn" id="editDownload" disabled>Download Edited Image</button></div>
+  <div class="preview-area"><h3>Edited Preview</h3><div id="editPreview" class="empty-preview">Your edited image will appear here.</div></div>
+  <div class="result-box" id="editResult"></div>
+</div>
+
+<!-- WATERMARK -->
+<div class="tool-section" id="watermark">
+  <div class="panel-head">
+    <div><h2>Watermark Studio</h2><p>Add custom text or a logo watermark to protect your images.</p></div>
+    <span class="badge">Brand Protection</span>
+  </div>
+  <label class="upload-box" for="watermarkFile">
+    <div class="upload-icon">©️</div><h3>Upload your image</h3>
+    <p>JPG, PNG or WebP · Maximum 20 MB</p>
+    <input type="file" id="watermarkFile" accept="image/jpeg,image/png,image/webp">
+  </label>
+  <div class="field-grid">
+    <div class="field"><label>Watermark Text</label><input type="text" id="watermarkText" placeholder="Your brand or website"></div>
+    <div class="field"><label>Text Color</label><input type="color" id="watermarkColor" value="#ffffff"></div>
+    <div class="field"><label>Font Size (px)</label><input type="number" id="watermarkSize" value="34" min="8" max="200"></div>
+    <div class="field"><label>Opacity (%)</label><input type="range" id="watermarkOpacity" min="5" max="100" value="65"></div>
+    <div class="field"><label>Position</label><select id="watermarkPosition"><option value="bottom-right">Bottom Right</option><option value="bottom-left">Bottom Left</option><option value="top-right">Top Right</option><option value="top-left">Top Left</option><option value="center">Center</option></select></div>
+    <div class="field"><label>Logo Image (optional)</label><input type="file" id="watermarkLogo" accept="image/png,image/jpeg,image/webp"></div>
+  </div>
+  <div class="btn-row"><button class="primary-btn" id="watermarkApply">Apply Watermark</button><button class="secondary-btn" id="watermarkDownload" disabled>Download Watermarked Image</button></div>
+  <div class="preview-area"><h3>Watermark Preview</h3><div id="watermarkPreview" class="empty-preview">Your watermarked image will appear here.</div></div>
+  <div class="result-box" id="watermarkResult"></div>
+</div>
+
+<!-- BATCH -->
+<div class="tool-section" id="batch">
+  <div class="panel-head">
+    <div><h2>Batch Image Processor</h2><p>Apply the same resize, format and quality settings to multiple images.</p></div>
+    <span class="badge">Multiple Images</span>
+  </div>
+  <label class="upload-box" for="batchFiles">
+    <div class="upload-icon">🗂️</div><h3>Select multiple images</h3>
+    <p>JPG, PNG or WebP · Up to 30 images · Maximum 20 MB each</p>
+    <input type="file" id="batchFiles" accept="image/jpeg,image/png,image/webp" multiple>
+  </label>
+  <div id="batchFileList" class="file-list"></div>
+  <div class="field-grid">
+    <div class="field"><label>Output Format</label><select id="batchFormat"><option value="image/webp">WebP</option><option value="image/jpeg">JPG</option><option value="image/png">PNG</option></select></div>
+    <div class="field"><label>Quality</label><input type="range" id="batchQuality" min="10" max="100" value="85"><small id="batchQualityValue">85%</small></div>
+    <div class="field"><label>Resize Width (optional)</label><input type="number" id="batchWidth" placeholder="Keep original"></div>
+    <div class="field"><label>Resize Height (optional)</label><input type="number" id="batchHeight" placeholder="Keep original"></div>
+  </div>
+  <label class="checkline"><input type="checkbox" id="batchLock" checked> Maintain aspect ratio</label>
+  <div class="btn-row"><button class="primary-btn" id="batchRun">Process All Images</button><button class="secondary-btn" id="batchZip" disabled>Download All as ZIP</button></div>
+  <div class="progress" id="batchProgress"><div id="batchProgressBar"></div></div>
+  <div id="batchResultList" class="file-list"></div>
+  <div class="result-box" id="batchResult"></div>
+</div>
+
+</section>
+</div>
+
+<section class="info-grid">
+  <div class="info-card"><div class="big">🔒</div><h3>Private Browser Processing</h3><p>Most image operations run locally in your browser. Your selected images are not uploaded to our website server by these tools.</p></div>
+  <div class="info-card"><div class="big">⚡</div><h3>Multiple Image Tools</h3><p>Resize, compress, convert, edit, watermark and create GIFs from one convenient workspace.</p></div>
+  <div class="info-card"><div class="big">📱</div><h3>Mobile Friendly</h3><p>Use the image tools on desktop, tablet or mobile devices with a responsive interface.</p></div>
 </section>
 
-</div>
+<h2 class="section-title">Frequently Asked Questions</h2>
+<div class="info-card" style="margin-bottom:12px"><h3>Are these image tools free?</h3><p>Yes. The tools on this page are available to use without a paid subscription. Your device handles most processing.</p></div>
+<div class="info-card" style="margin-bottom:12px"><h3>Which image formats are supported?</h3><p>Static image tools support JPG, PNG and WebP. GIF Studio supports animated GIF creation, optimization and frame extraction.</p></div>
+<div class="info-card"><h3>Does image compression always reduce file size?</h3><p>Not always. The result depends on the original image, output format and selected quality. Compare the original and processed sizes before using the result.</p></div>
+
 </main>
 
-<section class="section">
-<h2>Professional Image Processing Features</h2>
-<div class="features">
-<div class="feature"><div>📐</div><b>Precise Resizing</b><p>Set custom image dimensions or use popular presets while preserving the original aspect ratio.</p></div>
-<div class="feature"><div>⚡</div><b>Image Compression</b><p>Control output quality to balance image clarity and file size.</p></div>
-<div class="feature"><div>🔄</div><b>Format Conversion</b><p>Export compatible images in JPG, PNG and WebP formats.</p></div>
-<div class="feature"><div>📚</div><b>Batch Processing</b><p>Process multiple selected images with the same settings.</p></div>
-<div class="feature"><div>📊</div><b>File Size Comparison</b><p>Compare original and processed file sizes for each image.</p></div>
-<div class="feature"><div>🔐</div><b>Private Processing</b><p>Images are processed on your device using your browser's canvas features.</p></div>
-</div>
-</section>
-
 <footer>
-<strong>CV Tools</strong>
-<p>Free online tools for documents, images and productivity.</p>
-<p><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a> · <a href="index.html">Home</a></p>
+  <p>© <span id="year"></span> CV Tools. Free online image utilities.</p>
+  <p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms-and-conditions.html">Terms & Conditions</a> · <a href="contact.html">Contact</a></p>
 </footer>
 
 <script>
+"use strict";
+
+/* ---------------- BASIC HELPERS ---------------- */
+
 const $ = id => document.getElementById(id);
-const input = $('imageInput');
-const dropZone = $('dropZone');
-let files = [];
-let results = [];
+const MAX_FILE = 20 * 1024 * 1024;
+let resizeImage=null, resizeBlob=null;
+let compressImage=null, compressBlob=null;
+let convertImage=null, convertBlob=null;
+let editImage=null, editBlob=null;
+let watermarkImage=null, watermarkBlob=null, watermarkLogo=null;
+let gifFrames=[], gifBlob=null, extractedFrames=[];
+let batchImages=[], batchOutputs=[];
+
+$("year").textContent=new Date().getFullYear();
 
 function formatBytes(bytes){
- if(!bytes) return '0 KB';
- const units=['B','KB','MB','GB'];
- const i=Math.min(Math.floor(Math.log(bytes)/Math.log(1024)),3);
- return (bytes/Math.pow(1024,i)).toFixed(i===0?0:2)+' '+units[i];
+  if(bytes===0)return "0 Bytes";
+  if(!bytes)return "—";
+  const units=["Bytes","KB","MB","GB"];
+  const i=Math.floor(Math.log(bytes)/Math.log(1024));
+  return (bytes/Math.pow(1024,i)).toFixed(i===0?0:2)+" "+units[i];
+}
+function showResult(id,message){
+  const el=$(id);el.innerHTML=message;el.classList.add("show");
+}
+function clearResult(id){
+  const el=$(id);el.classList.remove("show");el.innerHTML="";
+}
+function validFile(file,types=["image/jpeg","image/png","image/webp"]){
+  if(!file)return false;
+  if(!types.includes(file.type)){
+    alert("This file format is not supported by this tool.");return false;
+  }
+  if(file.size>MAX_FILE){
+    alert("File size is over 20 MB. Please choose a smaller image.");return false;
+  }
+  return true;
+}
+function loadImage(file){
+  return new Promise((resolve,reject)=>{
+    const url=URL.createObjectURL(file);
+    const img=new Image();
+    img.onload=()=>{URL.revokeObjectURL(url);resolve(img);};
+    img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error("Unable to load image."));};
+    img.src=url;
+  });
+}
+function canvasBlob(canvas,type,quality=0.9){
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(blob=>{
+      if(blob)resolve(blob);else reject(new Error("Your browser could not create this image format."));
+    },type,quality);
+  });
+}
+function showBlobPreview(containerId,blob){
+  const el=$(containerId);
+  const url=URL.createObjectURL(blob);
+  el.innerHTML="";
+  const img=document.createElement("img");
+  img.className="preview-img";
+  img.src=url;
+  img.onload=()=>URL.revokeObjectURL(url);
+  el.appendChild(img);
+}
+function downloadBlob(blob,filename){
+  if(!blob)return;
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=filename;
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+function extensionFor(type){
+  return type==="image/jpeg"?"jpg":type==="image/png"?"png":type==="image/webp"?"webp":"gif";
 }
 function safeName(name){
- return name.replace(/\.[^.]+$/,'').replace(/[^\w-]+/g,'-').replace(/-+/g,'-');
+  return name.replace(/\.[^.]+$/,"").replace(/[^a-z0-9_-]/gi,"-").slice(0,70)||"image";
 }
-function setStatus(message){$('status').textContent=message}
-function updateStats(){
- $('countStat').textContent=files.length;
- $('originalStat').textContent=formatBytes(files.reduce((s,f)=>s+f.size,0));
- $('processedStat').textContent=results.length;
- $('selectionHint').textContent=files.length+' image(s) selected';
- $('resultSummary').textContent=files.length+' selected · '+results.length+' processed';
- $('processBtn').disabled=!files.length;
- $('downloadAllBtn').disabled=!results.length;
- $('downloadAllTop').disabled=!results.length;
- $('emptyState').style.display=files.length?'none':'flex';
+function setProgress(id,barId,percent){
+  $(id).style.display="block";
+  $(barId).style.width=Math.max(0,Math.min(100,percent))+"%";
 }
-function renderFiles(){
- const list=$('fileList');
- list.innerHTML='';
- files.forEach((file,index)=>{
-  const result=results.find(r=>r.index===index);
-  const card=document.createElement('article');
-  card.className='file-card';
-  const thumb=document.createElement('div');
-  thumb.className='thumb';
-  const img=document.createElement('img');
-  img.alt='Image preview';
-  img.src=URL.createObjectURL(file);
-  thumb.appendChild(img);
-  const info=document.createElement('div');
-  info.className='file-info';
-  const name=document.createElement('div');
-  name.className='file-name';
-  name.textContent=file.name;
-  const meta=document.createElement('div');
-  meta.className='file-meta';
-  meta.textContent=formatBytes(file.size)+' · '+(file.type||'Image file');
-  info.append(name,meta);
-  if(result){
-   const details=document.createElement('div');
-   details.className='file-result';
-   const saved=file.size-result.blob.size;
-   const percent=file.size?Math.round(saved/file.size*100):0;
-   details.textContent=result.width+' × '+result.height+' · '+formatBytes(result.blob.size)+' · '+(saved>=0?percent+'% smaller':Math.abs(percent)+'% larger');
-   info.appendChild(details);
-   const actions=document.createElement('div');
-   actions.className='file-actions';
-   const download=document.createElement('button');
-   download.className='btn secondary';
-   download.textContent='Download';
-   download.onclick=()=>downloadResult(result);
-   actions.appendChild(download);
-   info.appendChild(actions);
-  }
-  card.append(thumb,info);
-  list.appendChild(card);
- });
- updateStats();
+function resetProgress(id,barId){
+  $(id).style.display="none";$(barId).style.width="0%";
 }
-function addFiles(incoming){
- const valid=[];
- const rejected=[];
- for(const file of incoming){
-  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
-   rejected.push(file.name+' (unsupported format)');continue;
-  }
-  if(file.size>20*1024*1024){
-   rejected.push(file.name+' (over 20 MB)');continue;
-  }
-  valid.push(file);
- }
- files=[...files,...valid];
- results=[];
- renderFiles();
- if(rejected.length)setStatus('Skipped: '+rejected.join(', '));
- else setStatus(valid.length+' image(s) added successfully.');
+function addFileRow(container,file,detail="Ready"){
+  const row=document.createElement("div");row.className="file-item";
+  const img=document.createElement("img");img.className="file-thumb";
+  const url=URL.createObjectURL(file);img.src=url;
+  img.onload=()=>URL.revokeObjectURL(url);
+  const info=document.createElement("div");info.className="file-info";
+  const name=document.createElement("strong");name.textContent=file.name;
+  const small=document.createElement("small");small.textContent=formatBytes(file.size);
+  info.append(name,small);
+  const status=document.createElement("span");status.className="file-status";status.textContent=detail;
+  row.append(img,info,status);container.appendChild(row);
 }
-input.addEventListener('change',e=>{addFiles([...e.target.files]);input.value=''});
-['dragenter','dragover'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.add('drag')}));
-['dragleave','drop'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.remove('drag')}));
-dropZone.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
-$('quality').addEventListener('input',e=>$('qualityValue').textContent=e.target.value+'%');
-$('preset').addEventListener('change',()=>{
- const value=$('preset').value;
- if(!value)return;
- const [w,h]=value.split('x');
- $('width').value=w;$('height').value=h;
+function switchTab(name){
+  document.querySelectorAll(".tool-tab").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
+  document.querySelectorAll(".tool-section").forEach(s=>s.classList.toggle("active",s.id===name));
+}
+document.querySelectorAll(".tool-tab").forEach(btn=>{
+  btn.addEventListener("click",()=>switchTab(btn.dataset.tab));
 });
-$('lockRatio').addEventListener('change',()=>{if(!$('lockRatio').checked)setStatus('Aspect ratio is unlocked. Images may be stretched to the exact dimensions.')});
 
-function loadImage(file){
- return new Promise((resolve,reject)=>{
-  const url=URL.createObjectURL(file);
-  const img=new Image();
-  img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};
-  img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not read '+file.name))};
-  img.src=url;
- });
-}
-function getDimensions(img){
- let w=Number($('width').value)||img.naturalWidth;
- let h=Number($('height').value)||img.naturalHeight;
- const lock=$('lockRatio').checked;
- if(lock){
-  const ratio=img.naturalWidth/img.naturalHeight;
-  if($('width').value && $('height').value){
-   const scale=Math.min(w/img.naturalWidth,h/img.naturalHeight);
-   w=Math.round(img.naturalWidth*scale);
-   h=Math.round(img.naturalHeight*scale);
-  }else if($('width').value){h=Math.round(w/ratio)}
-  else if($('height').value){w=Math.round(h*ratio)}
- }
- w=Math.max(1,Math.min(12000,Math.round(w)));
- h=Math.max(1,Math.min(12000,Math.round(h)));
- return {w,h};
-}
-function canvasBlob(canvas,type,quality){
- return new Promise((resolve,reject)=>{
-  canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Image export failed. Try another format.')),type,quality);
- });
-}
-async function processOne(file,index){
- const img=await loadImage(file);
- const {w,h}=getDimensions(img);
- const canvas=document.createElement('canvas');
- canvas.width=w;canvas.height=h;
- const ctx=canvas.getContext('2d',{alpha:true});
- if(!ctx)throw new Error('Canvas is not supported by this browser.');
- const format=$('format').value;
- if(format==='image/jpeg'){
-  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);
- }
- ctx.imageSmoothingEnabled=true;
- ctx.imageSmoothingQuality='high';
- ctx.drawImage(img,0,0,w,h);
- const quality=Number($('quality').value)/100;
- const blob=await canvasBlob(canvas,format,quality);
- const ext=format==='image/jpeg'?'jpg':format==='image/png'?'png':'webp';
- const suffix=$('suffix').value;
- const filename=safeName(file.name)+suffix+'.'+ext;
- return {index,blob,filename,width:w,height:h};
-}
-async function processAll(){
- if(!files.length)return;
- results=[];
- $('processBtn').disabled=true;
- $('progress').style.display='block';
- $('progressBar').style.width='0%';
- setStatus('Processing images...');
- renderFiles();
- let success=0,failed=0;
- for(let i=0;i<files.length;i++){
+/* ---------------- RESIZE ---------------- */
+
+$("resizeFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!validFile(f))return;
   try{
-   const result=await processOne(files[i],i);
-   results.push(result);success++;
-  }catch(err){
-   failed++;setStatus('Issue with '+files[i].name+': '+err.message);
-  }
-  $('progressBar').style.width=Math.round((i+1)/files.length*100)+'%';
-  $('processedStat').textContent=results.length;
-  renderFiles();
- }
- $('processBtn').disabled=false;
- setStatus('Finished: '+success+' processed, '+failed+' failed.');
- $('resultSummary').textContent=success+' images processed successfully';
-}
-function downloadResult(result){
- const url=URL.createObjectURL(result.blob);
- const a=document.createElement('a');
- a.href=url;a.download=result.filename;
- document.body.appendChild(a);a.click();a.remove();
- setTimeout(()=>URL.revokeObjectURL(url),1500);
-}
-async function downloadZip(){
- if(!results.length)return;
- if(typeof JSZip==='undefined'){
-  results.forEach((r,i)=>setTimeout(()=>downloadResult(r),i*300));
-  setStatus('ZIP library unavailable. Downloading files individually.');
-  return;
- }
- const zip=new JSZip();
- results.forEach(r=>zip.file(r.filename,r.blob));
- setStatus('Preparing ZIP archive...');
- try{
-  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;a.download='cv-tools-optimized-images.zip';
-  document.body.appendChild(a);a.click();a.remove();
-  setTimeout(()=>URL.revokeObjectURL(url),2000);
-  setStatus('Your ZIP archive is ready.');
- }catch(e){setStatus('Could not create ZIP. Please download images individually.')}
-}
-$('processBtn').addEventListener('click',processAll);
-$('downloadAllBtn').addEventListener('click',downloadZip);
-$('downloadAllTop').addEventListener('click',downloadZip);
-$('clearBtn').addEventListener('click',()=>{
- files=[];results=[];
- $('progress').style.display='none';
- $('progressBar').style.width='0%';
- $('width').value='';$('height').value='';
- $('preset').value='';
- $('imageInput').value='';
- setStatus('Workspace cleared.');
- renderFiles();
+    resizeImage=await loadImage(f);
+    $("resizeWidth").value=resizeImage.naturalWidth;
+    $("resizeHeight").value=resizeImage.naturalHeight;
+    $("resizePreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(f)+'">';
+    $("resizeDownload").disabled=true;clearResult("resizeResult");
+  }catch(err){alert(err.message);}
 });
-renderFiles();
+$("resizePreset").addEventListener("change",()=>{
+  if(!$("resizePreset").value)return;
+  const [w,h]=$("resizePreset").value.split("x");
+  $("resizeWidth").value=w;$("resizeHeight").value=h;
+});
+$("resizeQuality").addEventListener("input",()=>{
+  $("resizeQualityLabel").textContent=$("resizeQuality").value+"%";
+  $("resizeQualityValue").textContent=$("resizeQuality").value+"%";
+});
+$("resizeRun").addEventListener("click",async()=>{
+  if(!resizeImage){alert("Please upload an image first.");return;}
+  let w=Number($("resizeWidth").value),h=Number($("resizeHeight").value);
+  if(!w||!h||w<1||h<1||w>12000||h>12000){alert("Enter valid dimensions between 1 and 12000 pixels.");return;}
+  if($("resizeLock").checked){
+    const ratio=resizeImage.naturalWidth/resizeImage.naturalHeight;
+    const scale=Math.min(w/resizeImage.naturalWidth,h/resizeImage.naturalHeight);
+    w=Math.max(1,Math.round(resizeImage.naturalWidth*scale));
+    h=Math.max(1,Math.round(resizeImage.naturalHeight*scale));
+  }
+  try{
+    const c=document.createElement("canvas");c.width=w;c.height=h;
+    const ctx=c.getContext("2d");
+    if($("resizeFormat").value==="image/jpeg"){ctx.fillStyle="#fff";ctx.fillRect(0,0,w,h);}
+    ctx.drawImage(resizeImage,0,0,w,h);
+    resizeBlob=await canvasBlob(c,$("resizeFormat").value,Number($("resizeQuality").value)/100);
+    showBlobPreview("resizePreview",resizeBlob);
+    $("resizeDownload").disabled=false;
+    showResult("resizeResult",`<strong>Resize complete.</strong><br>New dimensions: ${w} × ${h}px<br>Output size: ${formatBytes(resizeBlob.size)}`);
+  }catch(err){alert(err.message);}
+});
+$("resizeDownload").addEventListener("click",()=>{
+  downloadBlob(resizeBlob,"resized-image."+extensionFor($("resizeFormat").value));
+});
+
+/* ---------------- COMPRESS ---------------- */
+
+$("compressFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!validFile(f))return;
+  try{
+    compressImage=await loadImage(f);
+    $("compressPreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(f)+'">';
+    $("compressDownload").disabled=true;clearResult("compressResult");
+    $("compressFile").dataset.originalSize=f.size;
+  }catch(err){alert(err.message);}
+});
+$("compressQuality").addEventListener("input",()=>{
+  $("compressQualityLabel").textContent=$("compressQuality").value+"%";
+  $("compressQualityValue").textContent=$("compressQuality").value+"%";
+});
+$("compressRun").addEventListener("click",async()=>{
+  if(!compressImage){alert("Please upload an image first.");return;}
+  const type=$("compressFormat").value;
+  try{
+    const c=document.createElement("canvas");
+    c.width=compressImage.naturalWidth;c.height=compressImage.naturalHeight;
+    const ctx=c.getContext("2d");
+    if(type==="image/jpeg"){ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);}
+    ctx.drawImage(compressImage,0,0);
+    compressBlob=await canvasBlob(c,type,Number($("compressQuality").value)/100);
+    showBlobPreview("compressPreview",compressBlob);
+    $("compressDownload").disabled=false;
+    const before=Number($("compressFile").dataset.originalSize||0);
+    const difference=before?((1-compressBlob.size/before)*100).toFixed(1):0;
+    const note=compressBlob.size<before?`File size reduced by ${difference}%.`:"The output is not smaller than the original. Try another format or lower quality.";
+    showResult("compressResult",`<strong>Compression complete.</strong><br>Original: ${formatBytes(before)}<br>New size: ${formatBytes(compressBlob.size)}<br>${note}`);
+  }catch(err){alert(err.message);}
+});
+$("compressDownload").addEventListener("click",()=>{
+  downloadBlob(compressBlob,"compressed-image."+extensionFor($("compressFormat").value));
+});
+
+/* ---------------- CONVERT ---------------- */
+
+$("convertFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!validFile(f))return;
+  try{
+    convertImage=await loadImage(f);
+    $("convertPreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(f)+'">';
+    $("convertDownload").disabled=true;clearResult("convertResult");
+  }catch(err){alert(err.message);}
+});
+$("convertQuality").addEventListener("input",()=>$("convertQualityValue").textContent=$("convertQuality").value+"%");
+$("convertRun").addEventListener("click",async()=>{
+  if(!convertImage){alert("Please upload an image first.");return;}
+  try{
+    const type=$("convertFormat").value;
+    const c=document.createElement("canvas");c.width=convertImage.naturalWidth;c.height=convertImage.naturalHeight;
+    const ctx=c.getContext("2d");
+    if(type==="image/jpeg"){ctx.fillStyle="#fff";ctx.fillRect(0,0,c.width,c.height);}
+    ctx.drawImage(convertImage,0,0);
+    convertBlob=await canvasBlob(c,type,Number($("convertQuality").value)/100);
+    showBlobPreview("convertPreview",convertBlob);
+    $("convertDownload").disabled=false;
+    showResult("convertResult",`<strong>Conversion complete.</strong><br>Format: ${extensionFor(type).toUpperCase()}<br>Dimensions: ${c.width} × ${c.height}px<br>Size: ${formatBytes(convertBlob.size)}`);
+  }catch(err){alert(err.message);}
+});
+$("convertDownload").addEventListener("click",()=>{
+  downloadBlob(convertBlob,"converted-image."+extensionFor($("convertFormat").value));
+});
+
+/* ---------------- GIF MODE ---------------- */
+
+$("gifMode").addEventListener("change",()=>{
+  const mode=$("gifMode").value;
+  $("gifMakePanel").style.display=mode==="make"?"block":"none";
+  $("gifOptimizePanel").style.display=mode==="optimize"?"block":"none";
+  $("gifFramesPanel").style.display=mode==="frames"?"block":"none";
+  $("gifPreview").innerHTML="Select files to get started.";
+  $("gifDownload").disabled=true;$("gifZip").disabled=true;
+  clearResult("gifResult");
+});
+
+$("gifImages").addEventListener("change",e=>{
+  gifFrames=Array.from(e.target.files);
+  $("gifImageList").innerHTML="";
+  if(gifFrames.length>40){alert("Please select no more than 40 images.");gifFrames=[];return;}
+  gifFrames.forEach(f=>{
+    if(!validFile(f)){gifFrames=[];$("gifImageList").innerHTML="";return;}
+    addFileRow($("gifImageList"),f);
+  });
+});
+
+function gifLibraryReady(){
+  if(typeof window.GIF!=="function"){
+    alert("GIF Maker library did not load. Please refresh the page and try again.");
+    return false;
+  }
+  return true;
+}
+$("gifCreate").addEventListener("click",async()=>{
+  if(!gifFrames.length){alert("Please select at least two images.");return;}
+  if(!gifLibraryReady())return;
+  const width=Number($("gifWidth").value);
+  const delay=Number($("gifDelay").value);
+  const quality=Number($("gifQuality").value);
+  if(width<50||width>1200||delay<50||delay>5000){alert("Check the GIF width and frame delay.");return;}
+  try{
+    const loaded=[];
+    for(const f of gifFrames)loaded.push(await loadImage(f));
+    const first=loaded[0];
+    const height=Math.max(1,Math.round(width*first.naturalHeight/first.naturalWidth));
+    const gif=new GIF({
+      workers:2,quality:quality,width:width,height:height,
+      repeat:Number($("gifRepeat").value),
+      workerScript:"https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+    });
+    for(let i=0;i<loaded.length;i++){
+      const img=loaded[i];
+      const c=document.createElement("canvas");c.width=width;c.height=height;
+      const ctx=c.getContext("2d");
+      const scale=Math.min(width/img.naturalWidth,height/img.naturalHeight);
+      const dw=img.naturalWidth*scale,dh=img.naturalHeight*scale;
+      ctx.fillStyle="#fff";ctx.fillRect(0,0,width,height);
+      ctx.drawImage(img,(width-dw)/2,(height-dh)/2,dw,dh);
+      gif.addFrame(c,{delay:delay,copy:true});
+    }
+    setProgress("gifProgress","gifProgressBar",5);
+    gif.on("progress",p=>setProgress("gifProgress","gifProgressBar",Math.round(p*100)));
+    gif.on("finished",blob=>{
+      gifBlob=blob;
+      const url=URL.createObjectURL(blob);
+      $("gifPreview").innerHTML='<img class="preview-img" src="'+url+'">';
+      $("gifDownload").disabled=false;
+      $("gifZip").disabled=true;
+      showResult("gifResult",`<strong>Animated GIF created.</strong><br>Frames: ${loaded.length}<br>Dimensions: ${width} × ${height}px<br>File size: ${formatBytes(blob.size)}`);
+      setProgress("gifProgress","gifProgressBar",100);
+    });
+    gif.render();
+  }catch(err){alert("Could not create GIF: "+err.message);}
+});
+$("gifDownload").addEventListener("click",()=>{
+  if(gifBlob)downloadBlob(gifBlob,"animated-image.gif");
+});
+
+/* GIF decoding uses gifuct-js */
+function getGifuct(){
+  return window.gifuct||window.gifuctJs||window.gifuctjs||null;
+}
+async function decodeGif(file){
+  const api=getGifuct();
+  if(!api||!api.parseGIF||!api.decompressFrames){
+    throw new Error("GIF frame library did not load. Refresh the page and try again.");
+  }
+  const buffer=await file.arrayBuffer();
+  const parsed=api.parseGIF(buffer);
+  const frames=api.decompressFrames(parsed,true);
+  return {parsed,frames,width:parsed.lsd.width,height:parsed.lsd.height};
+}
+function framePatchToCanvas(frame,canvasWidth,canvasHeight,scale=1){
+  const c=document.createElement("canvas");
+  c.width=Math.max(1,Math.round(canvasWidth*scale));
+  c.height=Math.max(1,Math.round(canvasHeight*scale));
+  const ctx=c.getContext("2d");
+  const patch=document.createElement("canvas");
+  patch.width=frame.dims.width;patch.height=frame.dims.height;
+  const pctx=patch.getContext("2d");
+  const imageData=pctx.createImageData(frame.dims.width,frame.dims.height);
+  imageData.data.set(frame.patch);
+  pctx.putImageData(imageData,0,0);
+  ctx.drawImage(patch,frame.dims.left*scale,frame.dims.top*scale,
+    frame.dims.width*scale,frame.dims.height*scale);
+  return c;
+}
+
+$("gifOptimize").addEventListener("click",async()=>{
+  const file=$("gifOptimizeFile").files[0];
+  if(!file||file.type!=="image/gif"){alert("Please upload a GIF file.");return;}
+  if(file.size>MAX_FILE){alert("Please choose a GIF smaller than 20 MB.");return;}
+  if(!gifLibraryReady())return;
+  try{
+    const decoded=await decodeGif(file);
+    const originalW=decoded.width,originalH=decoded.height;
+    let outW=Number($("gifOptWidth").value)||originalW;
+    if(outW<20||outW>1200)throw new Error("GIF output width must be between 20 and 1200 pixels.");
+    const scale=outW/originalW;
+    const outH=Math.max(1,Math.round(originalH*scale));
+    const speed=Number($("gifOptSpeed").value)/100;
+    if(speed<0.25||speed>4)throw new Error("Frame delay multiplier must be between 25% and 400%.");
+    const gif=new GIF({
+      workers:2,quality:Number($("gifOptQuality").value),
+      width:outW,height:outH,repeat:0,
+      workerScript:"https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.worker.js"
+    });
+    decoded.frames.forEach(frame=>{
+      const c=framePatchToCanvas(frame,originalW,originalH,scale);
+      gif.addFrame(c,{delay:Math.max(20,Math.round((frame.delay||100)*speed)),copy:true});
+    });
+    gif.on("progress",p=>setProgress("gifProgress","gifProgressBar",Math.round(p*100)));
+    gif.on("finished",blob=>{
+      gifBlob=blob;
+      $("gifPreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(blob)+'">';
+      $("gifDownload").disabled=false;
+      showResult("gifResult",`<strong>GIF re-encoded.</strong><br>Original size: ${formatBytes(file.size)}<br>New size: ${formatBytes(blob.size)}<br>Output dimensions: ${outW} × ${outH}px<br>Frames: ${decoded.frames.length}<br><small>Note: complex GIF transparency/disposal effects may differ after re-encoding.</small>`);
+    });
+    gif.render();
+  }catch(err){alert(err.message);}
+});
+
+$("gifExtract").addEventListener("click",async()=>{
+  const file=$("gifFrameFile").files[0];
+  if(!file||file.type!=="image/gif"){alert("Please upload a GIF file.");return;}
+  if(file.size>MAX_FILE){alert("Please choose a GIF smaller than 20 MB.");return;}
+  try{
+    const decoded=await decodeGif(file);
+    extractedFrames=[];
+    const type=$("gifFrameFormat").value;
+    const preview=$("gifPreview");preview.innerHTML="";
+    const zip=new JSZip();
+    for(let i=0;i<decoded.frames.length;i++){
+      const frame=decoded.frames[i];
+      const c=framePatchToCanvas(frame,decoded.width,decoded.height,1);
+      const blob=await canvasBlob(c,type,0.92);
+      extractedFrames.push(blob);
+      zip.file("frame-"+String(i+1).padStart(3,"0")+"."+extensionFor(type),blob);
+      if(i<6){
+        const img=document.createElement("img");
+        img.src=URL.createObjectURL(blob);img.className="file-thumb";
+        img.style.width="100px";img.style.height="80px";img.style.objectFit="contain";
+        preview.appendChild(img);
+      }
+    }
+    const zipBlob=await zip.generateAsync({type:"blob"});
+    gifBlob=null;
+    window.extractedGifZip=zipBlob;
+    $("gifDownload").disabled=true;$("gifZip").disabled=false;
+    showResult("gifResult",`<strong>Frames extracted.</strong><br>Total frames: ${decoded.frames.length}<br>Showing first ${Math.min(6,decoded.frames.length)} previews. Download the ZIP to get all frames.`);
+  }catch(err){alert(err.message);}
+});
+$("gifZip").addEventListener("click",()=>{
+  if(window.extractedGifZip)downloadBlob(window.extractedGifZip,"gif-frames.zip");
+});
+
+/* ---------------- IMAGE EDITOR ---------------- */
+
+$("editFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!validFile(f))return;
+  try{
+    editImage=await loadImage(f);
+    $("cropW").value=editImage.naturalWidth;$("cropH").value=editImage.naturalHeight;
+    $("editPreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(f)+'">';
+    $("editDownload").disabled=true;clearResult("editResult");
+  }catch(err){alert(err.message);}
+});
+["brightness","contrast","saturation","blur"].forEach(id=>{
+  $(id).addEventListener("input",()=>{
+    const suffix=id==="blur"?"px":"%";
+    $(id+"Value").textContent=$(id).value+suffix;
+  });
+});
+$("editApply").addEventListener("click",async()=>{
+  if(!editImage){alert("Please upload an image first.");return;}
+  const x=Number($("cropX").value),y=Number($("cropY").value);
+  const w=Number($("cropW").value)||editImage.naturalWidth;
+  const h=Number($("cropH").value)||editImage.naturalHeight;
+  if(x<0||y<0||w<1||h<1||x+w>editImage.naturalWidth||y+h>editImage.naturalHeight){
+    alert("Crop coordinates and dimensions must stay within the original image.");return;
+  }
+  const angle=Number($("rotation").value);
+  const flip=$("flip").value;
+  const rotated=angle===90||angle===270;
+  const outW=rotated?h:w,outH=rotated?w:h;
+  const c=document.createElement("canvas");c.width=outW;c.height=outH;
+  const ctx=c.getContext("2d");
+  ctx.save();
+  ctx.translate(outW/2,outH/2);
+  ctx.rotate(angle*Math.PI/180);
+  ctx.scale(flip==="horizontal"?-1:1,flip==="vertical"?-1:1);
+  ctx.filter=`brightness(${$("brightness").value}%) contrast(${$("contrast").value}%) saturate(${$("saturation").value}%) blur(${$("blur").value}px)`;
+  ctx.drawImage(editImage,x,y,w,h,-w/2,-h/2,w,h);
+  ctx.restore();
+  try{
+    editBlob=await canvasBlob(c,"image/png",1);
+    showBlobPreview("editPreview",editBlob);
+    $("editDownload").disabled=false;
+    showResult("editResult",`<strong>Image edited successfully.</strong><br>Output dimensions: ${outW} × ${outH}px<br>File size: ${formatBytes(editBlob.size)}`);
+  }catch(err){alert(err.message);}
+});
+$("editReset").addEventListener("click",()=>{
+  ["cropX","cropY"].forEach(id=>$(id).value=0);
+  if(editImage){$("cropW").value=editImage.naturalWidth;$("cropH").value=editImage.naturalHeight;}
+  $("brightness").value=100;$("contrast").value=100;$("saturation").value=100;$("blur").value=0;
+  $("rotation").value=0;$("flip").value="none";
+  ["brightness","contrast","saturation"].forEach(id=>$(id+"Value").textContent="100%");
+  $("blurValue").textContent="0px";
+});
+$("editDownload").addEventListener("click",()=>downloadBlob(editBlob,"edited-image.png"));
+
+/* ---------------- WATERMARK ---------------- */
+
+$("watermarkFile").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!validFile(f))return;
+  try{
+    watermarkImage=await loadImage(f);
+    $("watermarkPreview").innerHTML='<img class="preview-img" src="'+URL.createObjectURL(f)+'">';
+    $("watermarkDownload").disabled=true;clearResult("watermarkResult");
+  }catch(err){alert(err.message);}
+});
+$("watermarkLogo").addEventListener("change",async e=>{
+  const f=e.target.files[0];if(!f){watermarkLogo=null;return;}
+  if(!validFile(f)){watermarkLogo=null;return;}
+  try{watermarkLogo=await loadImage(f);}catch(err){alert(err.message);}
+});
+$("watermarkApply").addEventListener("click",async()=>{
+  if(!watermarkImage){alert("Please upload your main image first.");return;}
+  const text=$("watermarkText").value.trim();
+  if(!text&&!watermarkLogo){alert("Enter watermark text or upload a logo.");return;}
+  const c=document.createElement("canvas");c.width=watermarkImage.naturalWidth;c.height=watermarkImage.naturalHeight;
+  const ctx=c.getContext("2d");ctx.drawImage(watermarkImage,0,0);
+  const size=Math.min(Number($("watermarkSize").value),200);
+  const padding=Math.max(15,Math.round(c.width*0.025));
+  const pos=$("watermarkPosition").value;
+  ctx.save();ctx.globalAlpha=Number($("watermarkOpacity").value)/100;
+  ctx.textBaseline="middle";ctx.font=`bold ${size}px Arial`;
+  const textW=text?ctx.measureText(text).width:0;
+  const logoW=watermarkLogo?Math.min(c.width*0.2,140):0;
+  const logoH=watermarkLogo?logoW*(watermarkLogo.naturalHeight/watermarkLogo.naturalWidth):0;
+  const gap=text&&watermarkLogo?12:0;
+  const totalW=Math.max(textW,logoW);
+  const totalH=logoH+(text?size+gap:0);
+  let x=padding,y=padding;
+  if(pos.includes("right"))x=c.width-totalW-padding;
+  if(pos.includes("bottom"))y=c.height-totalH-padding;
+  if(pos==="center"){x=(c.width-totalW)/2;y=(c.height-totalH)/2;}
+  if(watermarkLogo)ctx.drawImage(watermarkLogo,x,y,logoW,logoH);
+  if(text){
+    ctx.fillStyle=$("watermarkColor").value;
+    ctx.shadowColor="rgba(0,0,0,.4)";ctx.shadowBlur=3;
+    ctx.fillText(text,x,y+logoH+gap+size/2);
+  }
+  ctx.restore();
+  try{
+    watermarkBlob=await canvasBlob(c,"image/png",1);
+    showBlobPreview("watermarkPreview",watermarkBlob);
+    $("watermarkDownload").disabled=false;
+    showResult("watermarkResult","<strong>Watermark applied successfully.</strong><br>Download your protected image.");
+  }catch(err){alert(err.message);}
+});
+$("watermarkDownload").addEventListener("click",()=>downloadBlob(watermarkBlob,"watermarked-image.png"));
+
+/* ---------------- BATCH PROCESSING ---------------- */
+
+$("batchFiles").addEventListener("change",e=>{
+  batchImages=Array.from(e.target.files);
+  batchOutputs=[];
+  $("batchFileList").innerHTML="";
+  $("batchResultList").innerHTML="";
+  $("batchZip").disabled=true;
+  if(batchImages.length>30){alert("Please select no more than 30 images.");batchImages=[];return;}
+  batchImages.forEach(f=>{
+    if(!validFile(f)){batchImages=[];$("batchFileList").innerHTML="";return;}
+    addFileRow($("batchFileList"),f);
+  });
+});
+$("batchQuality").addEventListener("input",()=>$("batchQualityValue").textContent=$("batchQuality").value+"%");
+$("batchRun").addEventListener("click",async()=>{
+  if(!batchImages.length){alert("Please select images first.");return;}
+  batchOutputs=[];
+  $("batchResultList").innerHTML="";
+  const type=$("batchFormat").value;
+  const quality=Number($("batchQuality").value)/100;
+  const targetW=Number($("batchWidth").value)||null;
+  const targetH=Number($("batchHeight").value)||null;
+  try{
+    for(let i=0;i<batchImages.length;i++){
+      const file=batchImages[i];
+      const img=await loadImage(file);
+      let w=targetW||img.naturalWidth,h=targetH||img.naturalHeight;
+      if($("batchLock").checked&&(targetW||targetH)){
+        const scale=Math.min(targetW?targetW/img.naturalWidth:Infinity,targetH?targetH/img.naturalHeight:Infinity);
+        w=Math.max(1,Math.round(img.naturalWidth*scale));
+        h=Math.max(1,Math.round(img.naturalHeight*scale));
+      }
+      if(w<1||h<1||w>12000||h>12000)throw new Error("Invalid output dimensions.");
+      const c=document.createElement("canvas");c.width=w;c.height=h;
+      const ctx=c.getContext("2d");
+      if(type==="image/jpeg"){ctx.fillStyle="#fff";ctx.fillRect(0,0,w,h);}
+      ctx.drawImage(img,0,0,w,h);
+      const blob=await canvasBlob(c,type,quality);
+      const filename=safeName(file.name)+"."+extensionFor(type);
+      batchOutputs.push({blob,filename});
+      const row=document.createElement("div");row.className="file-item";
+      const info=document.createElement("div");info.className="file-info";
+      const name=document.createElement("strong");name.textContent=filename;
+      const small=document.createElement("small");small.textContent=formatBytes(blob.size);
+      info.append(name,small);
+      const dl=document.createElement("button");dl.textContent="Download";
+      dl.addEventListener("click",()=>downloadBlob(blob,filename));
+      row.append(info,dl);$("batchResultList").appendChild(row);
+      setProgress("batchProgress","batchProgressBar",Math.round(((i+1)/batchImages.length)*100));
+    }
+    $("batchZip").disabled=false;
+    showResult("batchResult",`<strong>Batch processing complete.</strong><br>Successfully processed ${batchOutputs.length} images.`);
+  }catch(err){alert("Batch processing stopped: "+err.message);}
+});
+$("batchZip").addEventListener("click",async()=>{
+  if(!batchOutputs.length)return;
+  if(typeof JSZip==="undefined"){alert("ZIP library did not load. Please refresh and try again.");return;}
+  const zip=new JSZip();
+  batchOutputs.forEach(item=>zip.file(item.filename,item.blob));
+  const blob=await zip.generateAsync({type:"blob"});
+  downloadBlob(blob,"processed-images.zip");
+});
+
+/* ---------------- SAFETY / ERROR HANDLING ---------------- */
+
+window.addEventListener("error",e=>{
+  console.error("Image Studio error:",e.message);
+});
 </script>
 </body>
 </html>
