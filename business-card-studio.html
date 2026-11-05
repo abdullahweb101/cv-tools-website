@@ -1,0 +1,791 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Card Studio Pro - Free Online Business Card Maker</title>
+<meta name="description" content="Create professional two-sided business cards online. Customize designs, add your logo, generate QR codes and export print-ready cards for free.">
+<style>
+:root{
+  --blue:#245bd5;
+  --navy:#14213d;
+  --ink:#17243a;
+  --muted:#64748b;
+  --bg:#f3f6fb;
+  --line:#e2e8f0;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{
+  background:#fff;
+  border-bottom:1px solid var(--line);
+  padding:15px 22px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  position:sticky;
+  top:0;
+  z-index:20;
+}
+.brand{font-size:19px;font-weight:800;color:var(--navy)}
+.brand span{color:var(--blue)}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.btn{
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--ink);
+  border-radius:9px;
+  padding:10px 14px;
+  font-weight:700;
+  font-size:13px;
+}
+.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
+.btn.dark{background:var(--navy);color:#fff;border-color:var(--navy)}
+.btn:hover{filter:brightness(.96)}
+.layout{
+  max-width:1500px;
+  margin:auto;
+  padding:22px;
+  display:grid;
+  grid-template-columns:310px minmax(0,1fr) 285px;
+  gap:18px;
+  align-items:start;
+}
+.panel{
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px;
+  padding:17px;
+  box-shadow:0 5px 20px rgba(15,23,42,.035);
+}
+.panel h2{font-size:16px;margin:0 0 15px;color:var(--navy)}
+.panel h3{font-size:13px;margin:20px 0 10px;color:#334155}
+.field{margin-bottom:12px}
+.field label{
+  display:block;
+  font-size:12px;
+  font-weight:700;
+  color:#475569;
+  margin-bottom:6px;
+}
+.field input,.field select,.field textarea{
+  width:100%;
+  border:1px solid #dbe2ec;
+  border-radius:8px;
+  padding:10px;
+  outline:none;
+  background:#fff;
+  color:var(--ink);
+  min-width:0;
+}
+.field input:focus,.field textarea:focus,.field select:focus{
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px rgba(36,91,213,.1);
+}
+.field textarea{resize:vertical;min-height:65px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.color-row{display:flex;align-items:center;gap:10px}
+.color-row input[type=color]{width:45px;height:38px;padding:2px}
+.editor-heading{font-size:22px;font-weight:800;margin:0 0 5px}
+.subheading{font-size:13px;color:var(--muted);margin:0 0 20px}
+.workspace{
+  min-width:0;
+  background:#e9eef6;
+  border:1px solid #dce4ef;
+  border-radius:15px;
+  padding:20px;
+}
+.workspace-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.side-tabs{display:flex;gap:7px}
+.side-tab{
+  border:1px solid #d5deeb;
+  border-radius:8px;
+  background:#fff;
+  padding:9px 15px;
+  font-size:13px;
+  font-weight:700;
+}
+.side-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.preview-wrap{
+  min-height:510px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:auto;
+  padding:25px 10px;
+}
+.business-card{
+  width:min(100%,700px);
+  aspect-ratio:1.75/1;
+  position:relative;
+  overflow:hidden;
+  border-radius:5px;
+  background:#fff;
+  box-shadow:0 18px 45px rgba(15,23,42,.2);
+  color:#17243a;
+  flex-shrink:0;
+}
+.card-inner{
+  width:100%;
+  height:100%;
+  position:relative;
+  padding:7.2%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  overflow:hidden;
+}
+.card-name{font-size:clamp(18px,3.2vw,34px);font-weight:800;line-height:1.1;overflow-wrap:anywhere}
+.card-role{font-size:clamp(10px,1.45vw,15px);margin-top:8px;letter-spacing:1.2px;text-transform:uppercase}
+.card-company{font-size:clamp(12px,1.8vw,19px);font-weight:700;margin-top:8px}
+.card-contact{
+  display:grid;
+  gap:7px;
+  font-size:clamp(9px,1.25vw,13px);
+  margin-top:22px;
+  overflow-wrap:anywhere;
+}
+.contact-line{display:flex;gap:8px;align-items:center}
+.contact-icon{font-weight:800;opacity:.8;width:15px;flex-shrink:0}
+.card-logo{
+  width:75px;height:75px;object-fit:contain;
+  position:absolute;right:7%;top:9%;
+  background:rgba(255,255,255,.12);
+  border-radius:8px;
+}
+.card-logo.hidden{display:none}
+.card-qr{
+  width:75px;height:75px;position:absolute;right:7%;bottom:8%;
+  background:#fff;padding:4px;border-radius:4px;
+  object-fit:contain;
+}
+.card-qr.hidden{display:none}
+.card-back-content{
+  position:relative;z-index:2;
+  height:100%;width:100%;
+  display:flex;align-items:center;justify-content:center;
+  flex-direction:column;text-align:center;gap:13px;
+}
+.back-company{font-size:clamp(20px,3vw,34px);font-weight:800}
+.back-tagline{font-size:clamp(10px,1.5vw,15px);letter-spacing:1px}
+.back-website{font-size:clamp(10px,1.4vw,14px);font-weight:700}
+.design-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.design-option{
+  border:2px solid #e2e8f0;
+  background:#fff;
+  border-radius:9px;
+  padding:7px;
+  text-align:left;
+}
+.design-option.active{border-color:var(--blue);background:#f4f7ff}
+.design-sample{
+  height:54px;border-radius:5px;margin-bottom:7px;
+  position:relative;overflow:hidden;
+}
+.design-sample:before{content:"";position:absolute;left:10px;top:14px;width:45%;height:7px;background:rgba(255,255,255,.9);border-radius:5px}
+.design-sample:after{content:"";position:absolute;left:10px;top:27px;width:65%;height:4px;background:rgba(255,255,255,.55);border-radius:5px}
+.design-option strong{font-size:11px}
+.help{font-size:11px;color:var(--muted);line-height:1.5;margin-top:7px}
+.notice{
+  background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;
+  padding:11px;border-radius:9px;font-size:12px;line-height:1.5;margin-top:12px;
+}
+.status{font-size:12px;color:#15803d;min-height:17px;margin-top:8px}
+.qr-preview{display:flex;justify-content:center;margin:10px 0}
+.qr-preview canvas,.qr-preview img{max-width:130px}
+.footer-note{text-align:center;color:#64748b;font-size:12px;padding:5px 15px 25px}
+.template-classic .card-inner{background:#fff}
+.template-classic .card-name{color:#14213d}
+.template-modern .card-inner{background:#14213d;color:#fff}
+.template-modern .card-role{color:#8bb2ff}
+.template-modern .card-company{color:#9ebaff}
+.template-minimal .card-inner{background:#fff;color:#111827;border-left:13px solid var(--accent)}
+.template-minimal .card-contact{border-top:1px solid #e5e7eb;padding-top:14px}
+.template-gradient .card-inner{background:linear-gradient(125deg,var(--accent),var(--accent2));color:#fff}
+.template-gradient .card-role{color:rgba(255,255,255,.8)}
+.template-luxury .card-inner{background:#151515;color:#f7e7b0;border:8px solid #c8a85a}
+.template-luxury .card-role{color:#c8a85a}
+.template-corporate .card-inner{background:#f8fafc;color:#102b4e;border-top:14px solid var(--accent)}
+.template-corporate .card-role{color:#42658b}
+.template-creative .card-inner{background:#fff;color:#18233b}
+.template-creative .card-inner:before{
+  content:"";position:absolute;width:48%;height:150%;
+  right:-12%;top:-25%;background:var(--accent);
+  transform:rotate(22deg);opacity:.13
+}
+.template-creative .card-name,.template-creative .card-role,
+.template-creative .card-company,.template-creative .card-contact{position:relative;z-index:1}
+.template-elegant .card-inner{background:#f5f0e8;color:#3a3028}
+.template-elegant .card-name{font-family:Georgia,serif}
+.template-elegant .card-role{letter-spacing:2px;color:#8b6d50}
+@media(max-width:1100px){
+  .layout{grid-template-columns:280px minmax(0,1fr)}
+  .right-panel{grid-column:1/-1}
+  .right-panel .design-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:700px){
+  .topbar{padding:12px}
+  .brand{font-size:16px}
+  .top-actions .btn{padding:8px;font-size:11px}
+  .layout{display:flex;flex-direction:column;padding:12px}
+  .panel,.workspace{width:100%}
+  .workspace{padding:12px}
+  .preview-wrap{min-height:280px;padding:15px 0}
+  .business-card{width:100%}
+  .right-panel .design-grid{grid-template-columns:1fr 1fr}
+}
+@media print{
+  body{background:#fff}
+  .topbar,.left-panel,.right-panel,.workspace-top,.editor-heading,
+  .subheading,.footer-note{display:none!important}
+  .layout{display:block;padding:0;margin:0;max-width:none}
+  .workspace{border:0;background:#fff;padding:0}
+  .preview-wrap{display:block;padding:0;min-height:0;overflow:visible}
+  .business-card{
+    width:3.5in;height:2in;aspect-ratio:auto;
+    box-shadow:none;border-radius:0;break-after:page;
+    margin:0;
+  }
+  .business-card:last-child{break-after:auto}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand">Business Card <span>Studio Pro</span></div>
+  <div class="top-actions">
+    <button class="btn" id="saveBtn">Save Design</button>
+    <button class="btn" id="loadBtn">Load Design</button>
+    <button class="btn primary" id="pngBtn">Download PNG</button>
+    <button class="btn dark" id="pdfBtn">Export PDF</button>
+  </div>
+</header>
+
+<main class="layout">
+
+<section class="panel left-panel">
+  <h2>Business Information</h2>
+
+  <div class="field">
+    <label>Full Name</label>
+    <input id="name" value="Alex Morgan" maxlength="45">
+  </div>
+  <div class="field">
+    <label>Job Title / Designation</label>
+    <input id="role" value="Creative Director" maxlength="55">
+  </div>
+  <div class="field">
+    <label>Company Name</label>
+    <input id="company" value="Morgan Creative Studio" maxlength="55">
+  </div>
+  <div class="field">
+    <label>Phone Number</label>
+    <input id="phone" value="+1 234 567 890">
+  </div>
+  <div class="field">
+    <label>Email Address</label>
+    <input id="email" value="hello@example.com">
+  </div>
+  <div class="field">
+    <label>Website</label>
+    <input id="website" value="www.example.com">
+  </div>
+  <div class="field">
+    <label>Business Address</label>
+    <textarea id="address">New York, United States</textarea>
+  </div>
+  <div class="field">
+    <label>Tagline / Short Message</label>
+    <input id="tagline" value="Ideas. Design. Impact.">
+  </div>
+
+  <h3>Logo & QR Code</h3>
+  <div class="field">
+    <label>Upload Company Logo</label>
+    <input type="file" id="logoUpload" accept="image/png,image/jpeg,image/webp,image/svg+xml">
+    <div class="help">PNG, JPG, WebP or SVG. Maximum 3 MB.</div>
+  </div>
+  <div class="field">
+    <label>QR Code Destination</label>
+    <input id="qrText" value="https://example.com" placeholder="Website, contact page or profile URL">
+  </div>
+  <div class="field">
+    <label>Show QR Code</label>
+    <select id="showQR">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+  </div>
+  <div class="qr-preview" id="qrPreview"></div>
+
+  <h3>Display Options</h3>
+  <div class="field">
+    <label>Show Contact Details</label>
+    <select id="showContact">
+      <option value="yes">Yes</option>
+      <option value="no">No</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Text Alignment</label>
+    <select id="alignment">
+      <option value="left">Left</option>
+      <option value="center">Center</option>
+    </select>
+  </div>
+</section>
+
+<section>
+  <h1 class="editor-heading">Design Your Business Card</h1>
+  <p class="subheading">Customize both sides and create a professional, print-ready business card.</p>
+
+  <div class="workspace">
+    <div class="workspace-top">
+      <div class="side-tabs">
+        <button class="side-tab active" data-side="front">Front Side</button>
+        <button class="side-tab" data-side="back">Back Side</button>
+      </div>
+      <span class="help">Standard ratio: 3.5 × 2 inches</span>
+    </div>
+
+    <div class="preview-wrap">
+      <div id="frontCard" class="business-card template-modern">
+        <div class="card-inner" id="frontInner">
+          <img class="card-logo hidden" id="cardLogo" alt="Company logo">
+          <div class="card-name" id="previewName">Alex Morgan</div>
+          <div class="card-role" id="previewRole">Creative Director</div>
+          <div class="card-company" id="previewCompany">Morgan Creative Studio</div>
+          <div class="card-contact" id="previewContact">
+            <div class="contact-line"><span class="contact-icon">☎</span><span id="previewPhone">+1 234 567 890</span></div>
+            <div class="contact-line"><span class="contact-icon">✉</span><span id="previewEmail">hello@example.com</span></div>
+            <div class="contact-line"><span class="contact-icon">⌘</span><span id="previewWebsite">www.example.com</span></div>
+            <div class="contact-line"><span class="contact-icon">⌖</span><span id="previewAddress">New York, United States</span></div>
+          </div>
+          <img id="cardQR" class="card-qr hidden" alt="QR code">
+        </div>
+      </div>
+
+      <div id="backCard" class="business-card template-modern" style="display:none">
+        <div class="card-inner">
+          <div class="card-back-content">
+            <div class="back-company" id="backCompany">Morgan Creative Studio</div>
+            <div class="back-tagline" id="backTagline">Ideas. Design. Impact.</div>
+            <div class="back-website" id="backWebsite">www.example.com</div>
+            <img id="backQR" class="card-qr hidden" alt="QR code">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice">
+      <strong>Print tip:</strong> Export PDF par click karne se dono sides print layout mein open hongi. Print settings mein paper size aur scaling check karein. Professional printing ke liye apne printer se bleed aur crop-mark requirements confirm karein.
+    </div>
+  </div>
+</section>
+
+<aside class="panel right-panel">
+  <h2>Design Templates</h2>
+  <div class="design-grid" id="designGrid"></div>
+
+  <h3>Customize Colours</h3>
+  <div class="field">
+    <label>Primary Colour</label>
+    <div class="color-row">
+      <input type="color" id="primaryColor" value="#245bd5">
+      <input id="primaryHex" value="#245bd5" aria-label="Primary colour HEX">
+    </div>
+  </div>
+  <div class="field">
+    <label>Secondary Colour</label>
+    <div class="color-row">
+      <input type="color" id="secondaryColor" value="#14213d">
+      <input id="secondaryHex" value="#14213d" aria-label="Secondary colour HEX">
+    </div>
+  </div>
+  <div class="field">
+    <label>Text Colour</label>
+    <div class="color-row">
+      <input type="color" id="textColor" value="#ffffff">
+      <input id="textHex" value="#ffffff" aria-label="Text colour HEX">
+    </div>
+  </div>
+
+  <h3>Typography</h3>
+  <div class="field">
+    <label>Font Family</label>
+    <select id="fontFamily">
+      <option value="Arial, sans-serif">Modern Sans</option>
+      <option value="Georgia, serif">Elegant Serif</option>
+      <option value="'Trebuchet MS', sans-serif">Trebuchet</option>
+      <option value="'Courier New', monospace">Monospace</option>
+      <option value="Verdana, sans-serif">Verdana</option>
+    </select>
+  </div>
+  <div class="field">
+    <label>Name Size</label>
+    <input type="range" id="nameSize" min="20" max="46" value="34">
+  </div>
+  <div class="field">
+    <label>Corner Style</label>
+    <select id="cornerStyle">
+      <option value="0">Square</option>
+      <option value="5">Slightly Rounded</option>
+      <option value="14">Rounded</option>
+    </select>
+  </div>
+  <button class="btn" id="resetBtn" style="width:100%;margin-top:8px">Reset Design</button>
+  <div class="status" id="status"></div>
+</aside>
+
+</main>
+
+<div class="footer-note">Business Card Studio Pro · Free browser-based design tool</div>
+
+<script>
+const $ = id => document.getElementById(id);
+let currentSide = "front";
+let currentTemplate = "modern";
+let logoData = "";
+let qrData = "";
+let qrLibraryPromise = null;
+
+const templates = [
+  {id:"modern",name:"Modern",a:"#14213d",b:"#245bd5",text:"#ffffff"},
+  {id:"classic",name:"Classic",a:"#ffffff",b:"#14213d",text:"#17243a"},
+  {id:"minimal",name:"Minimal",a:"#ffffff",b:"#245bd5",text:"#17243a"},
+  {id:"gradient",name:"Gradient",a:"#245bd5",b:"#7c3aed",text:"#ffffff"},
+  {id:"luxury",name:"Luxury",a:"#151515",b:"#c8a85a",text:"#f7e7b0"},
+  {id:"corporate",name:"Corporate",a:"#f8fafc",b:"#245bd5",text:"#102b4e"},
+  {id:"creative",name:"Creative",a:"#ffffff",b:"#ec4899",text:"#18233b"},
+  {id:"elegant",name:"Elegant",a:"#f5f0e8",b:"#8b6d50",text:"#3a3028"}
+];
+
+function setStatus(message){
+  $("status").textContent = message;
+  setTimeout(()=>{$("status").textContent="";},3500);
+}
+
+function validHex(value){
+  return /^#[0-9a-fA-F]{6}$/.test(value);
+}
+
+function applyTemplate(id){
+  const t = templates.find(x=>x.id===id);
+  if(!t)return;
+  currentTemplate=id;
+  $("primaryColor").value=t.a;
+  $("primaryHex").value=t.a;
+  $("secondaryColor").value=t.b;
+  $("secondaryHex").value=t.b;
+  $("textColor").value=t.text;
+  $("textHex").value=t.text;
+  render();
+  buildTemplateGrid();
+}
+
+function buildTemplateGrid(){
+  $("designGrid").innerHTML="";
+  templates.forEach(t=>{
+    const button=document.createElement("button");
+    button.className="design-option"+(t.id===currentTemplate?" active":"");
+    button.type="button";
+    button.innerHTML=`
+      <div class="design-sample" style="background:linear-gradient(120deg,${t.a},${t.b})"></div>
+      <strong>${t.name}</strong>`;
+    button.addEventListener("click",()=>applyTemplate(t.id));
+    $("designGrid").appendChild(button);
+  });
+}
+
+function currentColors(){
+  return {
+    primary:$("primaryColor").value,
+    secondary:$("secondaryColor").value,
+    text:$("textColor").value
+  };
+}
+
+function render(){
+  const c=currentColors();
+  const front=$("frontCard");
+  const back=$("backCard");
+  [front,back].forEach(card=>{
+    card.className="business-card template-"+currentTemplate;
+    card.style.setProperty("--accent",c.primary);
+    card.style.setProperty("--accent2",c.secondary);
+    card.style.borderRadius=$("cornerStyle").value+"px";
+    card.style.fontFamily=$("fontFamily").value;
+  });
+
+  $("frontInner").style.color=c.text;
+  $("previewName").textContent=$("name").value || "Your Name";
+  $("previewRole").textContent=$("role").value || "Your Designation";
+  $("previewCompany").textContent=$("company").value || "Your Company";
+  $("previewPhone").textContent=$("phone").value;
+  $("previewEmail").textContent=$("email").value;
+  $("previewWebsite").textContent=$("website").value;
+  $("previewAddress").textContent=$("address").value;
+  $("backCompany").textContent=$("company").value || "Your Company";
+  $("backTagline").textContent=$("tagline").value;
+  $("backWebsite").textContent=$("website").value;
+
+  $("previewName").style.fontSize=$("nameSize").value+"px";
+  $("frontInner").style.textAlign=$("alignment").value;
+  $("previewContact").style.display=$("showContact").value==="yes"?"grid":"none";
+
+  $("cardLogo").classList.toggle("hidden",!logoData);
+  if(logoData)$("cardLogo").src=logoData;
+
+  const showQR=$("showQR").value==="yes" && !!qrData;
+  $("cardQR").classList.toggle("hidden",!showQR);
+  $("backQR").classList.toggle("hidden",!showQR);
+  if(showQR){
+    $("cardQR").src=qrData;
+    $("backQR").src=qrData;
+  }
+  $("backCard").querySelector(".card-inner").style.color=c.text;
+}
+
+function loadScript(src){
+  return new Promise((resolve,reject)=>{
+    const script=document.createElement("script");
+    script.src=src;
+    script.onload=resolve;
+    script.onerror=reject;
+    document.head.appendChild(script);
+  });
+}
+
+async function ensureQRCode(){
+  if(window.QRCode)return;
+  if(!qrLibraryPromise){
+    qrLibraryPromise=loadScript("https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js")
+      .catch(async()=>{
+        await loadScript("https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js");
+      });
+  }
+  await qrLibraryPromise;
+  if(!window.QRCode)throw new Error("QR library unavailable");
+}
+
+async function makeQR(){
+  const value=$("qrText").value.trim();
+  if(!value){
+    qrData="";
+    render();
+    $("qrPreview").innerHTML="";
+    return;
+  }
+  try{
+    await ensureQRCode();
+    const holder=document.createElement("div");
+    new QRCode(holder,{
+      text:value,
+      width:220,
+      height:220,
+      colorDark:"#111827",
+      colorLight:"#ffffff",
+      correctLevel:QRCode.CorrectLevel.H
+    });
+    await new Promise(resolve=>setTimeout(resolve,150));
+    const canvas=holder.querySelector("canvas");
+    const img=holder.querySelector("img");
+    qrData=canvas?canvas.toDataURL("image/png"):(img?img.src:"");
+    $("qrPreview").innerHTML="";
+    if(qrData){
+      const preview=document.createElement("img");
+      preview.src=qrData;
+      preview.alt="Generated QR code preview";
+      preview.style.width="110px";
+      preview.style.height="110px";
+      $("qrPreview").appendChild(preview);
+    }
+    render();
+  }catch(error){
+    qrData="";
+    $("qrPreview").textContent="QR code library could not load. Check your internet connection and try again.";
+    render();
+  }
+}
+
+document.querySelectorAll("input,textarea,select").forEach(el=>{
+  if(["logoUpload","primaryColor","secondaryColor","textColor"].includes(el.id))return;
+  el.addEventListener("input",render);
+  el.addEventListener("change",render);
+});
+
+document.querySelectorAll(".side-tab").forEach(tab=>{
+  tab.addEventListener("click",()=>{
+    currentSide=tab.dataset.side;
+    document.querySelectorAll(".side-tab").forEach(x=>x.classList.toggle("active",x===tab));
+    $("frontCard").style.display=currentSide==="front"?"block":"none";
+    $("backCard").style.display=currentSide==="back"?"block":"none";
+  });
+});
+
+[
+  ["primaryColor","primaryHex"],
+  ["secondaryColor","secondaryHex"],
+  ["textColor","textHex"]
+].forEach(([picker,hex])=>{
+  $(picker).addEventListener("input",()=>{
+    $(hex).value=$(picker).value;
+    render();
+  });
+  $(hex).addEventListener("change",()=>{
+    if(validHex($(hex).value)){
+      $(picker).value=$(hex).value;
+      render();
+    }else{
+      $(hex).value=$(picker).value;
+      setStatus("Please enter a valid HEX colour.");
+    }
+  });
+});
+
+$("logoUpload").addEventListener("change",event=>{
+  const file=event.target.files[0];
+  if(!file)return;
+  if(file.size>3*1024*1024){
+    alert("Logo file must be 3 MB or smaller.");
+    event.target.value="";
+    return;
+  }
+  const reader=new FileReader();
+  reader.onload=()=>{
+    logoData=reader.result;
+    render();
+    setStatus("Logo uploaded successfully.");
+  };
+  reader.readAsDataURL(file);
+});
+
+$("qrText").addEventListener("change",makeQR);
+$("qrText").addEventListener("keydown",e=>{
+  if(e.key==="Enter")makeQR();
+});
+$("showQR").addEventListener("change",()=>{
+  if($("showQR").value==="yes" && !qrData)makeQR();
+  else render();
+});
+
+function getState(){
+  const fields=[
+    "name","role","company","phone","email","website","address","tagline",
+    "qrText","showQR","showContact","alignment","primaryColor","secondaryColor",
+    "textColor","fontFamily","nameSize","cornerStyle"
+  ];
+  const data={};
+  fields.forEach(id=>data[id]=$(id).value);
+  data.template=currentTemplate;
+  data.logo=logoData;
+  return data;
+}
+
+function setState(data){
+  if(!data)return;
+  Object.keys(data).forEach(id=>{
+    if($(id) && id!=="logo")$(id).value=data[id];
+  });
+  logoData=data.logo||"";
+  currentTemplate=data.template||"modern";
+  ["primaryColor","secondaryColor","textColor"].forEach(id=>{
+    const hexId=id==="primaryColor"?"primaryHex":id==="secondaryColor"?"secondaryHex":"textHex";
+    $(hexId).value=$(id).value;
+  });
+  buildTemplateGrid();
+  render();
+  makeQR();
+}
+
+$("saveBtn").addEventListener("click",()=>{
+  try{
+    localStorage.setItem("businessCardStudioPro",JSON.stringify(getState()));
+    setStatus("Your design has been saved in this browser.");
+  }catch(e){
+    alert("Could not save. The uploaded logo may be too large for browser storage.");
+  }
+});
+
+$("loadBtn").addEventListener("click",()=>{
+  try{
+    const saved=localStorage.getItem("businessCardStudioPro");
+    if(!saved){alert("No saved design was found in this browser.");return;}
+    setState(JSON.parse(saved));
+    setStatus("Saved design loaded.");
+  }catch(e){
+    alert("Saved design could not be loaded.");
+  }
+});
+
+$("resetBtn").addEventListener("click",()=>{
+  if(!confirm("Reset your business card design?"))return;
+  location.reload();
+});
+
+async function loadHtml2Canvas(){
+  if(window.html2canvas)return;
+  await loadScript("https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js");
+}
+
+async function downloadCardPNG(card,filename){
+  try{
+    await loadHtml2Canvas();
+    const canvas=await html2canvas(card,{
+      scale:3,
+      backgroundColor:null,
+      useCORS:true,
+      logging:false
+    });
+    const link=document.createElement("a");
+    link.download=filename;
+    link.href=canvas.toDataURL("image/png");
+    link.click();
+  }catch(error){
+    alert("PNG export failed. Please check your internet connection and try again.");
+  }
+}
+
+$("pngBtn").addEventListener("click",async()=>{
+  const front=$("frontCard");
+  const back=$("backCard");
+  if(currentSide==="front"){
+    await downloadCardPNG(front,"business-card-front.png");
+  }else{
+    await downloadCardPNG(back,"business-card-back.png");
+  }
+});
+
+$("pdfBtn").addEventListener("click",()=>{
+  const oldSide=currentSide;
+  $("frontCard").style.display="block";
+  $("backCard").style.display="block";
+  window.print();
+  $("frontCard").style.display=oldSide==="front"?"block":"none";
+  $("backCard").style.display=oldSide==="back"?"block":"none";
+});
+
+buildTemplateGrid();
+applyTemplate("modern");
+makeQR();
+render();
+</script>
+</body>
+</html>
