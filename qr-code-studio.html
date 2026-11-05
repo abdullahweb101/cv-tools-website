@@ -1,0 +1,796 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QR Code Studio - Free Custom QR Code Generator</title>
+<meta name="description" content="Create professional custom QR codes for websites, Wi-Fi, WhatsApp, email, phone, contact cards and more. Download high-quality PNG and SVG QR codes for free.">
+<meta name="keywords" content="QR code generator, free QR code maker, custom QR code, WiFi QR code, WhatsApp QR code, business QR code, QR code with logo">
+<meta name="robots" content="index,follow">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode/1.5.3/qrcode.min.js"></script>
+
+<style>
+:root{
+  --primary:#3563e9;
+  --primary-dark:#244bc1;
+  --navy:#172033;
+  --muted:#64748b;
+  --bg:#f5f7fb;
+  --border:#e3e8f1;
+  --white:#fff;
+  --green:#15966b;
+  --radius:15px;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--navy);font-family:Arial,Helvetica,sans-serif}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+.topbar{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:17px 5%;display:flex;align-items:center;
+  justify-content:space-between;gap:20px;flex-wrap:wrap
+}
+.brand{font-size:22px;font-weight:800;color:var(--navy)}
+.brand span{color:var(--primary)}
+.navlinks{display:flex;gap:22px;flex-wrap:wrap;color:#475569;font-size:14px}
+.navlinks a:hover{color:var(--primary)}
+.hero{
+  background:linear-gradient(120deg,#172b58,#3563e9);
+  color:#fff;padding:50px 20px;text-align:center
+}
+.hero h1{font-size:clamp(29px,5vw,43px);margin:0 0 13px}
+.hero p{max-width:740px;margin:auto;color:#e1eaff;line-height:1.7}
+.tags{display:flex;justify-content:center;gap:9px;flex-wrap:wrap;margin-top:22px}
+.tags span{background:#ffffff1b;border:1px solid #ffffff38;padding:8px 13px;border-radius:30px;font-size:12px}
+.container{width:min(1180px,94%);margin:30px auto 65px}
+.workspace{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(310px,.9fr);gap:22px;align-items:start}
+.panel,.info-card{background:#fff;border:1px solid var(--border);border-radius:var(--radius)}
+.panel{padding:24px;min-width:0}
+.panel h2{font-size:22px;margin:0 0 7px}
+.panel-sub{color:var(--muted);font-size:13px;line-height:1.6;margin:0 0 22px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px}
+.field input:not([type=color]):not([type=range]):not([type=checkbox]),.field select,.field textarea{
+  width:100%;padding:11px 12px;border:1px solid #dce3ee;border-radius:9px;
+  background:#fff;color:var(--navy);outline:none
+}
+.field textarea{min-height:95px;resize:vertical;line-height:1.5}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--primary)}
+.field small{display:block;color:var(--muted);font-size:11px;margin-top:5px;line-height:1.5}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mode-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:22px}
+.mode-btn{
+  border:1px solid var(--border);background:#fff;border-radius:10px;
+  padding:12px 6px;color:#475569;font-size:12px;font-weight:700;
+  text-align:center;transition:.2s
+}
+.mode-btn span{display:block;font-size:22px;margin-bottom:6px}
+.mode-btn:hover{border-color:var(--primary);color:var(--primary)}
+.mode-btn.active{background:#edf2ff;border-color:var(--primary);color:var(--primary)}
+.primary-btn,.secondary-btn{
+  border:0;border-radius:9px;padding:12px 17px;font-size:13px;
+  font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:7px
+}
+.primary-btn{background:var(--primary);color:white}
+.primary-btn:hover{background:var(--primary-dark)}
+.secondary-btn{background:#edf2ff;color:#244bc1}
+.secondary-btn:hover{background:#dfe8ff}
+button:disabled{opacity:.45;cursor:not-allowed}
+.btn-row{display:flex;gap:9px;flex-wrap:wrap;margin-top:15px}
+.checkline{display:flex;align-items:center;gap:8px;font-size:13px;color:#475569;margin:10px 0}
+.color-field{display:flex;align-items:center;gap:10px}
+.color-field input[type=color]{width:48px;height:38px;border:1px solid var(--border);border-radius:8px;padding:3px;background:#fff}
+.range-line{display:flex;align-items:center;gap:12px}
+.range-line input{flex:1;min-width:0}
+.range-value{min-width:42px;text-align:right;font-size:12px;font-weight:700}
+.preview-panel{position:sticky;top:18px}
+.preview-header{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px}
+.preview-header h2{font-size:20px;margin:0}
+.badge{background:#eaf8f2;color:#087b53;padding:7px 10px;border-radius:30px;font-size:11px;font-weight:700}
+.qr-stage{
+  background:#f2f5fb;border:1px solid var(--border);border-radius:13px;
+  min-height:330px;display:flex;align-items:center;justify-content:center;
+  padding:25px;overflow:hidden
+}
+.qr-placeholder{text-align:center;color:#94a3b8;font-size:13px;line-height:1.7}
+.qr-placeholder span{font-size:48px;display:block;margin-bottom:12px}
+#qrCanvas{display:none;max-width:100%;height:auto;background:white}
+.qr-info{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:15px}
+.stat{background:#f7f9fc;border:1px solid var(--border);border-radius:9px;padding:12px}
+.stat small{display:block;color:var(--muted);font-size:11px;margin-bottom:5px}
+.stat strong{font-size:13px;overflow-wrap:anywhere}
+.notice{background:#fff8e8;border:1px solid #f3dfac;color:#805c12;padding:12px 14px;border-radius:10px;font-size:12px;line-height:1.6;margin-top:16px}
+.success{display:none;background:#effaf5;border:1px solid #ccebdc;color:#176a4c;border-radius:10px;padding:12px;font-size:12px;line-height:1.6;margin-top:14px}
+.success.show{display:block}
+.logo-upload{
+  border:1px dashed #bdc9dc;background:#f8faff;padding:15px;
+  border-radius:10px;font-size:12px;color:var(--muted)
+}
+.logo-upload input{display:block;margin-top:10px;max-width:100%}
+.logo-preview{width:65px;height:65px;object-fit:contain;background:#f1f5f9;border-radius:8px;margin-top:10px;display:none}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:25px}
+.info-card{padding:19px}
+.info-card .icon{font-size:26px}
+.info-card h3{font-size:15px;margin:10px 0 7px}
+.info-card p{font-size:12px;color:var(--muted);line-height:1.6;margin:0}
+.section-title{font-size:24px;margin:38px 0 16px}
+.faq{margin-bottom:12px}
+.faq h3{font-size:15px;margin:0 0 7px}
+.faq p{font-size:13px;color:var(--muted);line-height:1.7;margin:0}
+footer{text-align:center;background:#fff;border-top:1px solid var(--border);padding:24px;color:var(--muted);font-size:12px}
+footer a{color:var(--primary)}
+@media(max-width:850px){
+ .workspace{grid-template-columns:1fr}
+ .preview-panel{position:static}
+ .preview-panel{grid-row:1}
+}
+@media(max-width:560px){
+ .topbar{padding:14px 4%}
+ .navlinks{gap:12px;font-size:12px}
+ .hero{padding:38px 17px}
+ .container{margin-top:18px}
+ .panel{padding:17px}
+ .mode-grid{grid-template-columns:repeat(3,1fr)}
+ .grid2{grid-template-columns:1fr}
+ .grid3{grid-template-columns:1fr 1fr}
+ .info-grid{grid-template-columns:1fr}
+ .qr-stage{min-height:280px;padding:14px}
+}
+</style>
+</head>
+
+<body>
+
+<header class="topbar">
+  <a class="brand" href="index.html">CV <span>Tools</span></a>
+  <nav class="navlinks">
+    <a href="index.html">Home</a>
+    <a href="index.html#tools">Our Tools</a>
+    <a href="portfolio-maker.html">Portfolio Maker</a>
+    <a href="blog.html">Blog</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>QR Code Studio</h1>
+  <p>Create professional, customizable QR codes for websites, Wi-Fi, business cards, WhatsApp, email and more. Add your brand colors and logo, then download high-quality PNG or SVG files.</p>
+  <div class="tags">
+    <span>Website QR</span>
+    <span>Wi-Fi QR</span>
+    <span>WhatsApp QR</span>
+    <span>Business QR</span>
+    <span>PNG & SVG</span>
+    <span>Custom Logo</span>
+  </div>
+</section>
+
+<main class="container">
+
+<div class="workspace">
+
+<section class="panel">
+  <h2>Create Your QR Code</h2>
+  <p class="panel-sub">Choose a QR code type, enter your information and customize its appearance.</p>
+
+  <div class="mode-grid" id="modeGrid">
+    <button class="mode-btn active" data-mode="url"><span>🔗</span>Website</button>
+    <button class="mode-btn" data-mode="text"><span>📝</span>Text</button>
+    <button class="mode-btn" data-mode="wifi"><span>📶</span>Wi-Fi</button>
+    <button class="mode-btn" data-mode="whatsapp"><span>💬</span>WhatsApp</button>
+    <button class="mode-btn" data-mode="email"><span>✉️</span>Email</button>
+    <button class="mode-btn" data-mode="phone"><span>📞</span>Phone</button>
+    <button class="mode-btn" data-mode="sms"><span>💌</span>SMS</button>
+    <button class="mode-btn" data-mode="vcard"><span>👤</span>Contact</button>
+    <button class="mode-btn" data-mode="location"><span>📍</span>Location</button>
+  </div>
+
+  <div id="fields-url" class="mode-fields">
+    <div class="field">
+      <label>Website URL</label>
+      <input id="urlInput" type="url" placeholder="https://example.com">
+      <small>Enter the complete website address, including https://</small>
+    </div>
+  </div>
+
+  <div id="fields-text" class="mode-fields" style="display:none">
+    <div class="field">
+      <label>Your Text</label>
+      <textarea id="textInput" placeholder="Enter any message, information or text..."></textarea>
+    </div>
+  </div>
+
+  <div id="fields-wifi" class="mode-fields" style="display:none">
+    <div class="field"><label>Wi-Fi Network Name (SSID)</label><input id="wifiName" placeholder="Your Wi-Fi name"></div>
+    <div class="field"><label>Wi-Fi Password</label><input id="wifiPassword" type="text" placeholder="Your Wi-Fi password"></div>
+    <div class="field"><label>Security Type</label>
+      <select id="wifiSecurity"><option value="WPA">WPA / WPA2 / WPA3</option><option value="WEP">WEP</option><option value="nopass">No Password</option></select>
+    </div>
+    <label class="checkline"><input type="checkbox" id="wifiHidden"> Hidden Wi-Fi network</label>
+  </div>
+
+  <div id="fields-whatsapp" class="mode-fields" style="display:none">
+    <div class="field"><label>WhatsApp Number</label><input id="waPhone" type="tel" placeholder="923001234567"><small>Include country code without + or spaces. Example: 923001234567</small></div>
+    <div class="field"><label>Pre-filled Message (optional)</label><textarea id="waMessage" placeholder="Hello! I would like to know more..."></textarea></div>
+  </div>
+
+  <div id="fields-email" class="mode-fields" style="display:none">
+    <div class="field"><label>Email Address</label><input id="emailAddress" type="email" placeholder="hello@example.com"></div>
+    <div class="field"><label>Email Subject</label><input id="emailSubject" placeholder="Your subject"></div>
+    <div class="field"><label>Email Message</label><textarea id="emailBody" placeholder="Write your message..."></textarea></div>
+  </div>
+
+  <div id="fields-phone" class="mode-fields" style="display:none">
+    <div class="field"><label>Phone Number</label><input id="phoneNumber" type="tel" placeholder="+923001234567"></div>
+  </div>
+
+  <div id="fields-sms" class="mode-fields" style="display:none">
+    <div class="field"><label>Mobile Number</label><input id="smsPhone" type="tel" placeholder="+923001234567"></div>
+    <div class="field"><label>SMS Message</label><textarea id="smsMessage" placeholder="Write your message..."></textarea></div>
+  </div>
+
+  <div id="fields-vcard" class="mode-fields" style="display:none">
+    <div class="grid2">
+      <div class="field"><label>First Name</label><input id="vFirst" placeholder="First name"></div>
+      <div class="field"><label>Last Name</label><input id="vLast" placeholder="Last name"></div>
+    </div>
+    <div class="field"><label>Organization / Company</label><input id="vOrg" placeholder="Company name"></div>
+    <div class="field"><label>Job Title</label><input id="vTitle" placeholder="Your job title"></div>
+    <div class="field"><label>Phone</label><input id="vPhone" type="tel" placeholder="+923001234567"></div>
+    <div class="field"><label>Email</label><input id="vEmail" type="email" placeholder="you@example.com"></div>
+    <div class="field"><label>Website</label><input id="vWebsite" placeholder="https://example.com"></div>
+    <div class="field"><label>Street / Address</label><input id="vAddress" placeholder="Your business address"></div>
+  </div>
+
+  <div id="fields-location" class="mode-fields" style="display:none">
+    <div class="grid2">
+      <div class="field"><label>Latitude</label><input id="latitude" type="number" step="any" placeholder="33.6844"></div>
+      <div class="field"><label>Longitude</label><input id="longitude" type="number" step="any" placeholder="73.0479"></div>
+    </div>
+    <small style="color:#64748b">Enter coordinates to create a map location QR code.</small>
+  </div>
+
+  <hr style="border:0;border-top:1px solid var(--border);margin:22px 0">
+
+  <h2 style="font-size:18px">Customize Design</h2>
+  <p class="panel-sub">Choose your QR code colors, size and optional logo.</p>
+
+  <div class="grid2">
+    <div class="field">
+      <label>QR Code Color</label>
+      <div class="color-field"><input type="color" id="darkColor" value="#172033"><span id="darkHex">#172033</span></div>
+    </div>
+    <div class="field">
+      <label>Background Color</label>
+      <div class="color-field"><input type="color" id="lightColor" value="#ffffff"><span id="lightHex">#ffffff</span></div>
+    </div>
+  </div>
+
+  <div class="field">
+    <label>QR Code Size</label>
+    <select id="qrSize">
+      <option value="256">256 × 256 px – Small</option>
+      <option value="400" selected>400 × 400 px – Standard</option>
+      <option value="600">600 × 600 px – High Quality</option>
+      <option value="800">800 × 800 px – Print</option>
+      <option value="1000">1000 × 1000 px – Large Print</option>
+    </select>
+  </div>
+
+  <div class="field">
+    <label>Error Correction Level</label>
+    <select id="qrError">
+      <option value="L">Low – 7%</option>
+      <option value="M">Medium – 15%</option>
+      <option value="Q" selected>Quartile – 25%</option>
+      <option value="H">High – 30% (Recommended with logo)</option>
+    </select>
+    <small>Higher correction can help a QR code remain readable if part of it is obscured, but it also makes the pattern denser.</small>
+  </div>
+
+  <div class="field">
+    <label>Logo in Center (Optional)</label>
+    <div class="logo-upload">
+      Upload a small square logo to place in the center of your QR code.
+      <input type="file" id="logoInput" accept="image/png,image/jpeg,image/webp">
+      <img id="logoPreview" class="logo-preview" alt="Logo preview">
+      <button type="button" class="secondary-btn" id="removeLogo" style="display:none;margin-top:8px">Remove Logo</button>
+    </div>
+    <small>For reliable scanning, use a small logo, high error correction and test the finished QR code before printing.</small>
+  </div>
+
+  <label class="checkline"><input type="checkbox" id="marginCheck" checked> Add white/colored quiet-zone margin</label>
+
+  <div class="btn-row">
+    <button class="primary-btn" id="generateBtn">Generate QR Code</button>
+    <button class="secondary-btn" id="resetBtn">Reset</button>
+  </div>
+
+  <div class="success" id="messageBox"></div>
+</section>
+
+<aside class="panel preview-panel">
+  <div class="preview-header">
+    <h2>Your QR Code</h2>
+    <span class="badge">Live Preview</span>
+  </div>
+
+  <div class="qr-stage" id="qrStage">
+    <div class="qr-placeholder" id="placeholder">
+      <span>▦</span>
+      Your QR code will appear here.<br>Choose a type and generate your code.
+    </div>
+    <canvas id="qrCanvas"></canvas>
+  </div>
+
+  <div class="qr-info">
+    <div class="stat"><small>QR Type</small><strong id="statType">Website</strong></div>
+    <div class="stat"><small>Image Size</small><strong id="statSize">400 × 400 px</strong></div>
+    <div class="stat"><small>Error Correction</small><strong id="statError">Q – 25%</strong></div>
+    <div class="stat"><small>Logo</small><strong id="statLogo">Not added</strong></div>
+  </div>
+
+  <div class="btn-row" style="margin-top:20px">
+    <button class="primary-btn" id="downloadPng" disabled>Download PNG</button>
+    <button class="secondary-btn" id="downloadSvg" disabled>Download SVG</button>
+  </div>
+  <div class="btn-row">
+    <button class="secondary-btn" id="copyContent" disabled>Copy QR Content</button>
+    <button class="secondary-btn" id="shareQr" disabled>Share QR Image</button>
+  </div>
+
+  <div class="notice">
+    <strong>Important:</strong> These are static QR codes. If you later change the destination URL, you must generate and distribute a new QR code. The QR code itself does not provide editable destination tracking or scan analytics.
+  </div>
+</aside>
+
+</div>
+
+<section class="info-grid">
+  <div class="info-card"><div class="icon">🎨</div><h3>Custom Branding</h3><p>Choose your own foreground and background colors and optionally add your brand logo to the center.</p></div>
+  <div class="info-card"><div class="icon">📁</div><h3>PNG & SVG Downloads</h3><p>Save a raster PNG for everyday use or an SVG for scalable print and design workflows.</p></div>
+  <div class="info-card"><div class="icon">🔐</div><h3>Browser-Based Generation</h3><p>QR codes are generated in your browser. Your entered information is not sent to our website server by this tool.</p></div>
+</section>
+
+<h2 class="section-title">Frequently Asked Questions</h2>
+<div class="info-card faq">
+  <h3>Is QR Code Studio free?</h3>
+  <p>Yes. You can generate and download QR codes without a paid subscription.</p>
+</div>
+<div class="info-card faq">
+  <h3>Can I create a Wi-Fi QR code?</h3>
+  <p>Yes. Enter your Wi-Fi network name, password and security type. A compatible phone can scan the code to connect to the network.</p>
+</div>
+<div class="info-card faq">
+  <h3>Can I add my company logo?</h3>
+  <p>Yes. Upload a logo to place it in the center. Use a high error correction level and test the QR code on multiple devices before printing.</p>
+</div>
+<div class="info-card faq">
+  <h3>What is the difference between PNG and SVG?</h3>
+  <p>PNG is an image format suitable for normal digital use. SVG is a vector format that can scale to larger sizes without pixelation.</p>
+</div>
+<div class="info-card faq">
+  <h3>Are these dynamic QR codes?</h3>
+  <p>No. These are static QR codes. Their encoded information cannot be edited after creation. To change a destination, generate a new QR code.</p>
+</div>
+
+</main>
+
+<footer>
+  <p>© <span id="year"></span> CV Tools. Free online QR Code Studio.</p>
+  <p><a href="privacy-policy.html">Privacy Policy</a> · <a href="terms-and-conditions.html">Terms & Conditions</a> · <a href="contact.html">Contact</a></p>
+</footer>
+
+<script>
+"use strict";
+
+const $ = id => document.getElementById(id);
+let currentMode="url";
+let currentContent="";
+let logoImage=null;
+let generated=false;
+let generatedSize=400;
+let generatedMargin=true;
+
+$("year").textContent=new Date().getFullYear();
+
+const modeNames={
+  url:"Website",
+  text:"Text",
+  wifi:"Wi-Fi",
+  whatsapp:"WhatsApp",
+  email:"Email",
+  phone:"Phone",
+  sms:"SMS",
+  vcard:"Contact",
+  location:"Location"
+};
+
+function showMessage(message){
+  const box=$("messageBox");
+  box.textContent=message;
+  box.classList.add("show");
+}
+function hideMessage(){
+  $("messageBox").classList.remove("show");
+}
+function setMode(mode){
+  currentMode=mode;
+  document.querySelectorAll(".mode-btn").forEach(btn=>{
+    btn.classList.toggle("active",btn.dataset.mode===mode);
+  });
+  document.querySelectorAll(".mode-fields").forEach(panel=>{
+    panel.style.display=panel.id==="fields-"+mode?"block":"none";
+  });
+  hideMessage();
+}
+document.querySelectorAll(".mode-btn").forEach(btn=>{
+  btn.addEventListener("click",()=>setMode(btn.dataset.mode));
+});
+
+function cleanPhone(value){
+  return value.replace(/[^\d+]/g,"");
+}
+function escapeVCard(value){
+  return String(value||"").replace(/\\/g,"\\\\").replace(/\n/g,"\\n").replace(/,/g,"\\,").replace(/;/g,"\\;");
+}
+function getContent(){
+  switch(currentMode){
+    case "url":{
+      let url=$("urlInput").value.trim();
+      if(!url)throw new Error("Please enter a website URL.");
+      if(!/^https?:\/\//i.test(url))url="https://"+url;
+      try{new URL(url);}catch(e){throw new Error("Please enter a valid website address.");}
+      return url;
+    }
+    case "text":{
+      const value=$("textInput").value.trim();
+      if(!value)throw new Error("Please enter some text.");
+      return value;
+    }
+    case "wifi":{
+      const ssid=$("wifiName").value;
+      const password=$("wifiPassword").value;
+      const security=$("wifiSecurity").value;
+      if(!ssid)throw new Error("Please enter your Wi-Fi network name.");
+      if(security!=="nopass"&&!password)throw new Error("Please enter the Wi-Fi password.");
+      const escapeWifi=v=>String(v).replace(/\\/g,"\\\\").replace(/;/g,"\\;").replace(/,/g,"\\,").replace(/:/g,"\\:");
+      return "WIFI:T:"+security+";S:"+escapeWifi(ssid)+";P:"+escapeWifi(password)+";H:"+($("wifiHidden").checked?"true":"false")+";;";
+    }
+    case "whatsapp":{
+      const phone=cleanPhone($("waPhone").value).replace(/^\+/,"");
+      if(!/^\d{7,15}$/.test(phone))throw new Error("Enter a valid WhatsApp number with country code.");
+      const msg=$("waMessage").value.trim();
+      return "https://wa.me/"+phone+(msg?"?text="+encodeURIComponent(msg):"");
+    }
+    case "email":{
+      const email=$("emailAddress").value.trim();
+      if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("Enter a valid email address.");
+      const subject=$("emailSubject").value.trim();
+      const body=$("emailBody").value.trim();
+      return "mailto:"+email+"?subject="+encodeURIComponent(subject)+"&body="+encodeURIComponent(body);
+    }
+    case "phone":{
+      const phone=cleanPhone($("phoneNumber").value);
+      if(!/^\+?\d{7,15}$/.test(phone))throw new Error("Enter a valid phone number.");
+      return "tel:"+phone;
+    }
+    case "sms":{
+      const phone=cleanPhone($("smsPhone").value);
+      if(!/^\+?\d{7,15}$/.test(phone))throw new Error("Enter a valid mobile number.");
+      return "SMSTO:"+phone+":"+$("smsMessage").value.trim();
+    }
+    case "vcard":{
+      const first=$("vFirst").value.trim(),last=$("vLast").value.trim();
+      const phone=cleanPhone($("vPhone").value);
+      const email=$("vEmail").value.trim();
+      if(!first&&!last&&!phone&&!email)throw new Error("Enter at least a name, phone number or email.");
+      if(email&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))throw new Error("Enter a valid email address.");
+      const lines=[
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "N:"+escapeVCard(last)+";"+escapeVCard(first)+";;;",
+        "FN:"+escapeVCard((first+" "+last).trim())
+      ];
+      const org=$("vOrg").value.trim();
+      const title=$("vTitle").value.trim();
+      const website=$("vWebsite").value.trim();
+      const address=$("vAddress").value.trim();
+      if(org)lines.push("ORG:"+escapeVCard(org));
+      if(title)lines.push("TITLE:"+escapeVCard(title));
+      if(phone)lines.push("TEL;TYPE=CELL:"+escapeVCard(phone));
+      if(email)lines.push("EMAIL:"+escapeVCard(email));
+      if(website)lines.push("URL:"+escapeVCard(website));
+      if(address)lines.push("ADR;TYPE=WORK:;;"+escapeVCard(address)+";;;;");
+      lines.push("END:VCARD");
+      return lines.join("\r\n");
+    }
+    case "location":{
+      const lat=$("latitude").value.trim(),lon=$("longitude").value.trim();
+      if(lat===""||lon==="")throw new Error("Enter both latitude and longitude.");
+      const la=Number(lat),lo=Number(lon);
+      if(!Number.isFinite(la)||!Number.isFinite(lo)||la < -90||la > 90||lo < -180||lo > 180){
+        throw new Error("Enter valid latitude and longitude coordinates.");
+      }
+      return "geo:"+la+","+lo;
+    }
+    default:throw new Error("Choose a QR code type.");
+  }
+}
+
+function drawLogoOnCanvas(canvas,logo,background){
+  const ctx=canvas.getContext("2d");
+  const size=canvas.width;
+  const logoSize=Math.round(size*0.19);
+  const x=Math.round((size-logoSize)/2);
+  const y=Math.round((size-logoSize)/2);
+  const padding=Math.round(size*0.025);
+  const box=logoSize+padding*2;
+  const bx=Math.round((size-box)/2);
+  const by=Math.round((size-box)/2);
+  const radius=Math.round(size*0.025);
+
+  ctx.save();
+  ctx.fillStyle=background;
+  ctx.beginPath();
+  ctx.roundRect(bx,by,box,box,radius);
+  ctx.fill();
+
+  const ratio=Math.min(logoSize/logo.naturalWidth,logoSize/logo.naturalHeight);
+  const w=logo.naturalWidth*ratio;
+  const h=logo.naturalHeight*ratio;
+  ctx.drawImage(logo,x+(logoSize-w)/2,y+(logoSize-h)/2,w,h);
+  ctx.restore();
+}
+
+function canvasToBlob(canvas){
+  return new Promise((resolve,reject)=>{
+    canvas.toBlob(blob=>{
+      if(blob)resolve(blob);
+      else reject(new Error("Could not export PNG."));
+    },"image/png");
+  });
+}
+
+function downloadBlob(blob,name){
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;a.download=name;
+  document.body.appendChild(a);
+  a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+
+function downloadDataUrl(data,name,type){
+  const blob=new Blob([data],{type});
+  downloadBlob(blob,name);
+}
+
+async function generateQR(){
+  if(typeof QRCode==="undefined"||!QRCode.toCanvas){
+    throw new Error("QR generator library did not load. Refresh the page and try again.");
+  }
+
+  const content=getContent();
+  if(content.length>2500)throw new Error("This content is too long for this QR tool. Please shorten it.");
+
+  const size=Number($("qrSize").value);
+  const dark=$("darkColor").value;
+  const light=$("lightColor").value;
+  const error=$("qrError").value;
+  const margin=$("marginCheck").checked;
+
+  if(dark.toLowerCase()===light.toLowerCase()){
+    throw new Error("Choose different foreground and background colors.");
+  }
+
+  const canvas=$("qrCanvas");
+  const placeholder=$("placeholder");
+
+  await QRCode.toCanvas(canvas,content,{
+    width:size,
+    margin:margin?4:0,
+    errorCorrectionLevel:error,
+    color:{dark:dark,light:light}
+  });
+
+  if(logoImage){
+    if(error!=="H"){
+      throw new Error("For a logo QR code, choose High (H) error correction for better scan reliability.");
+    }
+    drawLogoOnCanvas(canvas,logoImage,light);
+  }
+
+  canvas.style.display="block";
+  placeholder.style.display="none";
+
+  currentContent=content;
+  generated=true;
+  generatedSize=size;
+  generatedMargin=margin;
+
+  $("statType").textContent=modeNames[currentMode];
+  $("statSize").textContent=size+" × "+size+" px";
+  $("statError").textContent=error+" – "+({L:"7%",M:"15%",Q:"25%",H:"30%"}[error]);
+  $("statLogo").textContent=logoImage?"Added":"Not added";
+
+  $("downloadPng").disabled=false;
+  $("downloadSvg").disabled=false;
+  $("copyContent").disabled=false;
+  $("shareQr").disabled=false;
+
+  showMessage("Your "+modeNames[currentMode]+" QR code has been generated successfully.");
+}
+
+$("generateBtn").addEventListener("click",async()=>{
+  hideMessage();
+  try{
+    await generateQR();
+  }catch(error){
+    showMessage(error.message);
+  }
+});
+
+$("darkColor").addEventListener("input",()=>{
+  $("darkHex").textContent=$("darkColor").value.toUpperCase();
+});
+$("lightColor").addEventListener("input",()=>{
+  $("lightHex").textContent=$("lightColor").value.toUpperCase();
+});
+
+$("qrSize").addEventListener("change",()=>{
+  $("statSize").textContent=$("qrSize").value+" × "+$("qrSize").value+" px";
+});
+
+$("logoInput").addEventListener("change",e=>{
+  const file=e.target.files[0];
+  if(!file)return;
+  if(!["image/png","image/jpeg","image/webp"].includes(file.type)){
+    showMessage("Please upload a PNG, JPG or WebP logo.");e.target.value="";return;
+  }
+  if(file.size>2*1024*1024){
+    showMessage("Logo must be smaller than 2 MB.");e.target.value="";return;
+  }
+  const url=URL.createObjectURL(file);
+  const img=new Image();
+  img.onload=()=>{
+    logoImage=img;
+    $("logoPreview").src=url;
+    $("logoPreview").style.display="block";
+    $("removeLogo").style.display="inline-flex";
+    showMessage("Logo uploaded. Select High error correction and generate the QR code again.");
+  };
+  img.onerror=()=>showMessage("Could not load this logo image.");
+  img.src=url;
+});
+
+$("removeLogo").addEventListener("click",()=>{
+  logoImage=null;
+  $("logoInput").value="";
+  $("logoPreview").removeAttribute("src");
+  $("logoPreview").style.display="none";
+  $("removeLogo").style.display="none";
+  showMessage("Logo removed. Generate the QR code again to update your preview.");
+});
+
+$("downloadPng").addEventListener("click",async()=>{
+  if(!generated)return;
+  try{
+    const blob=await canvasToBlob($("qrCanvas"));
+    downloadBlob(blob,"custom-qr-code.png");
+  }catch(error){showMessage(error.message);}
+});
+
+$("downloadSvg").addEventListener("click",async()=>{
+  if(!generated)return;
+  try{
+    const size=generatedSize;
+    const dark=$("darkColor").value;
+    const light=$("lightColor").value;
+    const error=$("qrError").value;
+    const margin=generatedMargin?4:0;
+
+    const qrSvg=await QRCode.toString(currentContent,{
+      type:"svg",
+      width:size,
+      margin:margin,
+      errorCorrectionLevel:error,
+      color:{dark:dark,light:light}
+    });
+
+    let svg=qrSvg;
+
+    if(logoImage){
+      const logoCanvas=document.createElement("canvas");
+      logoCanvas.width=logoImage.naturalWidth;
+      logoCanvas.height=logoImage.naturalHeight;
+      logoCanvas.getContext("2d").drawImage(logoImage,0,0);
+      const logoData=logoCanvas.toDataURL("image/png");
+      const logoSize=size*0.19;
+      const box=logoSize*1.25;
+      const x=(size-box)/2;
+      const y=(size-box)/2;
+      const lx=(size-logoSize)/2;
+      const ly=(size-logoSize)/2;
+
+      const overlay=
+        `<rect x="${x}" y="${y}" width="${box}" height="${box}" rx="${size*.025}" fill="${light}"/>`+
+        `<image href="${logoData}" x="${lx}" y="${ly}" width="${logoSize}" height="${logoSize}" preserveAspectRatio="xMidYMid meet"/>`;
+
+      svg=svg.replace("</svg>",overlay+"</svg>");
+    }
+
+    downloadDataUrl(svg,"custom-qr-code.svg","image/svg+xml");
+  }catch(error){
+    showMessage("SVG export failed: "+error.message);
+  }
+});
+
+$("copyContent").addEventListener("click",async()=>{
+  if(!generated)return;
+  try{
+    await navigator.clipboard.writeText(currentContent);
+    showMessage("QR code content copied to clipboard.");
+  }catch(error){
+    showMessage("Clipboard access was blocked by your browser. You can copy the original content manually.");
+  }
+});
+
+$("shareQr").addEventListener("click",async()=>{
+  if(!generated)return;
+  try{
+    const blob=await canvasToBlob($("qrCanvas"));
+    const file=new File([blob],"custom-qr-code.png",{type:"image/png"});
+    if(navigator.share&&navigator.canShare&&navigator.canShare({files:[file]})){
+      await navigator.share({title:"My QR Code",files:[file]});
+    }else{
+      downloadBlob(blob,"custom-qr-code.png");
+      showMessage("Image sharing is not supported in this browser. Your PNG download has started instead.");
+    }
+  }catch(error){
+    if(error.name!=="AbortError")showMessage("Could not share the QR code. Try downloading the PNG instead.");
+  }
+});
+
+$("resetBtn").addEventListener("click",()=>{
+  document.querySelectorAll(".mode-fields input,.mode-fields textarea").forEach(el=>{
+    if(el.type==="checkbox")el.checked=false;
+    else el.value="";
+  });
+  $("wifiSecurity").value="WPA";
+  $("darkColor").value="#172033";
+  $("lightColor").value="#ffffff";
+  $("darkHex").textContent="#172033";
+  $("lightHex").textContent="#FFFFFF";
+  $("qrSize").value="400";
+  $("qrError").value="Q";
+  $("marginCheck").checked=true;
+
+  logoImage=null;
+  $("logoInput").value="";
+  $("logoPreview").removeAttribute("src");
+  $("logoPreview").style.display="none";
+  $("removeLogo").style.display="none";
+
+  generated=false;currentContent="";
+  $("qrCanvas").style.display="none";
+  $("placeholder").style.display="block";
+  $("downloadPng").disabled=true;
+  $("downloadSvg").disabled=true;
+  $("copyContent").disabled=true;
+  $("shareQr").disabled=true;
+
+  $("statType").textContent="Website";
+  $("statSize").textContent="400 × 400 px";
+  $("statError").textContent="Q – 25%";
+  $("statLogo").textContent="Not added";
+
+  setMode("url");
+  hideMessage();
+});
+
+</script>
+</body>
+</html>
