@@ -138,6 +138,48 @@ button{cursor:pointer}
  .form-grid{grid-template-columns:1fr}
  .form-grid .full{grid-column:auto}
 }
+  /* Template choice popup */
+.choice-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.65);
+  z-index:9999;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+.choice-box{
+  background:#fff;
+  width:100%;
+  max-width:520px;
+  padding:25px;
+  border-radius:14px;
+  box-shadow:0 20px 60px #0003;
+}
+.choice-box h2{margin:0 0 8px;font-size:22px}
+.choice-box p{color:#64748b;font-size:14px;line-height:1.6}
+.choice-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:20px;
+}
+.choice-option{
+  border:1px solid #dbe2ea;
+  border-radius:10px;
+  padding:18px 12px;
+  background:#fff;
+  text-align:left;
+}
+.choice-option:hover{border-color:#2563eb;background:#eff6ff}
+.choice-option strong{display:block;margin:8px 0}
+.choice-option span{font-size:12px;color:#64748b;line-height:1.5}
+.choice-icon{font-size:27px}
+.choice-cancel{margin-top:16px;width:100%}
+@media(max-width:480px){
+ .choice-options{grid-template-columns:1fr}
+}
 </style>
 </head>
 
@@ -175,7 +217,29 @@ button{cursor:pointer}
     <button class="btn" id="formStartBtn">Create with Form Fields</button>
   </div>
 </main>
+<!-- User chooses how to customize a selected template -->
+<div class="choice-overlay" id="templateChoice">
+  <div class="choice-box">
+    <h2>How would you like to create your portfolio?</h2>
+    <p>Choose how you want to customize your selected template.</p>
 
+    <div class="choice-options">
+      <button class="choice-option" id="visualChoice">
+        <div class="choice-icon">🎨</div>
+        <strong>Customize Yourself</strong>
+        <span>Open the visual editor. Move, resize, add and edit elements freely.</span>
+      </button>
+
+      <button class="choice-option" id="formChoice">
+        <div class="choice-icon">📝</div>
+        <strong>Fill Details in Form</strong>
+        <span>Enter your personal details, skills, education and projects. Your portfolio updates automatically.</span>
+      </button>
+    </div>
+
+    <button class="btn choice-cancel" id="cancelChoice">Cancel</button>
+  </div>
+</div>
 <!-- AUTOMATIC FORM EDITOR -->
 <section id="formView" class="form-mode hidden">
   <h1>Build Portfolio with Your Details</h1>
@@ -408,21 +472,75 @@ function miniPreview(t){
  <div class="mini-title">EXPERIENCE & EDUCATION</div><div class="mini-line" style="width:90%"></div><div class="mini-line" style="width:70%"></div>
  </div>`;
 }
-function renderGallery(filter="All"){
- const grid=$("templateGrid");grid.innerHTML="";
- templates.filter(t=>filter==="All"||t.category===filter).forEach((t,i)=>{
-  const card=document.createElement("article");card.className="template-card";
-  card.innerHTML=`<div class="template-preview">${miniPreview(t)}</div><div class="template-info"><strong>${t.name}</strong><span>${t.category} · A4 Portrait</span><button class="btn primary" data-template="${templates.indexOf(t)}">Use This Template</button></div>`;
-  grid.appendChild(card);
- });
- grid.querySelectorAll("[data-template]").forEach(b=>b.addEventListener("click",()=>startTemplate(templates[Number(b.dataset.template)])));
-}
-document.querySelectorAll(".filter-btn").forEach(b=>b.addEventListener("click",()=>{
- document.querySelectorAll(".filter-btn").forEach(x=>x.classList.remove("active"));
- b.classList.add("active");renderGallery(b.dataset.filter);
-}));
-renderGallery();
+let selectedTemplate = null;
 
+function openTemplateChoice(template) {
+  selectedTemplate = template;
+  $("templateChoice").style.display = "flex";
+}
+
+$("cancelChoice").onclick = () => {
+  $("templateChoice").style.display = "none";
+  selectedTemplate = null;
+};
+
+$("visualChoice").onclick = () => {
+  if (!selectedTemplate) return;
+
+  const template = selectedTemplate;
+  $("templateChoice").style.display = "none";
+
+  startTemplate(template);
+  selectedTemplate = null;
+};
+
+$("formChoice").onclick = () => {
+  if (!selectedTemplate) return;
+
+  const template = selectedTemplate;
+  $("templateChoice").style.display = "none";
+
+  $("fAccent").value = template.accent;
+  $("fFont").value = "Arial";
+
+  setupProjectFields();
+  showView("form");
+
+  selectedTemplate = null;
+};
+
+function renderGallery(filter = "All") {
+  const grid = $("templateGrid");
+  grid.innerHTML = "";
+
+  const filteredTemplates = filter === "All"
+    ? templates
+    : templates.filter(t => t.category === filter);
+
+  filteredTemplates.forEach((template) => {
+    const index = templates.indexOf(template);
+
+    const button = document.createElement("button");
+    button.className = "template-card";
+    button.dataset.template = index;
+
+    button.innerHTML = `
+      <div class="template-preview">
+        ${template.preview || ""}
+      </div>
+      <h3>${template.name}</h3>
+      <p>${template.category}</p>
+    `;
+
+    button.addEventListener("click", () => {
+      openTemplateChoice(template);
+    });
+
+    grid.appendChild(button);
+  });
+}
+
+renderGallery();
 /* View switching */
 function showView(view){
  $("galleryView").classList.toggle("hidden",view!=="gallery");
@@ -613,18 +731,57 @@ function addImage(data,name){
   img.customLabel=name||"Uploaded image";canvas.add(img);canvas.setActiveObject(img);canvas.renderAll();updateProperties();saveHistory();renderLayers();
  });
 }
-function replacePlaceholder(rect,data,name){
- const x=rect.left,y=rect.top,w=rect.width,h=rect.height;
- const label=canvas.getObjects().find(o=>o.isPlaceholderLabel&&Math.abs(o.left-(x+8))<2&&Math.abs(o.top-(y+h/2-23))<3);
- canvas.remove(rect);if(label)canvas.remove(label);
- fabric.Image.fromURL(data,img=>{
-  const scale=Math.max(w/img.width,h/img.height);
-  img.set({left:x,top:y,scaleX:scale,scaleY:scale});
-  img.customLabel=name||"Project image";img.clipPath=new fabric.Rect({width:w,height:h,rx:7,ry:7,originX:"center",originY:"center"});
-  canvas.add(img);canvas.setActiveObject(img);canvas.renderAll();saveHistory();renderLayers();
- });
+function replacePlaceholder(rect, data, name) {
+  const x = rect.left;
+  const y = rect.top;
+  const w = rect.width * (rect.scaleX || 1);
+  const h = rect.height * (rect.scaleY || 1);
+
+  const label = canvas.getObjects().find(o =>
+    o.isPlaceholderLabel &&
+    Math.abs(o.left - (x + 8)) < 2 &&
+    Math.abs(o.top - (y + h / 2 - 23)) < 3
+  );
+
+  canvas.remove(rect);
+
+  if (label) {
+    canvas.remove(label);
+  }
+
+  fabric.Image.fromURL(data, img => {
+    if (!img || !img.width || !img.height) {
+      alert("Image load nahi ho saki. Dobara try karein.");
+      return;
+    }
+
+    // Poori image frame ke andar fit hogi, crop nahi hogi
+    const scale = Math.min(
+      w / img.width,
+      h / img.height
+    );
+
+    img.set({
+      left: x + (w - img.width * scale) / 2,
+      top: y + (h - img.height * scale) / 2,
+      scaleX: scale,
+      scaleY: scale,
+      originX: "left",
+      originY: "top",
+      customLabel: name || "Project image",
+      cornerStyle: "circle",
+      transparentCorners: false
+    });
+
+    canvas.add(img);
+    canvas.setActiveObject(img);
+    canvas.renderAll();
+
+    saveHistory();
+    renderLayers();
+  }, { crossOrigin: "anonymous" });
 }
-function renderUploads(){
+  function renderUploads(){
  const list=$("uploadList");list.innerHTML="";
  uploadedImages.forEach((im,i)=>{
   const b=document.createElement("button");b.className="btn small";b.style.display="block";b.style.width="100%";b.style.marginTop="7px";b.textContent="＋ "+im.name;
