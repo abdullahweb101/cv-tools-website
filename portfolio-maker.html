@@ -3,325 +3,261 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#f5f7fb">
 <title>Portfolio Showcase Studio</title>
 
 <style>
-:root{
- --blue:#315efb;
- --ink:#172033;
- --muted:#6d778b;
- --line:#e7eaf0;
- --bg:#f5f7fb;
-}
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--ink);
- font-family:Inter,Arial,sans-serif
-}
+body{margin:0;background:#f4f6fa;color:#172033;font-family:Arial,Helvetica,sans-serif}
 button,input,textarea,select{font:inherit}
 button{cursor:pointer}
-.topbar{
- height:68px;background:#fff;border-bottom:1px solid var(--line);
- display:flex;align-items:center;justify-content:space-between;
- padding:0 24px;position:sticky;top:0;z-index:20
-}
-.brand{font-weight:850;font-size:19px;letter-spacing:-.5px}
-.brand span{color:var(--blue)}
-.top-actions{display:flex;gap:9px;align-items:center}
-.btn{
- border:1px solid var(--line);background:#fff;color:var(--ink);
- padding:10px 15px;border-radius:9px;font-weight:700;font-size:13px
-}
-.btn.primary{background:var(--blue);color:#fff;border-color:var(--blue)}
-.btn:hover{filter:brightness(.96)}
-.btn:disabled{opacity:.4;cursor:not-allowed}
-.app{
- display:grid;
- grid-template-columns:220px minmax(280px,420px) minmax(400px,1fr);
- gap:16px;padding:18px;max-width:1800px;margin:auto;align-items:start
-}
-.panel{
- background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden
-}
-.panel-head{padding:17px 18px;border-bottom:1px solid var(--line)}
+.topbar{height:65px;background:#fff;border-bottom:1px solid #e6e9ef;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:50}
+.brand{font-size:19px;font-weight:850}
+.brand span{color:#315efb}
+.actions{display:flex;gap:8px}
+.btn{border:1px solid #dfe3eb;background:#fff;padding:10px 13px;border-radius:8px;font-size:12px;font-weight:700;color:#172033}
+.btn.primary{background:#315efb;border-color:#315efb;color:white}
+.app{max-width:1800px;margin:auto;padding:15px;display:grid;grid-template-columns:205px minmax(280px,390px) minmax(350px,1fr);gap:13px;align-items:start}
+.panel{background:#fff;border:1px solid #e5e8ef;border-radius:12px;overflow:hidden;min-width:0}
+.panel-head{padding:16px;border-bottom:1px solid #e8ebf1}
 .panel-head h2{font-size:15px;margin:0}
-.panel-head p{font-size:12px;color:var(--muted);margin:6px 0 0}
-.steps{padding:12px}
-.step{
- width:100%;display:flex;align-items:center;gap:11px;
- border:0;background:transparent;text-align:left;padding:12px;
- border-radius:9px;color:#536078;font-weight:650;font-size:13px;margin:2px 0
-}
-.step .num{
- width:26px;height:26px;border-radius:8px;background:#f0f2f7;
- display:grid;place-items:center;font-size:11px
-}
-.step.active{background:#eef2ff;color:var(--blue)}
-.step.active .num{background:var(--blue);color:#fff}
-.side-note{
- margin:12px;padding:13px;background:#f7f8fc;border-radius:10px;
- color:#657087;font-size:11px;line-height:1.6
-}
-.editor{padding:18px}
-.editor h3{font-size:17px;margin:0 0 5px}
-.editor .hint{font-size:12px;color:var(--muted);line-height:1.5;margin:0 0 18px}
-.field{margin:0 0 15px}
+.panel-head p{font-size:11px;color:#7b8494;margin:6px 0 0}
+.steps{padding:10px}
+.step{display:flex;align-items:center;gap:10px;width:100%;padding:11px 9px;border:0;background:none;border-radius:8px;text-align:left;font-size:12px;font-weight:700;color:#596477}
+.step.active{background:#edf1ff;color:#315efb}
+.step span{width:25px;height:25px;display:grid;place-items:center;border-radius:7px;background:#edf0f5;font-size:10px}
+.step.active span{background:#315efb;color:#fff}
+.note{margin:10px;padding:12px;border-radius:8px;background:#f5f7fb;color:#697386;font-size:11px;line-height:1.6}
+.editor{padding:17px}
+.editor h3{font-size:17px;margin:0 0 6px}
+.hint{font-size:12px;line-height:1.6;color:#788294;margin:0 0 17px}
+.field{margin-bottom:14px}
 .field label{display:block;font-size:12px;font-weight:750;margin-bottom:7px}
-.field input,.field textarea,.field select{
- width:100%;padding:11px 12px;border:1px solid #dfe3eb;
- border-radius:8px;background:#fff;color:#172033;outline:none;
- font-size:13px;min-width:0
-}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--blue)}
-.field textarea{min-height:82px;resize:vertical;line-height:1.5}
-.field small{display:block;color:#8992a3;font-size:10px;margin-top:5px}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.upload{border:1.5px dashed #cbd2e0;border-radius:10px;padding:13px;background:#fafbfe}
-.upload input{border:0;padding:5px 0;background:transparent}
-.upload-preview{
- width:100%;height:110px;object-fit:contain;display:none;
- background:#f0f2f7;border-radius:8px;margin-top:9px
-}
-.editor-actions{
- display:flex;justify-content:space-between;gap:8px;
- border-top:1px solid var(--line);padding-top:15px;margin-top:20px
-}
-.preview-panel{position:sticky;top:84px}
-.preview-head{
- display:flex;align-items:center;justify-content:space-between;
- padding:13px 15px;border-bottom:1px solid var(--line);gap:8px
-}
-.preview-head strong{font-size:13px}
-.preview-head span{font-size:11px;color:var(--muted)}
-.preview-scroll{padding:12px;background:#e9edf5;max-height:calc(100vh - 145px);overflow:auto}
-.portfolio{
- --accent:var(--blue);
- background:#fff;min-height:650px;overflow:hidden;
- box-shadow:0 5px 24px #1a274015;color:#172033
-}
-.portfolio.dark{background:#101116;color:#f5f5f5}
-.portfolio.editorial{background:#f8f5ef;color:#222}
-.portfolio.studio{background:#f4f6fa;color:#172033}
-.portfolio a{color:inherit}
-.p-nav{
- display:flex;align-items:center;justify-content:space-between;
- padding:23px 6%;font-size:12px;gap:12px
-}
-.p-logo{font-weight:850;font-size:15px;letter-spacing:-.5px}
-.p-navlinks{display:flex;gap:18px;flex-wrap:wrap}
-.p-navlinks a{text-decoration:none;color:inherit;opacity:.75}
-.p-hero{
- padding:65px 7% 55px;display:grid;
- grid-template-columns:1.1fr .9fr;gap:35px;align-items:center;min-height:340px
-}
-.p-kicker{
- font-size:10px;letter-spacing:2px;text-transform:uppercase;
- color:var(--accent);font-weight:800;margin-bottom:15px
-}
-.p-hero h1{
- font-size:clamp(35px,5vw,65px);line-height:1.02;
- letter-spacing:-2.7px;margin:0 0 18px;overflow-wrap:anywhere
-}
-.p-hero p{font-size:14px;line-height:1.8;opacity:.72;max-width:520px}
-.p-hero-image{
- height:270px;width:100%;object-fit:contain;
- background:#e9edf3;border-radius:12px;display:block
-}
-.dark .p-hero-image{background:#20232b}
-.p-cta{
- display:inline-block;background:var(--accent);color:#fff!important;
- padding:12px 19px;border-radius:5px;text-decoration:none;
- font-size:11px;font-weight:800;margin-top:12px
-}
-.p-section{padding:45px 7%}
-.p-section-head{
- display:flex;align-items:end;justify-content:space-between;
- gap:15px;margin-bottom:23px
-}
-.p-section-head h2{font-size:clamp(25px,3vw,38px);letter-spacing:-1.3px;margin:0}
-.p-section-head p{font-size:12px;opacity:.65;max-width:300px;line-height:1.6}
-.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px}
-.project-card{min-width:0}
-.project-image{
- height:190px;width:100%;object-fit:contain;background:#e8ebf1;
- border-radius:8px;display:block
-}
-.dark .project-image{background:#24262d}
-.project-card h3{font-size:17px;margin:13px 0 6px}
-.project-card p{font-size:12px;line-height:1.65;opacity:.68;margin:0}
-.project-meta{font-size:10px;opacity:.55;margin-top:9px}
-.about-layout{
- display:grid;grid-template-columns:170px 1fr;gap:30px;align-items:center
-}
-.about-photo{
- width:160px;height:160px;border-radius:50%;object-fit:contain;
- background:#e7eaf0;border:5px solid #fff;box-shadow:0 4px 20px #0001
-}
-.dark .about-photo{border-color:#25262c;background:#292b33}
-.about-copy h2{font-size:30px;margin:0 0 10px;letter-spacing:-1px}
-.about-copy p{font-size:13px;line-height:1.8;opacity:.72}
-.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-.service-item{padding:18px 0;border-top:1px solid #9995}
-.service-item h3{font-size:14px;margin:0 0 8px}
-.service-item p{font-size:11px;line-height:1.6;opacity:.65}
-.testimonial{font-size:22px;line-height:1.5;max-width:680px;letter-spacing:-.5px}
-.contact-section{background:#edf1f8;color:#172033}
-.dark .contact-section{background:#1c1e25;color:#fff}
-.contact-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.contact-links a{
- padding:10px 13px;border:1px solid #9996;border-radius:5px;
- text-decoration:none;font-size:11px;font-weight:700
-}
-.p-footer{
- padding:22px 7%;font-size:10px;opacity:.6;
- display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap
-}
-.empty-image{
- display:grid;place-items:center;color:#8b94a5;font-size:12px;
- border:1px dashed #b9c1ce
-}
+.field input,.field textarea,.field select{width:100%;padding:11px;border:1px solid #dfe3eb;border-radius:8px;background:white;color:#172033;font-size:13px;min-width:0}
+.field textarea{min-height:80px;resize:vertical;line-height:1.5}
+.field small{display:block;font-size:10px;color:#8490a2;margin-top:6px}
+.upload{padding:12px;border:1px dashed #c7cfdd;border-radius:9px;background:#fafbfe}
+.upload input{border:0;padding:5px 0;background:none}
+.upload img{width:100%;height:100px;object-fit:contain;margin-top:8px;background:#edf0f5;border-radius:7px}
+.colors{display:flex;gap:10px;flex-wrap:wrap}
+.dot{width:27px;height:27px;border-radius:50%;border:2px solid white;box-shadow:0 0 0 1px #cbd1dc}
+.dot.selected{box-shadow:0 0 0 2px #315efb}
+.actions-bottom{display:flex;justify-content:space-between;border-top:1px solid #e8ebf1;padding-top:15px;margin-top:20px}
+.preview-panel{position:sticky;top:78px}
+.preview-head{padding:13px 15px;border-bottom:1px solid #e8ebf1;display:flex;justify-content:space-between;align-items:center;font-size:12px}
+.preview-head span{color:#8992a2;font-size:10px}
+.preview-scroll{background:#e8edf5;padding:12px;max-height:calc(100vh - 140px);overflow:auto}
+#portfolio{width:100%;min-height:650px;overflow:hidden;box-shadow:0 4px 20px #17203312}
+#portfolio img{max-width:100%}
 .mobile-tabs{display:none}
-.toast{
- position:fixed;bottom:20px;left:50%;transform:translateX(-50%);
- background:#172033;color:#fff;padding:12px 18px;border-radius:9px;
- font-size:12px;z-index:99;box-shadow:0 5px 20px #0003;
- max-width:90%;text-align:center
-}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);padding:12px 18px;background:#172033;color:white;border-radius:8px;font-size:12px;z-index:99}
 
-/* TEMPLATE 5: PHOTOGRAPHY */
-.portfolio.photography .p-hero{
- grid-template-columns:1fr;text-align:center;padding-top:65px
-}
-.portfolio.photography .p-hero p{margin-left:auto;margin-right:auto}
-.portfolio.photography .p-hero-image{height:340px;border-radius:3px}
-.portfolio.photography .project-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
-.portfolio.photography .project-image{height:230px;border-radius:3px}
+/* Common portfolio elements */
+.p-nav{display:flex;justify-content:space-between;align-items:center;padding:22px 6%;gap:15px}
+.p-logo{font-weight:850;font-size:17px}
+.p-links{display:flex;gap:19px;flex-wrap:wrap}
+.p-links a{text-decoration:none;color:inherit;font-size:11px;opacity:.75}
+.p-hero{padding:65px 7%;display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+.p-hero h1{font-size:clamp(38px,5vw,68px);line-height:1.02;letter-spacing:-2.5px;margin:10px 0 18px;overflow-wrap:anywhere}
+.p-hero p{font-size:14px;line-height:1.8;opacity:.75}
+.kicker{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:13px}
+.p-image{width:100%;height:300px;object-fit:contain;background:#e9edf3;display:block}
+.p-button{display:inline-block;text-decoration:none;background:var(--accent);color:#fff!important;padding:13px 20px;border-radius:4px;font-size:11px;font-weight:800;margin-top:12px}
+.p-section{padding:48px 7%}
+.section-title{font-size:clamp(26px,3vw,42px);letter-spacing:-1.4px;margin:0 0 22px}
+.project-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.project-card{min-width:0}
+.project-card img{width:100%;height:210px;object-fit:contain;background:#e9edf3;display:block}
+.project-card h3{font-size:17px;margin:13px 0 7px}
+.project-card p{font-size:12px;line-height:1.7;opacity:.72}
+.project-card small{opacity:.6}
+.about-grid{display:grid;grid-template-columns:170px 1fr;gap:28px;align-items:center}
+.profile{width:160px;height:160px;object-fit:contain;border-radius:50%;background:#e9edf3;border:5px solid #fff}
+.services{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.service{padding:18px 0;border-top:1px solid #9995}
+.service h3{font-size:14px}
+.service p{font-size:12px;line-height:1.7;opacity:.7}
+.contact-links{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.contact-links a{border:1px solid currentColor;padding:10px 13px;text-decoration:none;font-size:11px;border-radius:4px}
+.p-footer{padding:22px 7%;font-size:10px;opacity:.65;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.placeholder{display:grid;place-items:center;border:1px dashed #abb5c5;color:#8993a5;font-size:12px;min-height:120px}
+.p-about p{font-size:13px;line-height:1.9;opacity:.75}
+.p-contact{padding:50px 7%}
 
-/* TEMPLATE 6: DEVELOPER */
-.portfolio.developer{background:#101827;color:#e8efff}
-.portfolio.developer .p-hero{background:#131f32}
-.portfolio.developer .p-kicker{color:#63d9bd}
-.portfolio.developer .p-hero h1{font-family:monospace;letter-spacing:-2px}
-.portfolio.developer .project-image{background:#1e2b40;border:1px solid #34445e}
-.portfolio.developer .p-section{border-top:1px solid #29374b}
-.portfolio.developer .service-item{border-color:#34445e}
-.portfolio.developer .contact-section{background:#19263a;color:#fff}
+/* TEMPLATE 1 - CREATIVE SHOWCASE */
+.t-creative{background:#fff;color:#172033}
+.t-creative .p-hero{min-height:410px}
+.t-creative .p-image{border-radius:13px}
+.t-creative .project-card img{border-radius:9px}
+.t-creative .p-section:nth-of-type(even){background:#f7f8fb}
 
-/* TEMPLATE 7: FREELANCER */
-.portfolio.freelancer .p-hero{background:#eef2ff}
-.portfolio.freelancer .p-hero h1{font-size:clamp(38px,5vw,60px)}
-.portfolio.freelancer .project-image{border-radius:14px}
-.portfolio.freelancer .p-cta{border-radius:30px}
+/* TEMPLATE 2 - EDITORIAL MAGAZINE */
+.t-editorial{background:#f7f3eb;color:#29251f;font-family:Georgia,serif}
+.t-editorial .p-logo{font-family:Arial,sans-serif;letter-spacing:2px;text-transform:uppercase}
+.t-editorial .p-links{border-bottom:1px solid #b9b1a5;padding-bottom:10px}
+.t-editorial .p-hero{grid-template-columns:1fr;max-width:1000px;margin:auto;text-align:center;padding-top:75px}
+.t-editorial .p-hero h1{font-size:clamp(48px,8vw,100px);font-weight:400;letter-spacing:-4px}
+.t-editorial .p-hero p{max-width:570px;margin:20px auto}
+.t-editorial .p-image{height:400px;object-fit:contain;background:#e8e1d5}
+.t-editorial .project-grid{grid-template-columns:1.2fr .8fr}
+.t-editorial .project-card:nth-child(even){margin-top:65px}
+.t-editorial .project-card img{height:280px}
+.t-editorial .section-title{font-weight:400}
+.t-editorial .profile{border-radius:0;width:190px;height:240px}
 
-/* TEMPLATE 8: BOLD CREATIVE */
-.portfolio.bold{background:#fff4e9;color:#211b19}
-.portfolio.bold .p-hero{grid-template-columns:1fr;padding-top:55px}
-.portfolio.bold .p-hero h1{
- font-size:clamp(48px,8vw,90px);line-height:.96;
- letter-spacing:-4px;max-width:850px
-}
-.portfolio.bold .p-hero-image{height:320px;border-radius:0}
-.portfolio.bold .project-image{border-radius:0}
+/* TEMPLATE 3 - MODERN STUDIO */
+.t-studio{background:#f1f4fa;color:#18243a}
+.t-studio .p-nav{background:#fff}
+.t-studio .p-hero{background:#e3eafa;grid-template-columns:1.1fr .9fr}
+.t-studio .p-image{border-radius:22px;height:340px}
+.t-studio .p-button{border-radius:30px}
+.t-studio .project-grid{grid-template-columns:repeat(2,1fr)}
+.t-studio .project-card{background:#fff;padding:12px;border-radius:12px}
+.t-studio .project-card img{border-radius:9px}
+.t-studio .service{background:white;border:0;padding:20px;border-radius:10px}
 
-/* TEMPLATE 9: LUXURY */
-.portfolio.luxury{background:#171713;color:#eee9dc}
-.portfolio.luxury .p-logo,
-.portfolio.luxury .p-section-head h2,
-.portfolio.luxury .about-copy h2{
- font-family:Georgia,serif;font-weight:400
-}
-.portfolio.luxury .p-hero h1{
- font-family:Georgia,serif;font-weight:400;letter-spacing:-2px
-}
-.portfolio.luxury .p-kicker{color:#c6a66a}
-.portfolio.luxury .p-hero-image,
-.portfolio.luxury .project-image{background:#29271f}
-.portfolio.luxury .service-item{border-color:#625a48}
-.portfolio.luxury .contact-section{background:#242219;color:#eee9dc}
+/* TEMPLATE 4 - DARK CINEMATIC */
+.t-dark{background:#101116;color:#f4f3f0}
+.t-dark .p-nav{background:#101116}
+.t-dark .p-hero{background:#171920;min-height:470px}
+.t-dark .p-hero h1{font-size:clamp(45px,6vw,78px)}
+.t-dark .p-image,.t-dark .project-card img{background:#24262e}
+.t-dark .p-section{border-top:1px solid #30323a}
+.t-dark .service{border-color:#42434a}
+.t-dark .p-contact{background:#202129}
 
-/* TEMPLATE 2: EDITORIAL */
-.portfolio.editorial .p-hero h1{font-family:Georgia,serif;font-weight:400}
-.portfolio.editorial .p-section-head h2{font-family:Georgia,serif;font-weight:400}
-.portfolio.editorial .project-image{border-radius:0}
+/* TEMPLATE 5 - PHOTOGRAPHY */
+.t-photo{background:#fff;color:#161616}
+.t-photo .p-nav{padding-top:28px;padding-bottom:28px}
+.t-photo .p-hero{display:block;padding:30px 5% 50px}
+.t-photo .p-hero h1{font-size:clamp(42px,7vw,85px);max-width:850px}
+.t-photo .p-image{height:430px;background:#e8e8e8}
+.t-photo .project-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.t-photo .project-card img{height:230px;background:#eee}
+.t-photo .project-card h3{font-size:14px}
+.t-photo .about-grid{grid-template-columns:220px 1fr}
 
-/* TEMPLATE 3: MODERN STUDIO */
-.portfolio.studio .p-hero{background:#e8edf6}
-.portfolio.studio .p-hero-image{border-radius:20px}
-.portfolio.studio .project-image{border-radius:12px}
-.portfolio.studio .p-cta{border-radius:30px}
+/* TEMPLATE 6 - DEVELOPER */
+.t-developer{background:#0b1220;color:#e6efff;font-family:Arial,sans-serif}
+.t-developer .p-nav{background:#101c30}
+.t-developer .p-logo{font-family:monospace;color:#6ce2bd}
+.t-developer .p-links a{font-family:monospace}
+.t-developer .p-hero{background:#101c30;grid-template-columns:1.3fr .7fr}
+.t-developer .p-hero h1{font-family:monospace;font-size:clamp(34px,5vw,59px);letter-spacing:-2px}
+.t-developer .p-image{background:#172840;border:1px solid #30445f;border-radius:8px}
+.t-developer .p-section{border-top:1px solid #26374e}
+.t-developer .project-card{background:#111f34;border:1px solid #30445f;padding:12px;border-radius:8px}
+.t-developer .project-card img{background:#172840}
+.t-developer .service{border-color:#30445f}
+.t-developer .p-contact{background:#172840}
 
-/* PRINT */
-@media print{
- @page{size:A4;margin:10mm}
- html,body{background:#fff!important;margin:0!important;padding:0!important}
- body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- .portfolio{box-shadow:none!important;width:100%!important;min-height:0!important}
- .p-hero,.p-section,.contact-section,.p-footer,.project-card,.about-layout{
-  break-inside:avoid;page-break-inside:avoid
- }
-}
+/* TEMPLATE 7 - FREELANCER */
+.t-freelancer{background:#fff;color:#20263a}
+.t-freelancer .p-hero{background:#eef2ff;grid-template-columns:1fr 1fr}
+.t-freelancer .p-hero h1{font-size:clamp(40px,5vw,62px)}
+.t-freelancer .p-image{border-radius:50%;height:320px;width:320px;margin:auto}
+.t-freelancer .p-button{border-radius:30px}
+.t-freelancer .project-card{border-bottom:1px solid #e6e8ef;padding-bottom:18px}
+.t-freelancer .project-card img{border-radius:12px}
+.t-freelancer .service{background:#f4f6fb;padding:20px;border:0;border-radius:10px}
 
-/* TABLET */
-@media(max-width:1100px){
- .app{grid-template-columns:190px minmax(260px,380px) minmax(330px,1fr);gap:10px;padding:10px}
+/* TEMPLATE 8 - BOLD CREATIVE */
+.t-bold{background:#fff0e6;color:#211a17}
+.t-bold .p-nav{border-bottom:1px solid #d8c9bd}
+.t-bold .p-hero{display:block;padding:70px 6% 45px}
+.t-bold .p-hero h1{font-size:clamp(55px,9vw,115px);letter-spacing:-6px;line-height:.91;max-width:950px}
+.t-bold .p-hero p{max-width:520px}
+.t-bold .p-image{height:340px;margin-top:30px;background:#e8d9cc}
+.t-bold .project-grid{grid-template-columns:1fr 1fr}
+.t-bold .project-card:nth-child(2){margin-top:75px}
+.t-bold .project-card img{height:280px}
+.t-bold .project-card:nth-child(odd) img{border-radius:80px 0 0 0}
+.t-bold .project-card:nth-child(even) img{border-radius:0 0 80px 0}
+
+/* TEMPLATE 9 - LUXURY */
+.t-luxury{background:#171713;color:#eae3d4;font-family:Georgia,serif}
+.t-luxury .p-nav{border-bottom:1px solid #514936}
+.t-luxury .p-logo{text-transform:uppercase;letter-spacing:3px;font-size:13px}
+.t-luxury .p-hero{grid-template-columns:1fr 1fr;min-height:500px}
+.t-luxury .p-hero h1{font-weight:400;font-size:clamp(45px,6vw,78px);letter-spacing:-3px}
+.t-luxury .p-image{background:#2c2921;height:370px}
+.t-luxury .p-section{border-top:1px solid #4c4537}
+.t-luxury .project-card img{background:#2b281f}
+.t-luxury .service{border-color:#514936}
+.t-luxury .p-contact{background:#242219}
+.t-luxury .p-button{background:#b99a61;color:#171713!important}
+
+/* Responsive layouts */
+@media(max-width:1050px){
+ .app{grid-template-columns:180px minmax(260px,350px) minmax(300px,1fr)}
  .p-hero{padding:45px 6%}
 }
-
-/* MOBILE */
 @media(max-width:800px){
- .topbar{padding:0 12px;height:60px}
- .top-actions .btn{padding:9px 10px;font-size:11px}
- .app{display:flex;flex-direction:column;padding:10px;width:100%}
+ .app{display:flex;flex-direction:column;padding:9px}
  .steps-panel,.editor-panel,.preview-panel{width:100%}
- .steps{display:flex;overflow-x:auto;gap:5px;padding:9px}
- .step{min-width:max-content;width:auto;margin:0;padding:8px}
- .step .num{width:23px;height:23px}
- .side-note{display:none}
+ .steps{display:flex;overflow-x:auto;gap:5px}
+ .step{min-width:max-content;width:auto}
+ .note{display:none}
  .preview-panel{position:static}
- .preview-scroll{max-height:none;padding:7px}
- .mobile-tabs{display:flex;gap:7px;padding:9px;background:#fff;border-bottom:1px solid var(--line)}
- .mobile-tabs button{
-  flex:1;padding:9px;border:1px solid var(--line);
-  border-radius:7px;background:#fff;font-size:11px;font-weight:700
- }
- .mobile-tabs button.active{background:#eef2ff;color:var(--blue)}
+ .preview-scroll{max-height:none;padding:6px}
+ .mobile-tabs{display:flex;gap:8px;padding:9px}
+ .mobile-tabs button{flex:1;padding:9px;background:white;border:1px solid #e0e4ed;border-radius:7px;font-weight:700;font-size:11px}
+ .mobile-tabs button.active{background:#edf1ff;color:#315efb}
 }
-@media(max-width:520px){
- .brand{font-size:16px}
- .top-actions{gap:5px}
- .top-actions .btn{padding:8px;font-size:10px}
- .p-nav{padding:17px 5%;align-items:flex-start}
- .p-navlinks{gap:9px;font-size:9px;justify-content:flex-end}
+@media(max-width:560px){
+ .topbar{height:58px;padding:0 9px}
+ .brand{font-size:15px}
+ .actions{gap:4px}
+ .btn{font-size:10px;padding:8px}
+ .app{padding:7px}
+ .editor{padding:13px}
+ .p-nav{padding:16px 5%;align-items:flex-start}
  .p-logo{font-size:12px}
- .p-hero{grid-template-columns:1fr;padding:36px 6%;gap:20px}
+ .p-links{gap:9px;justify-content:flex-end}
+ .p-links a{font-size:9px}
+ .p-hero{display:block;padding:35px 6%}
  .p-hero h1{font-size:39px;letter-spacing:-1.7px}
- .p-hero-image{height:210px}
+ .p-hero p{font-size:12px}
+ .p-image{height:210px;margin-top:20px}
  .p-section{padding:32px 6%}
- .p-section-head{display:block}
- .p-section-head p{margin-top:8px}
- .project-grid{grid-template-columns:1fr;gap:20px}
- .project-image{height:190px}
- .about-layout{grid-template-columns:1fr;text-align:center;justify-items:center;gap:15px}
- .about-photo{width:135px;height:135px}
- .about-copy h2{font-size:25px}
- .services-grid{grid-template-columns:1fr}
- .testimonial{font-size:18px}
- .field-row{grid-template-columns:1fr}
- .portfolio.photography .project-grid{grid-template-columns:1fr}
- .portfolio.photography .p-hero-image,
- .portfolio.bold .p-hero-image{height:220px}
- .portfolio.bold .p-hero h1{font-size:45px;letter-spacing:-2px}
+ .project-grid,.t-editorial .project-grid,.t-photo .project-grid,.t-bold .project-grid{grid-template-columns:1fr}
+ .project-card:nth-child(even),.t-bold .project-card:nth-child(2){margin-top:0}
+ .project-card img{height:210px}
+ .about-grid,.t-photo .about-grid{grid-template-columns:1fr;text-align:center;justify-items:center}
+ .profile{width:135px;height:135px}
+ .services{grid-template-columns:1fr}
+ .t-editorial .p-hero{padding-top:45px}
+ .t-editorial .p-hero h1{font-size:48px;letter-spacing:-2px}
+ .t-editorial .p-image{height:230px}
+ .t-editorial .project-card img{height:210px}
+ .t-editorial .project-card:nth-child(even){margin-top:0}
+ .t-photo .p-hero{padding:30px 5%}
+ .t-photo .p-image{height:240px}
+ .t-photo .project-grid{grid-template-columns:1fr}
+ .t-photo .project-card img{height:220px}
+ .t-freelancer .p-image{width:210px;height:210px}
+ .t-bold .p-hero h1{font-size:48px;letter-spacing:-2px}
+ .t-bold .p-image{height:220px}
+ .t-bold .project-card img{height:220px}
+ .t-luxury .p-hero h1{font-size:46px}
+ .t-luxury .p-image{height:220px}
+ .p-footer{padding:20px 6%}
+}
+@media print{
+ @page{size:A4;margin:10mm}
+ html,body{margin:0!important;padding:0!important}
+ body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ #portfolio{box-shadow:none!important;width:100%!important}
+ .p-hero,.p-section,.project-card,.about-grid,.p-contact{break-inside:avoid;page-break-inside:avoid}
 }
 </style>
 </head>
 
 <body>
-
 <header class="topbar">
  <div class="brand">Portfolio <span>Studio</span></div>
- <div class="top-actions">
+ <div class="actions">
   <button class="btn" id="saveBtn">Save Draft</button>
   <button class="btn" id="pdfBtn">Download PDF</button>
   <button class="btn primary" id="exportBtn">Export Website</button>
@@ -330,44 +266,31 @@ button{cursor:pointer}
 
 <main class="app">
  <aside class="panel steps-panel">
-  <div class="panel-head">
-   <h2>Build your portfolio</h2>
-   <p>Create a personal showcase website</p>
-  </div>
+  <div class="panel-head"><h2>Build your portfolio</h2><p>Create your personal showcase</p></div>
   <div class="steps" id="steps">
-   <button class="step active" data-step="0"><span class="num">01</span> Style & Layout</button>
-   <button class="step" data-step="1"><span class="num">02</span> Hero & Intro</button>
-   <button class="step" data-step="2"><span class="num">03</span> Featured Projects</button>
-   <button class="step" data-step="3"><span class="num">04</span> About & Story</button>
-   <button class="step" data-step="4"><span class="num">05</span> Services</button>
-   <button class="step" data-step="5"><span class="num">06</span> Contact & Links</button>
+   <button class="step active" data-step="0"><span>01</span> Style & Layout</button>
+   <button class="step" data-step="1"><span>02</span> Hero & Intro</button>
+   <button class="step" data-step="2"><span>03</span> Featured Projects</button>
+   <button class="step" data-step="3"><span>04</span> About & Story</button>
+   <button class="step" data-step="4"><span>05</span> Services</button>
+   <button class="step" data-step="5"><span>06</span> Contact & Links</button>
   </div>
-  <div class="side-note">
-   Your portfolio preview updates as you edit. Images up to 2 MB are supported.
-   Export your finished work as a website or PDF.
-  </div>
+  <div class="note">Edit your content and see the complete website design update instantly. Images up to 2 MB are supported.</div>
  </aside>
 
  <section class="panel editor-panel">
   <div class="mobile-tabs">
-   <button class="active" id="editTab">Edit</button>
+   <button id="editTab" class="active">Edit</button>
    <button id="previewTab">Preview</button>
   </div>
   <div class="editor" id="editor"></div>
  </section>
 
  <section class="panel preview-panel" id="previewPanel">
-  <div class="preview-head">
-   <strong>Live Website Preview</strong>
-   <span>Responsive preview</span>
-  </div>
-  <div class="preview-scroll">
-   <div id="portfolio" class="portfolio"></div>
-  </div>
+  <div class="preview-head"><strong>Live Website Preview</strong><span>Responsive preview</span></div>
+  <div class="preview-scroll"><div id="portfolio"></div></div>
  </section>
 </main>
-
-<div id="toast" class="toast" hidden></div>
 
 <script>
 const $=id=>document.getElementById(id);
@@ -375,32 +298,16 @@ const MAX_IMAGE=2*1024*1024;
 let currentStep=0;
 
 const state={
- template:"creative",
- accent:"#315efb",
- name:"Alex Morgan",
- logo:"Alex Morgan",
+ template:"creative",accent:"#315efb",
+ name:"Alex Morgan",logo:"Alex Morgan",
  role:"Independent Creative Professional",
  headline:"Ideas into meaningful digital experiences.",
  intro:"I create thoughtful digital experiences, visual stories and projects that make an impact.",
- heroImage:"",
- heroButton:"Explore My Work",
- projectsIntro:"",
+ heroImage:"",heroButton:"Explore My Work",projectsIntro:"",
  projects:[
-  {
-   title:"Brand Identity Design",
-   description:"A visual identity created to give a growing brand a distinctive and memorable presence.",
-   category:"Branding & Design",image:"",link:""
-  },
-  {
-   title:"Digital Experience",
-   description:"A clean and engaging digital experience focused on clarity, usability and modern design.",
-   category:"Digital Project",image:"",link:""
-  },
-  {
-   title:"Creative Exploration",
-   description:"An independent creative project exploring new ideas, visual direction and storytelling.",
-   category:"Creative Work",image:"",link:""
-  }
+  {title:"Brand Identity Design",description:"A visual identity created to give a growing brand a distinctive and memorable presence.",category:"Branding & Design",image:"",link:""},
+  {title:"Digital Experience",description:"A clean and engaging digital experience focused on clarity, usability and modern design.",category:"Digital Project",image:"",link:""},
+  {title:"Creative Exploration",description:"An independent creative project exploring new ideas, visual direction and storytelling.",category:"Creative Work",image:"",link:""}
  ],
  aboutTitle:"A little about me",
  about:"I enjoy turning ideas into meaningful work. My approach combines curiosity, thoughtful planning and attention to detail. I believe good work should be useful, clear and memorable.",
@@ -411,590 +318,389 @@ const state={
   {title:"Consultation",description:"Helping individuals and teams shape ideas into practical solutions."}
  ],
  testimonial:"",
- email:"",
- phone:"",
- whatsapp:"",
- website:"",
- instagram:"",
- linkedin:"",
- behance:"",
- github:"",
- otherLink:"",
- otherLabel:""
+ email:"",phone:"",whatsapp:"",website:"",
+ instagram:"",linkedin:"",behance:"",github:"",
+ otherLink:"",otherLabel:""
 };
 
 function esc(s=""){
- return String(s).replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
+ return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
-
-function safeUrl(value){
- let v=String(value||"").trim();
+function url(v){
+ v=String(v||"").trim();
  if(!v)return "";
- if(/^https?:\/\//i.test(v))return v;
- if(/^mailto:/i.test(v)||/^tel:/i.test(v))return v;
+ if(/^(https?:|mailto:|tel:)/i.test(v))return v;
  return "https://"+v;
 }
-
-function linkHtml(url,label){
- if(!url)return "";
- return `<a href="${esc(safeUrl(url))}" target="_blank" rel="noopener">${esc(label)}</a>`;
+function link(v,label){
+ return v?`<a href="${esc(url(v))}" target="_blank" rel="noopener">${esc(label)}</a>`:"";
 }
-
-function toast(message){
- const t=$("toast");
- t.textContent=message;
+function toast(msg){
+ let t=$("toast");
+ if(!t){t=document.createElement("div");t.id="toast";t.className="toast";document.body.appendChild(t)}
+ t.textContent=msg;
  t.hidden=false;
  clearTimeout(window.toastTimer);
- window.toastTimer=setTimeout(()=>t.hidden=true,2800);
+ window.toastTimer=setTimeout(()=>t.hidden=true,2600);
 }
-
-function field(label,key,value,placeholder="",type="text"){
- return `
- <div class="field">
-  <label>${label}</label>
-  <input type="${type}" data-key="${key}" value="${esc(value||"")}" placeholder="${esc(placeholder)}">
- </div>`;
+function input(label,key,value,placeholder="",type="text"){
+ return `<div class="field"><label>${label}</label><input type="${type}" data-key="${key}" value="${esc(value)}" placeholder="${esc(placeholder)}"></div>`;
 }
-
-function textarea(label,key,value,placeholder=""){
- return `
- <div class="field">
-  <label>${label}</label>
-  <textarea data-key="${key}" placeholder="${esc(placeholder)}">${esc(value||"")}</textarea>
- </div>`;
+function area(label,key,value,placeholder=""){
+ return `<div class="field"><label>${label}</label><textarea data-key="${key}" placeholder="${esc(placeholder)}">${esc(value)}</textarea></div>`;
 }
-
-function uploadField(label,key,value){
- return `
- <div class="field">
-  <label>${label}</label>
-  <div class="upload">
-   <input type="file" accept="image/*" data-upload="${key}">
-   <small>Maximum image size: 2 MB. Image fits inside its display area without cropping.</small>
-   <img class="upload-preview" id="uploadPreview-${key}" src="${value||""}" style="${value?"display:block":""}">
-  </div>
- </div>`;
+function upload(label,key,value){
+ return `<div class="field"><label>${label}</label><div class="upload">
+ <input type="file" accept="image/*" data-upload="${key}">
+ <small>Image size limit: 2 MB. Images are fitted without cropping.</small>
+ ${value?`<img src="${value}" alt="Uploaded image">`:""}
+ </div></div>`;
 }
 
 function renderEditor(){
- document.querySelectorAll(".step").forEach(b=>{
-  b.classList.toggle("active",+b.dataset.step===currentStep);
- });
-
- let html="";
+ document.querySelectorAll(".step").forEach(b=>b.classList.toggle("active",+b.dataset.step===currentStep));
+ let h="";
 
  if(currentStep===0){
-  html=`
-  <h3>Choose your visual style</h3>
-  <p class="hint">Choose a portfolio look. Each template has its own visual personality and presentation.</p>
-
-  <div class="field">
-   <label>Portfolio template</label>
-   <select data-key="template">
-    <option value="creative">1. Creative Showcase</option>
-    <option value="editorial">2. Editorial Minimal</option>
-    <option value="studio">3. Modern Studio</option>
-    <option value="dark">4. Dark Portfolio</option>
-    <option value="photography">5. Photography Portfolio</option>
-    <option value="developer">6. Developer Portfolio</option>
-    <option value="freelancer">7. Freelancer Portfolio</option>
-    <option value="bold">8. Bold Creative</option>
-    <option value="luxury">9. Luxury Personal Brand</option>
-   </select>
-  </div>
-
-  <div class="field">
-   <label>Accent colour</label>
-   <div class="color-row">
-    ${["#315efb","#7c4dff","#e45d45","#0b927c","#d19b35","#111827"].map(c=>
-     `<button class="color-dot ${state.accent===c?"selected":""}" style="background:${c}" data-color="${c}" aria-label="${c}"></button>`
-    ).join("")}
-   </div>
-  </div>
-
-  ${field("Your name / brand","name",state.name,"Your name")}
-  ${field("Navbar brand name","logo",state.logo,"Brand name")}
-
-  <p class="hint">Select any of the nine templates and see its design in the live preview.</p>`;
+  h=`<h3>Choose your website design</h3>
+  <p class="hint">These are nine different website structures, not just colour variations. Select one to change the whole preview.</p>
+  <div class="field"><label>Choose a complete design</label>
+  <select data-key="template">
+   <option value="creative">01 — Creative Showcase</option>
+   <option value="editorial">02 — Editorial Magazine</option>
+   <option value="studio">03 — Modern Studio</option>
+   <option value="dark">04 — Dark Cinematic</option>
+   <option value="photo">05 — Photography Gallery</option>
+   <option value="developer">06 — Developer Portfolio</option>
+   <option value="freelancer">07 — Freelancer Profile</option>
+   <option value="bold">08 — Bold Creative</option>
+   <option value="luxury">09 — Luxury Personal Brand</option>
+  </select></div>
+  <div class="field"><label>Accent colour</label><div class="colors">
+  ${["#315efb","#7c4dff","#e45d45","#0b927c","#d19b35","#111827"].map(c=>`<button class="dot ${state.accent===c?"selected":""}" data-color="${c}" style="background:${c}"></button>`).join("")}
+  </div></div>
+  ${input("Your name / brand","name",state.name)}
+  ${input("Navbar brand name","logo",state.logo)}
+  <p class="hint">The selected design controls the page layout, section order, image positioning, typography and responsive presentation.</p>`;
  }
 
  if(currentStep===1){
-  html=`
-  <h3>Hero & Introduction</h3>
-  <p class="hint">Everything in this section is editable. Change your headline, introduction and image to create your own first impression.</p>
-
-  ${field("Small intro label (optional)","role",state.role,"e.g. Designer & Developer")}
-
-  ${field("Main headline","headline",state.headline,"Write your own main headline")}
-
-  ${textarea("Introduction / Description","intro",state.intro,"Write your own introduction here...")}
-
-  ${uploadField("Hero image","heroImage",state.heroImage)}
-
-  ${field("Button text","heroButton",state.heroButton,"Explore my work")}`;
+  h=`<h3>Hero & Introduction</h3><p class="hint">Both headline and introduction are fully editable and appear immediately in the preview.</p>
+  ${input("Small intro label (optional)","role",state.role)}
+  ${input("Main headline","headline",state.headline,"Write your own headline")}
+  ${area("Introduction / Description","intro",state.intro,"Write your introduction")}
+  ${upload("Hero image","heroImage",state.heroImage)}
+  ${input("Button text","heroButton",state.heroButton)}`;
  }
 
  if(currentStep===2){
-  html=`
-  <h3>Featured Projects</h3>
-  <p class="hint">Show your best work visually. Add project images, descriptions and optional links.</p>
-
-  ${textarea("Section introduction (optional)","projectsIntro",state.projectsIntro,"Write an optional introduction for your selected work.")}
-
-  <div id="projectEditor">
-   ${state.projects.map((p,i)=>`
-    <div style="border:1px solid #e7eaf0;border-radius:10px;padding:13px;margin:0 0 13px">
-     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-      <strong style="font-size:13px">Project ${i+1}</strong>
-      <button class="btn" data-remove-project="${i}" ${state.projects.length===1?"disabled":""}>Remove</button>
-     </div>
-
-     <div class="field">
-      <label>Project title</label>
-      <input data-project="${i}" data-prop="title" value="${esc(p.title)}" placeholder="Project title">
-     </div>
-
-     <div class="field">
-      <label>Category / type</label>
-      <input data-project="${i}" data-prop="category" value="${esc(p.category)}" placeholder="Design, development, photography...">
-     </div>
-
-     <div class="field">
-      <label>Project description</label>
-      <textarea data-project="${i}" data-prop="description" placeholder="Describe this project">${esc(p.description)}</textarea>
-     </div>
-
-     <div class="field">
-      <label>Project image</label>
-      <div class="upload">
-       <input type="file" accept="image/*" data-project-upload="${i}">
-       <small>Maximum 2 MB. Full image fits without cropping.</small>
-       ${p.image?`<img src="${p.image}" style="width:100%;height:110px;object-fit:contain;background:#f0f2f7;border-radius:8px;margin-top:8px">`:""}
-      </div>
-     </div>
-
-     <div class="field">
-      <label>Project URL (optional)</label>
-      <input data-project="${i}" data-prop="link" value="${esc(p.link)}" placeholder="https://example.com">
-     </div>
-    </div>
-   `).join("")}
-  </div>
-
-  <button class="btn primary" id="addProject">+ Add another project</button>`;
+  h=`<h3>Featured Projects</h3><p class="hint">Add your work, project descriptions, images and optional links.</p>
+  ${area("Section introduction (optional)","projectsIntro",state.projectsIntro,"")}
+  ${state.projects.map((p,i)=>`
+   <div style="border:1px solid #e5e8ef;padding:12px;border-radius:9px;margin-bottom:12px">
+    <div style="display:flex;justify-content:space-between"><b style="font-size:12px">Project ${i+1}</b><button class="btn" data-remove="${i}">Remove</button></div>
+    ${input("Project title","project-title-"+i,p.title)}
+    ${input("Category","project-category-"+i,p.category)}
+    ${area("Description","project-description-"+i,p.description)}
+    ${upload("Project image","project-image-"+i,p.image)}
+    ${input("Project URL","project-link-"+i,p.link,"https://")}
+   </div>`).join("")}
+  <button class="btn primary" id="addProject">+ Add project</button>`;
  }
 
  if(currentStep===3){
-  html=`
-  <h3>About & Story</h3>
-  <p class="hint">Introduce yourself with a personal story. Your profile photo will appear inside a circular frame.</p>
-
-  ${uploadField("Round profile image","profileImage",state.profileImage)}
-  ${field("Section heading","aboutTitle",state.aboutTitle,"A little about me")}
-  ${textarea("Your story","about",state.about,"Share your background, approach and interests.")}`;
+  h=`<h3>About & Story</h3><p class="hint">Your profile photo appears in a circular frame. Add your personal introduction.</p>
+  ${upload("Round profile image","profileImage",state.profileImage)}
+  ${input("Section heading","aboutTitle",state.aboutTitle)}
+  ${area("Your story","about",state.about)}`;
  }
 
  if(currentStep===4){
-  html=`
-  <h3>Services & Expertise</h3>
-  <p class="hint">Describe the services, expertise or areas of work you want visitors to notice.</p>
-
+  h=`<h3>Services & Expertise</h3><p class="hint">Add the services or areas of work you want to showcase.</p>
   ${state.services.map((s,i)=>`
-   <div style="border:1px solid #e7eaf0;border-radius:10px;padding:13px;margin-bottom:12px">
-    <strong style="font-size:13px">Service ${i+1}</strong>
-    <div class="field" style="margin-top:12px">
-     <label>Title</label>
-     <input data-service="${i}" data-prop="title" value="${esc(s.title)}">
-    </div>
-    <div class="field">
-     <label>Description</label>
-     <textarea data-service="${i}" data-prop="description">${esc(s.description)}</textarea>
-    </div>
-   </div>
-  `).join("")}
-
+   <div style="border:1px solid #e5e8ef;padding:12px;border-radius:9px;margin-bottom:12px">
+    <b style="font-size:12px">Service ${i+1}</b>
+    ${input("Service title","service-title-"+i,s.title)}
+    ${area("Description","service-description-"+i,s.description)}
+   </div>`).join("")}
   <button class="btn" id="addService">+ Add service</button>
-
-  ${textarea("Optional testimonial / quote","testimonial",state.testimonial,"Add a client or mentor quote if you have one.")}`;
+  ${area("Optional testimonial","testimonial",state.testimonial)}`;
  }
 
  if(currentStep===5){
-  html=`
-  <h3>Contact & Social Links</h3>
-  <p class="hint">Add your contact details and social profiles. Only completed fields will appear on your portfolio.</p>
-
-  ${field("Email address","email",state.email,"you@example.com","email")}
-  ${field("Phone number","phone",state.phone,"+92 300 1234567","tel")}
-  ${field("WhatsApp number","whatsapp",state.whatsapp,"923001234567")}
-  ${field("Personal website","website",state.website,"https://yourwebsite.com")}
-
-  <hr style="border:0;border-top:1px solid #e7eaf0;margin:18px 0">
-  <strong style="font-size:13px">Social profiles</strong>
-
-  ${field("Instagram URL","instagram",state.instagram,"https://instagram.com/username")}
-  ${field("LinkedIn URL","linkedin",state.linkedin,"https://linkedin.com/in/username")}
-  ${field("Behance URL","behance",state.behance,"https://behance.net/username")}
-  ${field("GitHub URL","github",state.github,"https://github.com/username")}
-  ${field("Other link URL","otherLink",state.otherLink,"https://example.com")}
-  ${field("Other link label","otherLabel",state.otherLabel,"My profile")}`;
+  h=`<h3>Contact & Social Links</h3><p class="hint">Only filled contact details will appear on your website.</p>
+  ${input("Email","email",state.email,"you@example.com","email")}
+  ${input("Phone","phone",state.phone,"+92 300 1234567","tel")}
+  ${input("WhatsApp","whatsapp",state.whatsapp,"923001234567")}
+  ${input("Website","website",state.website,"https://")}
+  <hr>
+  ${input("Instagram URL","instagram",state.instagram,"https://instagram.com/")}
+  ${input("LinkedIn URL","linkedin",state.linkedin,"https://linkedin.com/in/")}
+  ${input("Behance URL","behance",state.behance,"https://behance.net/")}
+  ${input("GitHub URL","github",state.github,"https://github.com/")}
+  ${input("Other link URL","otherLink",state.otherLink,"https://")}
+  ${input("Other link label","otherLabel",state.otherLabel,"My profile")}`;
  }
 
- $("editor").innerHTML=html+`
- <div class="editor-actions">
-  <button class="btn" id="backBtn" ${currentStep===0?"disabled":""}>Back</button>
-  <button class="btn primary" id="nextBtn">${currentStep===5?"Finish":"Continue"}</button>
+ $("editor").innerHTML=h+`<div class="actions-bottom">
+ <button class="btn" id="back" ${currentStep===0?"disabled":""}>Back</button>
+ <button class="btn primary" id="next">${currentStep===5?"Finish":"Continue"}</button>
  </div>`;
 
  const select=$("editor").querySelector('[data-key="template"]');
  if(select)select.value=state.template;
 
  $("editor").querySelectorAll("[data-key]").forEach(el=>{
-  const update=()=>{
-   state[el.dataset.key]=el.value;
-   renderPreview();
-  };
+  const update=()=>{state[el.dataset.key]=el.value;renderPreview()};
   el.addEventListener("input",update);
   el.addEventListener("change",update);
  });
 
- $("editor").querySelectorAll("[data-color]").forEach(b=>{
-  b.onclick=()=>{
-   state.accent=b.dataset.color;
-   renderEditor();
-   renderPreview();
+ $("editor").querySelectorAll("[data-color]").forEach(b=>b.onclick=()=>{
+  state.accent=b.dataset.color;renderEditor();renderPreview();
+ });
+
+ $("editor").querySelectorAll("[data-upload]").forEach(el=>el.onchange=()=>{
+  const key=el.dataset.upload;
+  readImage(el.files[0]).then(data=>{
+   state[key]=data;renderEditor();renderPreview();toast("Image added successfully");
+  }).catch(toast);
+ });
+
+ $("editor").querySelectorAll("[data-remove]").forEach(b=>b.onclick=()=>{
+  state.projects.splice(+b.dataset.remove,1);renderEditor();renderPreview();
+ });
+
+ $("editor").querySelectorAll("[data-project-upload]").forEach(el=>{});
+ $("editor").querySelectorAll("[data-remove]").forEach(()=>{});
+
+ state.projects.forEach((p,i)=>{
+  ["title","category","description","link"].forEach(prop=>{
+   const el=$("editor").querySelector(`[data-key="project-${prop}-${i}"]`);
+   if(el)el.addEventListener("input",()=>{p[prop]=el.value;renderPreview()});
+  });
+  const file=$("editor").querySelector(`[data-upload="project-image-${i}"]`);
+  if(file)file.onchange=()=>{
+   readImage(file.files[0]).then(data=>{
+    p.image=data;renderEditor();renderPreview();toast("Project image added");
+   }).catch(toast);
   };
  });
 
- $("editor").querySelectorAll("[data-upload]").forEach(el=>{
-  el.onchange=()=>handleImage(el.files[0],el.dataset.upload);
- });
-
- $("editor").querySelectorAll("[data-project]").forEach(el=>{
-  el.addEventListener("input",()=>{
-   state.projects[+el.dataset.project][el.dataset.prop]=el.value;
-   renderPreview();
+ state.services.forEach((s,i)=>{
+  ["title","description"].forEach(prop=>{
+   const el=$("editor").querySelector(`[data-key="service-${prop}-${i}"]`);
+   if(el)el.addEventListener("input",()=>{s[prop]=el.value;renderPreview()});
   });
  });
 
- $("editor").querySelectorAll("[data-project-upload]").forEach(el=>{
-  el.onchange=()=>handleProjectImage(el.files[0],+el.dataset.projectUpload);
- });
-
- $("editor").querySelectorAll("[data-service]").forEach(el=>{
-  el.addEventListener("input",()=>{
-   state.services[+el.dataset.service][el.dataset.prop]=el.value;
-   renderPreview();
-  });
- });
-
- $("editor").querySelectorAll("[data-remove-project]").forEach(b=>{
-  b.onclick=()=>{
-   state.projects.splice(+b.dataset.removeProject,1);
-   renderEditor();
-   renderPreview();
-  };
- });
-
- if($("addProject")){
-  $("addProject").onclick=()=>{
-   state.projects.push({
-    title:"New Project",
-    description:"",
-    category:"Creative Work",
-    image:"",
-    link:""
-   });
-   renderEditor();
-   renderPreview();
-  };
- }
-
- if($("addService")){
-  $("addService").onclick=()=>{
-   state.services.push({title:"New Service",description:"Describe this service."});
-   renderEditor();
-   renderPreview();
-  };
- }
-
- $("backBtn").onclick=()=>{
-  if(currentStep>0){currentStep--;renderEditor()}
+ if($("addProject"))$("addProject").onclick=()=>{
+  state.projects.push({title:"New Project",description:"",category:"Creative Work",image:"",link:""});
+  renderEditor();renderPreview();
  };
-
- $("nextBtn").onclick=()=>{
-  if(currentStep<5){
-   currentStep++;
-   renderEditor();
-  }else{
-   toast("Your portfolio details are ready. Review the preview.");
-  }
+ if($("addService"))$("addService").onclick=()=>{
+  state.services.push({title:"New Service",description:""});
+  renderEditor();renderPreview();
  };
+ $("back").onclick=()=>{if(currentStep>0){currentStep--;renderEditor()}};
+ $("next").onclick=()=>{if(currentStep<5){currentStep++;renderEditor()}else toast("Your portfolio is ready to preview.")};
 }
 
 function readImage(file){
  return new Promise((resolve,reject)=>{
-  if(!file)return reject("Please select an image.");
-  if(!file.type.startsWith("image/"))return reject("Please choose an image file.");
-  if(file.size>MAX_IMAGE)return reject("Image is larger than 2 MB. Please choose a smaller image.");
-
-  const reader=new FileReader();
-  reader.onload=()=>resolve(reader.result);
-  reader.onerror=()=>reject("Image could not be read.");
-  reader.readAsDataURL(file);
+  if(!file)return reject("Select an image first.");
+  if(!file.type.startsWith("image/"))return reject("Please select an image.");
+  if(file.size>MAX_IMAGE)return reject("Image must be 2 MB or smaller.");
+  const r=new FileReader();
+  r.onload=()=>resolve(r.result);
+  r.onerror=()=>reject("Image could not be read.");
+  r.readAsDataURL(file);
  });
 }
-
-async function handleImage(file,key){
- try{
-  const data=await readImage(file);
-  state[key]=data;
-  renderEditor();
-  renderPreview();
-  toast("Image added and displayed successfully.");
- }catch(e){
-  toast(String(e));
- }
+function img(src,cls,alt){
+ return src?`<img class="${cls}" src="${src}" alt="${esc(alt)}">`:`<div class="placeholder ${cls}">Add image</div>`;
+}
+function projectCards(){
+ return state.projects.filter(p=>p.title||p.image||p.description).map(p=>`
+ <article class="project-card">
+ ${img(p.image,"",p.title)}
+ <h3>${esc(p.title)}</h3><p>${esc(p.description)}</p>
+ <small>${esc(p.category)}</small>
+ ${p.link?`<p><a href="${esc(url(p.link))}" target="_blank" rel="noopener">View project ↗</a></p>`:""}
+ </article>`).join("");
+}
+function serviceCards(){
+ return state.services.map(s=>`<article class="service"><h3>${esc(s.title)}</h3><p>${esc(s.description)}</p></article>`).join("");
+}
+function contacts(){
+ const items=[];
+ if(state.email)items.push(link("mailto:"+state.email,"Email"));
+ if(state.phone)items.push(link("tel:"+state.phone,"Call"));
+ if(state.whatsapp)items.push(link("https://wa.me/"+state.whatsapp.replace(/\D/g,""),"WhatsApp"));
+ if(state.website)items.push(link(state.website,"Website"));
+ if(state.instagram)items.push(link(state.instagram,"Instagram"));
+ if(state.linkedin)items.push(link(state.linkedin,"LinkedIn"));
+ if(state.behance)items.push(link(state.behance,"Behance"));
+ if(state.github)items.push(link(state.github,"GitHub"));
+ if(state.otherLink)items.push(link(state.otherLink,state.otherLabel||"More"));
+ return items.join("");
+}
+function nav(){
+ return `<nav class="p-nav"><div class="p-logo">${esc(state.logo||state.name)}</div>
+ <div class="p-links"><a href="#work">Work</a><a href="#about">About</a><a href="#services">Services</a><a href="#contact">Contact</a></div></nav>`;
+}
+function heroImage(){return img(state.heroImage,"p-image","Portfolio hero")}
+function heroText(){
+ return `<div><div class="kicker">${esc(state.role)}</div>
+ <h1>${esc(state.headline)}</h1><p>${esc(state.intro)}</p>
+ ${state.heroButton?`<a class="p-button" href="#work">${esc(state.heroButton)}</a>`:""}</div>`;
+}
+function projectsSection(){
+ return `<section class="p-section" id="work"><h2 class="section-title">Selected Work</h2>
+ ${state.projectsIntro?`<p>${esc(state.projectsIntro)}</p>`:""}
+ <div class="project-grid">${projectCards()}</div></section>`;
+}
+function aboutSection(){
+ return `<section class="p-section" id="about"><div class="about-grid">
+ ${img(state.profileImage,"profile","Profile photo")}
+ <div class="p-about"><div class="kicker">About me</div><h2 class="section-title">${esc(state.aboutTitle)}</h2><p>${esc(state.about)}</p></div>
+ </div></section>`;
+}
+function servicesSection(){
+ return `<section class="p-section" id="services"><h2 class="section-title">What I do</h2>
+ <div class="services">${serviceCards()}</div>
+ ${state.testimonial?`<blockquote><p>“${esc(state.testimonial)}”</p></blockquote>`:""}
+ </section>`;
+}
+function contactSection(){
+ return `<section class="p-contact" id="contact"><div class="kicker">Get in touch</div>
+ <h2 class="section-title">Let's create something meaningful.</h2>
+ <p>Have a project or an idea? Let's connect.</p>
+ <div class="contact-links">${contacts()}</div></section>`;
+}
+function footer(){
+ return `<footer class="p-footer"><span>© ${new Date().getFullYear()} ${esc(state.name)}</span><span>Personal Portfolio</span></footer>`;
 }
 
-async function handleProjectImage(file,index){
- try{
-  state.projects[index].image=await readImage(file);
-  renderEditor();
-  renderPreview();
-  toast("Project image added successfully.");
- }catch(e){
-  toast(String(e));
- }
-}
+/* Each template gets its own HTML structure and section arrangement */
+function templateMarkup(){
+ const H=heroText(),I=heroImage(),N=nav(),P=projectsSection(),A=aboutSection(),S=servicesSection(),C=contactSection(),F=footer();
 
-function imageOrPlaceholder(src,cls,alt){
- return src
- ? `<img class="${cls}" src="${src}" alt="${esc(alt)}">`
- : `<div class="${cls} empty-image">Add your image</div>`;
+ switch(state.template){
+
+ case "editorial":
+  return `${N}<header class="p-hero"><div class="kicker">A PERSONAL JOURNAL OF WORK</div>
+   <h1>${esc(state.headline)}</h1><p>${esc(state.intro)}</p></header>
+   <section class="p-section">${I}</section>${P}${A}${S}${C}${F}`;
+
+ case "studio":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   <section class="p-section"><h2 class="section-title">Our selected creations</h2><div class="project-grid">${projectCards()}</div></section>
+   ${S}${A}${C}${F}`;
+
+ case "dark":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   ${P}<section class="p-section">${A}</section>${S}${C}${F}`;
+
+ case "photo":
+  return `${N}<header class="p-hero"><div class="kicker">VISUAL STORIES & PHOTOGRAPHY</div>
+   <h1>${esc(state.headline)}</h1><p>${esc(state.intro)}</p></header>
+   <section class="p-section">${I}</section>
+   <section class="p-section" id="work"><h2 class="section-title">Visual Gallery</h2><div class="project-grid">${projectCards()}</div></section>
+   ${A}${C}${F}`;
+
+ case "developer":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   <section class="p-section" id="services"><div class="kicker">CAPABILITIES & TECHNOLOGIES</div><h2 class="section-title">What I build</h2><div class="services">${serviceCards()}</div></section>
+   ${P}${A}${C}${F}`;
+
+ case "freelancer":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   <section class="p-section" id="services"><div class="kicker">HOW I CAN HELP</div><h2 class="section-title">Services & expertise</h2><div class="services">${serviceCards()}</div></section>
+   ${P}${A}${C}${F}`;
+
+ case "bold":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   <section class="p-section"><div class="kicker">A SELECTION OF MY WORK</div><div class="project-grid">${projectCards()}</div></section>
+   ${A}${S}${C}${F}`;
+
+ case "luxury":
+  return `${N}<header class="p-hero">${H}${I}</header>
+   <section class="p-section" id="about">${A}</section>
+   <section class="p-section"><div class="kicker">SELECTED CREATIONS</div>${P}</section>
+   ${S}${C}${F}`;
+
+ default:
+  return `${N}<header class="p-hero">${H}${I}</header>${P}${A}${S}${C}${F}`;
+ }
 }
 
 function renderPreview(){
- const projects=state.projects.filter(p=>p.title||p.description||p.image);
-
- const contact=[];
- if(state.email)contact.push(linkHtml("mailto:"+state.email,"Email me"));
- if(state.phone)contact.push(linkHtml("tel:"+state.phone,"Call me"));
- if(state.whatsapp)contact.push(linkHtml("https://wa.me/"+state.whatsapp.replace(/\D/g,""),"WhatsApp"));
- if(state.website)contact.push(linkHtml(state.website,"Website"));
-
- const socials=[
-  ["instagram","Instagram"],
-  ["linkedin","LinkedIn"],
-  ["behance","Behance"],
-  ["github","GitHub"],
-  ["otherLink",state.otherLabel||"More"]
- ].filter(([key])=>state[key]).map(([key,label])=>linkHtml(state[key],label));
-
- $("portfolio").className="portfolio "+state.template;
- $("portfolio").style.setProperty("--accent",state.accent);
-
- $("portfolio").innerHTML=`
- <nav class="p-nav">
-  <div class="p-logo">${esc(state.logo||state.name)}</div>
-  <div class="p-navlinks">
-   <a href="#work">Work</a>
-   <a href="#about">About</a>
-   <a href="#services">Services</a>
-   <a href="#contact">Contact</a>
-  </div>
- </nav>
-
- <section class="p-hero">
-  <div>
-   ${state.role?`<div class="p-kicker">${esc(state.role)}</div>`:""}
-   <h1>${esc(state.headline)}</h1>
-   <p>${esc(state.intro)}</p>
-   ${state.heroButton?`<a class="p-cta" href="#work">${esc(state.heroButton)}</a>`:""}
-  </div>
-  ${imageOrPlaceholder(state.heroImage,"p-hero-image","Portfolio introduction image")}
- </section>
-
- <section class="p-section" id="work">
-  <div class="p-section-head">
-   <h2>Selected Work</h2>
-   ${state.projectsIntro?`<p>${esc(state.projectsIntro)}</p>`:""}
-  </div>
-
-  <div class="project-grid">
-   ${projects.map(p=>`
-    <article class="project-card">
-     ${imageOrPlaceholder(p.image,"project-image",p.title)}
-     <h3>${esc(p.title)}</h3>
-     <p>${esc(p.description)}</p>
-     <div class="project-meta">${esc(p.category)}</div>
-     ${p.link?`<p style="margin-top:10px"><a href="${esc(safeUrl(p.link))}" target="_blank" rel="noopener">View project ↗</a></p>`:""}
-    </article>
-   `).join("")}
-  </div>
- </section>
-
- <section class="p-section" id="about">
-  <div class="about-layout">
-   ${imageOrPlaceholder(state.profileImage,"about-photo","Profile portrait")}
-   <div class="about-copy">
-    <div class="p-kicker">The person behind the work</div>
-    <h2>${esc(state.aboutTitle)}</h2>
-    <p>${esc(state.about)}</p>
-   </div>
-  </div>
- </section>
-
- <section class="p-section" id="services">
-  <div class="p-section-head"><h2>What I do</h2></div>
-  <div class="services-grid">
-   ${state.services.map(s=>`
-    <div class="service-item">
-     <h3>${esc(s.title)}</h3>
-     <p>${esc(s.description)}</p>
-    </div>
-   `).join("")}
-  </div>
-
-  ${state.testimonial?`
-   <div style="margin-top:35px">
-    <div class="p-kicker">A kind word</div>
-    <div class="testimonial">“${esc(state.testimonial)}”</div>
-   </div>`:""}
- </section>
-
- <section class="p-section contact-section" id="contact">
-  <div class="p-kicker">Get in touch</div>
-  <div class="p-section-head"><h2>Have a project in mind?</h2></div>
-  <p style="font-size:13px;line-height:1.7;opacity:.7">
-   Let's connect and talk about what we can create together.
-  </p>
-  <div class="contact-links">${contact.join("")}${socials.join("")}</div>
- </section>
-
- <footer class="p-footer">
-  <span>© ${new Date().getFullYear()} ${esc(state.name)}. All rights reserved.</span>
-  <span>Personal Portfolio</span>
- </footer>`;
+ const el=$("portfolio");
+ el.className="t-"+state.template;
+ el.style.setProperty("--accent",state.accent);
+ el.innerHTML=templateMarkup();
 }
 
 function saveDraft(){
  try{
-  localStorage.setItem("portfolioShowcaseDraftV3",JSON.stringify(state));
+  localStorage.setItem("portfolioShowcaseV4",JSON.stringify(state));
   toast("Draft saved on this device.");
- }catch(e){
-  toast("Draft could not be saved. Your images may exceed browser storage limits.");
- }
+ }catch(e){toast("Storage limit reached. Try fewer or smaller images.")}
 }
-
 function loadDraft(){
  try{
-  const saved=localStorage.getItem("portfolioShowcaseDraftV3");
-  if(saved)Object.assign(state,JSON.parse(saved));
- }catch(e){
-  console.warn("Draft load failed",e);
- }
+  const data=localStorage.getItem("portfolioShowcaseV4");
+  if(data)Object.assign(state,JSON.parse(data));
+ }catch(e){console.warn(e)}
 }
-
-function getExportDocument(){
- const content=$("portfolio").outerHTML;
- const css=[...document.querySelectorAll("style")].map(s=>s.innerHTML).join("\n");
-
- return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>${esc(state.name)} | Portfolio</title>
-<meta name="description" content="${esc(state.intro.slice(0,155))}">
-<style>
-${css}
-body{margin:0;background:#fff;padding:0}
-.portfolio{max-width:1440px;margin:auto;box-shadow:none}
-html{scroll-behavior:smooth}
-</style>
-</head>
-<body>
-${content}
-</body>
-</html>`;
-}
-
-function exportHTML(){
- const doc=getExportDocument();
- const blob=new Blob([doc],{type:"text/html;charset=utf-8"});
- const url=URL.createObjectURL(blob);
- const a=document.createElement("a");
-
- a.href=url;
- a.download=(state.name||"my").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-portfolio.html";
-
- document.body.appendChild(a);
- a.click();
- a.remove();
-
- setTimeout(()=>URL.revokeObjectURL(url),3000);
- toast("Website HTML exported. Upload it to hosting to create a public link.");
-}
-
-function downloadPDF(){
- const content=$("portfolio").outerHTML;
- const css=[...document.querySelectorAll("style")].map(s=>s.innerHTML).join("\n");
- const win=window.open("","_blank");
-
- if(!win){
-  toast("Please allow pop-ups to download your PDF.");
-  return;
- }
-
- win.document.open();
- win.document.write(`
- <!DOCTYPE html>
- <html>
- <head>
- <meta charset="UTF-8">
+function exportDocument(){
+ const css=[...document.querySelectorAll("style")].map(x=>x.innerHTML).join("\n");
+ return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
  <meta name="viewport" content="width=device-width,initial-scale=1">
- <title>${esc(state.name)} - Portfolio</title>
- <style>
- ${css}
- html,body{margin:0;padding:0;background:#fff}
+ <title>${esc(state.name)} | Portfolio</title>
+ <meta name="description" content="${esc(state.intro.slice(0,155))}">
+ <style>${css}body{margin:0;background:white}#portfolio{max-width:1440px;margin:auto;box-shadow:none}</style>
+ </head><body><div id="portfolio" class="t-${state.template}" style="--accent:${state.accent}">${templateMarkup()}</div></body></html>`;
+}
+function exportWebsite(){
+ const blob=new Blob([exportDocument()],{type:"text/html;charset=utf-8"});
+ const u=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=u;a.download=(state.name||"portfolio").toLowerCase().replace(/[^a-z0-9]+/g,"-")+"-portfolio.html";
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(u),3000);
+ toast("Website exported. Upload the HTML file to hosting to publish it.");
+}
+function exportPDF(){
+ const w=window.open("","_blank");
+ if(!w){toast("Allow pop-ups to print your PDF.");return}
+ const css=[...document.querySelectorAll("style")].map(x=>x.innerHTML).join("\n");
+ w.document.open();
+ w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Portfolio PDF</title>
+ <style>${css}
+ html,body{margin:0;padding:0}
  body{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
- .portfolio{box-shadow:none!important;max-width:none!important}
- img{max-width:100%;-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important}
+ #portfolio{box-shadow:none!important}
  @page{size:A4;margin:10mm}
- </style>
- </head>
- <body>
- ${content}
- <script>
- window.onload=()=>setTimeout(()=>window.print(),900);
- <\/script>
- </body>
- </html>
- `);
- win.document.close();
+ </style></head><body><div id="portfolio" class="t-${state.template}" style="--accent:${state.accent}">${templateMarkup()}</div>
+ <script>window.onload=()=>setTimeout(()=>window.print(),1000);<\/script>
+ </body></html>`);
+ w.document.close();
 }
 
-$("steps").addEventListener("click",e=>{
+$("steps").onclick=e=>{
  const b=e.target.closest("[data-step]");
- if(b){
-  currentStep=+b.dataset.step;
-  renderEditor();
- }
-});
-
+ if(b){currentStep=+b.dataset.step;renderEditor()}
+};
 $("saveBtn").onclick=saveDraft;
-$("exportBtn").onclick=exportHTML;
-$("pdfBtn").onclick=downloadPDF;
-
+$("exportBtn").onclick=exportWebsite;
+$("pdfBtn").onclick=exportPDF;
 $("editTab").onclick=()=>{
  $("editor").style.display="block";
  $("previewPanel").style.display="none";
  $("editTab").classList.add("active");
  $("previewTab").classList.remove("active");
 };
-
 $("previewTab").onclick=()=>{
  $("editor").style.display="none";
  $("previewPanel").style.display="block";
@@ -1006,6 +712,5 @@ loadDraft();
 renderEditor();
 renderPreview();
 </script>
-
 </body>
 </html>
