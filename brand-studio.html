@@ -181,6 +181,253 @@ footer a{color:var(--blue);text-decoration:none}
   .preview-hero h2{font-size:23px}
   .preview-cards{grid-template-columns:1fr}
 }
+  
+/* ===== PREMIUM COLOR PALETTE UPGRADE ===== */
+
+.palette-gallery {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:12px;
+  margin:20px 0;
+}
+
+.preset-card {
+  border:1px solid #e3e8f1;
+  background:#fff;
+  border-radius:13px;
+  padding:12px;
+  cursor:pointer;
+  transition:.2s ease;
+  text-align:left;
+  min-width:0;
+}
+
+.preset-card:hover {
+  transform:translateY(-3px);
+  border-color:#3563e9;
+  box-shadow:0 8px 24px #17203314;
+}
+
+.preset-card.selected {
+  border:2px solid #3563e9;
+  background:#f4f7ff;
+}
+
+.preset-colors {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+  min-height:65px;
+  margin-bottom:10px;
+}
+
+.preset-dot {
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  border:2px solid #ffffff;
+  box-shadow:0 2px 7px #17203330;
+}
+
+.preset-card strong {
+  display:block;
+  font-size:12px;
+  color:#172033;
+}
+
+.preset-card small {
+  display:block;
+  font-size:10px;
+  color:#64748b;
+  margin-top:4px;
+}
+
+.palette-designs {
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:18px 0;
+}
+
+.palette-design-btn {
+  border:1px solid #dce3ee;
+  background:#fff;
+  color:#475569;
+  border-radius:9px;
+  padding:10px 13px;
+  font-size:12px;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.palette-design-btn.active {
+  color:#fff;
+  background:#3563e9;
+  border-color:#3563e9;
+}
+
+.palette.style-circles {
+  display:grid;
+  grid-template-columns:repeat(5,minmax(0,1fr));
+  border:0;
+  gap:10px;
+  overflow:visible;
+}
+
+.palette.style-circles .swatch {
+  text-align:center;
+  min-width:0;
+}
+
+.palette.style-circles .swatch-color {
+  width:100%;
+  max-width:125px;
+  aspect-ratio:1;
+  height:auto;
+  border-radius:50%;
+  margin:auto;
+  border:5px solid #fff;
+  box-shadow:0 4px 15px #17203320;
+  overflow:hidden;
+}
+
+.palette.style-circles .swatch-info {
+  background:transparent;
+  padding:10px 2px;
+}
+
+.palette.style-rounded {
+  border:0;
+  gap:12px;
+  overflow:visible;
+}
+
+.palette.style-rounded .swatch {
+  border:1px solid #e3e8f1;
+  border-radius:14px;
+  overflow:hidden;
+}
+
+.palette.style-rounded .swatch-color {
+  height:115px;
+}
+
+.palette.style-strips {
+  display:flex;
+  gap:5px;
+  border:0;
+  overflow:visible;
+}
+
+.palette.style-strips .swatch {
+  flex:1;
+  min-width:0;
+}
+
+.palette.style-strips .swatch-color {
+  height:170px;
+  border-radius:10px;
+}
+
+.palette.style-strips .swatch-info {
+  padding:9px 2px;
+}
+
+.palette.style-pills {
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  border:0;
+  overflow:visible;
+}
+
+.palette.style-pills .swatch {
+  flex:1 1 130px;
+  border:1px solid #e3e8f1;
+  border-radius:50px;
+  overflow:hidden;
+  display:flex;
+  align-items:center;
+}
+
+.palette.style-pills .swatch-color {
+  width:65px;
+  height:65px;
+  flex-shrink:0;
+  border-radius:50%;
+  border:4px solid white;
+}
+
+.palette.style-pills .swatch-info {
+  padding:8px;
+  min-width:0;
+  text-align:left;
+}
+
+.color-wheel-wrap {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:15px;
+}
+
+.color-wheel {
+  width:min(260px,75vw);
+  aspect-ratio:1;
+  border-radius:50%;
+  background:conic-gradient(
+    #ff0000,#ff8000,#ffff00,#80ff00,
+    #00ff00,#00ff80,#00ffff,#0080ff,
+    #0000ff,#8000ff,#ff00ff,#ff0080,#ff0000
+  );
+  border:9px solid #fff;
+  box-shadow:0 5px 22px #17203325;
+  position:relative;
+}
+
+.color-wheel:after {
+  content:"COLOR";
+  position:absolute;
+  inset:31%;
+  border-radius:50%;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  font-size:13px;
+  font-weight:800;
+  color:#172033;
+}
+
+.preset-heading {
+  font-size:17px;
+  margin:24px 0 6px;
+}
+
+@media(max-width:700px) {
+  .palette-gallery {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .palette.style-circles {
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .palette.style-strips .swatch-color {
+    height:100px;
+  }
+}
+
+@media(max-width:420px) {
+  .palette-gallery {
+    grid-template-columns:1fr;
+  }
+  .palette.style-circles {
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+  .palette.style-strips .swatch-info strong {
+    font-size:10px;
+  }
+}
+
 </style>
 </head>
 
@@ -1119,6 +1366,214 @@ updateGradient();
 updateFonts();
 updateBrandPreview();
 updateExport();
+  
+/* ===== PREMIUM COLOR COLLECTION ===== */
+
+const premiumPalettes = [
+  {name:"Sunset Glow",type:"Vibrant",colors:["#FF512F","#F09819","#FCE38A","#E23E57","#521262"]},
+  {name:"Ocean Breeze",type:"Fresh",colors:["#0077B6","#00B4D8","#90E0EF","#CAF0F8","#03045E"]},
+  {name:"Royal Luxury",type:"Luxury",colors:["#151515","#D4AF37","#F5E6B8","#8C6A20","#FFFFFF"]},
+  {name:"Pastel Dream",type:"Pastel",colors:["#FFCAD4","#F4ACB7","#9D8189","#D8E2DC","#FFE5D9"]},
+  {name:"Neon Energy",type:"Neon",colors:["#F72585","#7209B7","#3A0CA3","#4361EE","#4CC9F0"]},
+  {name:"Forest Green",type:"Nature",colors:["#1B4332","#2D6A4F","#40916C","#95D5B2","#D8F3DC"]},
+  {name:"Cyber Purple",type:"Gaming",colors:["#240046","#5A189A","#9D4EDD","#E0AAFF","#00F5D4"]},
+  {name:"Corporate Blue",type:"Corporate",colors:["#003566","#00509D","#4EA8DE","#BDE0FE","#001D3D"]},
+  {name:"Rose Gold",type:"Luxury",colors:["#7D3C50","#B76E79","#E6B7B0","#F4D6CC","#FFF5F0"]},
+  {name:"Tropical",type:"Vibrant",colors:["#06D6A0","#1B9AAA","#EF476F","#FFC43D","#073B4C"]},
+  {name:"Midnight",type:"Dark",colors:["#080C24","#151B3D","#323D75","#7C83FD","#B9C7FF"]},
+  {name:"Peach Cream",type:"Pastel",colors:["#FFB5A7","#FCD5CE","#F8EDEB","#F9DCC4","#FEC89A"]},
+  {name:"Electric Lime",type:"Neon",colors:["#111111","#B6FF00","#E5FF00","#6CFF00","#FFFFFF"]},
+  {name:"Lavender Sky",type:"Pastel",colors:["#6C63FF","#A29BFE","#C8B6FF","#E7C6FF","#F8F7FF"]},
+  {name:"Desert Sand",type:"Nature",colors:["#8C5E3C","#B08968","#DDB892","#E6CCB2","#F5EBE0"]},
+  {name:"Cherry Pop",type:"Vibrant",colors:["#590D22","#A4133C","#FF4D6D","#FF8FA3","#FFF0F3"]},
+  {name:"Arctic Ice",type:"Fresh",colors:["#03045E","#0077B6","#48CAE4","#ADE8F4","#CAF0F8"]},
+  {name:"Emerald Elite",type:"Luxury",colors:["#064E3B","#047857","#10B981","#A7F3D0","#ECFDF5"]},
+  {name:"Retro Sunset",type:"Creative",colors:["#264653","#2A9D8F","#E9C46A","#F4A261","#E76F51"]},
+  {name:"Candy Pop",type:"Creative",colors:["#FF006E","#FB5607","#FFBE0B","#8338EC","#3A86FF"]},
+  {name:"Minimal Stone",type:"Minimal",colors:["#222222","#555555","#999999","#D9D9D9","#F5F5F5"]},
+  {name:"Royal Sapphire",type:"Luxury",colors:["#14213D","#003566","#00509D","#FFD60A","#FFFFFF"]},
+  {name:"Coral Reef",type:"Fresh",colors:["#FF6B6B","#F7B267","#F79D65","#84DCC6","#1B4965"]},
+  {name:"Digital Future",type:"Tech",colors:["#03071E","#370617","#6A040F","#D00000","#FFBA08"]},
+  {name:"Mint Fresh",type:"Pastel",colors:["#D8F3DC","#B7E4C7","#95D5B2","#74C69D","#40916C"]},
+  {name:"Golden Hour",type:"Warm",colors:["#7F4F24","#A47148","#DDB892","#EDE0D4","#F2CC8F"]},
+  {name:"Blueberry",type:"Creative",colors:["#10002B","#3C096C","#7B2CBF","#C77DFF","#E0AAFF"]},
+  {name:"Citrus Fresh",type:"Vibrant",colors:["#386641","#6A994E","#A7C957","#F2E8CF","#BC4749"]},
+  {name:"Soft Elegance",type:"Minimal",colors:["#6D6875","#B5838D","#E5989B","#FFB4A2","#FFCDB2"]},
+  {name:"Dark Luxury",type:"Dark",colors:["#101010","#272727","#C9A227","#E6D5A8","#F7F4EA"]}
+];
+
+let selectedPaletteStyle = "circles";
+
+function createPremiumPaletteUI(){
+  const palettePanel = $("paletteOutput").closest(".panel");
+
+  const section = document.createElement("div");
+  section.innerHTML = `
+    <h3 class="preset-heading">Explore Ready-Made Color Collections</h3>
+    <p class="panel-desc">Choose from 30 professionally selected color combinations. Select any collection to apply it instantly.</p>
+
+    <div class="field">
+      <label>Search Color Collections</label>
+      <input id="premiumPaletteSearch" placeholder="Search sunset, luxury, neon, pastel..." />
+    </div>
+
+    <div class="field">
+      <label>Filter Collections</label>
+      <select id="premiumPaletteFilter">
+        <option value="all">All Collections</option>
+        <option value="Vibrant">Vibrant</option>
+        <option value="Pastel">Pastel</option>
+        <option value="Luxury">Luxury</option>
+        <option value="Neon">Neon</option>
+        <option value="Nature">Nature</option>
+        <option value="Fresh">Fresh</option>
+        <option value="Gaming">Gaming</option>
+        <option value="Corporate">Corporate</option>
+        <option value="Creative">Creative</option>
+        <option value="Dark">Dark</option>
+        <option value="Minimal">Minimal</option>
+        <option value="Tech">Tech</option>
+        <option value="Warm">Warm</option>
+      </select>
+    </div>
+
+    <div class="palette-gallery" id="premiumPaletteGallery"></div>
+
+    <h3 class="preset-heading">Choose Your Palette Display Design</h3>
+    <p class="panel-desc">Change how your selected colors are displayed.</p>
+
+    <div class="palette-designs">
+      <button class="palette-design-btn active" data-design="circles">● Circle Design</button>
+      <button class="palette-design-btn" data-design="rounded">▰ Rounded Cards</button>
+      <button class="palette-design-btn" data-design="strips">▥ Color Strips</button>
+      <button class="palette-design-btn" data-design="pills">⬭ Color Pills</button>
+    </div>
+
+    <h3 class="preset-heading">Color Harmony Wheel</h3>
+    <p class="panel-desc">Explore how colors relate to one another on the color wheel.</p>
+    <div class="color-wheel-wrap">
+      <div class="color-wheel" title="Color harmony wheel"></div>
+    </div>
+  `;
+
+  palettePanel.insertBefore(section, palettePanel.querySelector(".palette-toolbar"));
+
+  const search = $("premiumPaletteSearch");
+  const filter = $("premiumPaletteFilter");
+
+  search.addEventListener("input",renderPremiumPalettes);
+  filter.addEventListener("change",renderPremiumPalettes);
+
+  $("premiumPaletteGallery").addEventListener("click",event=>{
+    const card = event.target.closest("[data-preset-index]");
+    if(!card)return;
+
+    const preset = premiumPalettes[Number(card.dataset.presetIndex)];
+    if(!preset)return;
+
+    paletteColors = [...preset.colors];
+    $("paletteName").value = preset.name;
+    $("baseColor").value = preset.colors[0];
+    $("baseHex").value = preset.colors[0];
+
+    document.querySelectorAll(".preset-card").forEach(item=>{
+      item.classList.toggle("selected",item===card);
+    });
+
+    renderPalette();
+    updateExport();
+    updateBrandPreview();
+
+    $("paletteHeading").textContent = preset.name;
+    showMessage("paletteMessage",preset.name+" palette applied successfully.");
+  });
+
+  document.querySelectorAll("[data-design]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      selectedPaletteStyle = button.dataset.design;
+
+      document.querySelectorAll("[data-design]").forEach(item=>{
+        item.classList.toggle("active",item===button);
+      });
+
+      renderPalette();
+    });
+  });
+
+  renderPremiumPalettes();
+}
+
+function renderPremiumPalettes(){
+  const gallery = $("premiumPaletteGallery");
+  if(!gallery)return;
+
+  const query = $("premiumPaletteSearch").value.toLowerCase().trim();
+  const category = $("premiumPaletteFilter").value;
+
+  const filtered = premiumPalettes
+    .map((preset,index)=>({...preset,index}))
+    .filter(preset=>{
+      const matchesCategory = category==="all" || preset.type===category;
+      const matchesSearch = (preset.name+" "+preset.type).toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+
+  gallery.innerHTML = "";
+
+  if(!filtered.length){
+    gallery.innerHTML = '<p class="panel-desc">No matching palettes found. Try another search.</p>';
+    return;
+  }
+
+  filtered.forEach(preset=>{
+    const card = document.createElement("button");
+    card.className = "preset-card";
+    card.dataset.presetIndex = preset.index;
+
+    const dots = document.createElement("div");
+    dots.className = "preset-colors";
+
+    preset.colors.forEach(color=>{
+      const dot = document.createElement("span");
+      dot.className = "preset-dot";
+      dot.style.background = color;
+      dots.appendChild(dot);
+    });
+
+    const title = document.createElement("strong");
+    title.textContent = preset.name;
+
+    const type = document.createElement("small");
+    type.textContent = preset.type+" · 5 colors";
+
+    card.append(dots,title,type);
+    gallery.appendChild(card);
+  });
+}
+
+/* Keep original palette rendering and add display styles */
+const originalPremiumRenderPalette = renderPalette;
+
+renderPalette = function(){
+  originalPremiumRenderPalette();
+
+  const output = $("paletteOutput");
+  if(!output)return;
+
+  output.classList.remove(
+    "style-circles",
+    "style-rounded",
+    "style-strips",
+    "style-pills"
+  );
+
+  output.classList.add("style-"+selectedPaletteStyle);
+};
+
+/* Start upgraded collection */
+createPremiumPaletteUI();
+renderPalette();
+
 </script>
 </body>
 </html>
