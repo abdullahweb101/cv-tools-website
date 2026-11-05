@@ -1,0 +1,467 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Image Studio - Free Online Image Editor | CV Tools</title>
+<meta name="description" content="Resize, compress and convert images online. Process multiple images, control quality and download optimized images privately in your browser.">
+<meta name="robots" content="index,follow">
+<link rel="canonical" href="https://cv-tools-website.pages.dev/image-studio.html">
+<meta name="theme-color" content="#ffffff">
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#f6f8fc;color:#172033;line-height:1.6}
+button,input,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+header{background:#fff;border-bottom:1px solid #e6ebf2;position:sticky;top:0;z-index:20}
+.nav{max-width:1250px;margin:auto;padding:17px 22px;display:flex;justify-content:space-between;align-items:center;gap:15px}
+.logo{font-size:23px;font-weight:800;letter-spacing:-.7px}
+.logo span{color:#3563e9}
+.navlinks{display:flex;gap:23px;flex-wrap:wrap}
+.navlinks a{font-size:14px;font-weight:600;color:#536078}
+.navlinks a:hover{color:#3563e9}
+.hero{background:linear-gradient(135deg,#edf3ff,#f9fbff);padding:54px 20px 48px;text-align:center}
+.hero .tag{display:inline-block;padding:6px 13px;background:#e1eaff;color:#2855c5;border-radius:30px;font-size:12px;font-weight:700;margin-bottom:15px}
+.hero h1{font-size:clamp(30px,4vw,43px);line-height:1.2;letter-spacing:-1px;margin-bottom:13px}
+.hero p{max-width:690px;margin:auto;color:#657087;font-size:16px}
+.wrap{max-width:1250px;margin:35px auto;padding:0 20px 65px}
+.workspace{display:grid;grid-template-columns:340px minmax(0,1fr);gap:22px;align-items:start}
+.panel,.preview-panel{background:#fff;border:1px solid #e4e9f1;border-radius:15px;box-shadow:0 5px 20px rgba(22,38,70,.035)}
+.panel{padding:23px}
+.panel h2,.preview-panel h2{font-size:19px;margin-bottom:5px}
+.sub{font-size:13px;color:#78849a;margin-bottom:20px}
+.field{margin-bottom:18px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:7px;color:#354158}
+input[type=file]{display:none}
+.upload{border:2px dashed #bdcbea;border-radius:12px;padding:25px 14px;text-align:center;background:#f8faff;cursor:pointer;transition:.2s}
+.upload:hover,.upload.drag{border-color:#3563e9;background:#f0f5ff}
+.upload .big{font-size:30px;margin-bottom:7px}
+.upload strong{display:block;font-size:14px}
+.upload small{color:#77839a;font-size:12px}
+.control,select{width:100%;height:43px;border:1px solid #dce3ed;border-radius:8px;padding:0 11px;background:#fff;color:#253149;outline:none}
+.control:focus,select:focus{border-color:#3563e9;box-shadow:0 0 0 3px rgba(53,99,233,.1)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.checkrow{display:flex;align-items:center;gap:9px;font-size:13px;color:#4d5a71;margin-top:9px}
+input[type=checkbox]{accent-color:#3563e9;width:16px;height:16px}
+.range-row{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px}
+input[type=range]{width:100%;accent-color:#3563e9}
+.hint{font-size:11px;color:#8290a5;margin-top:5px}
+.btn{border:0;border-radius:8px;padding:12px 15px;font-size:13px;font-weight:700;transition:.2s}
+.primary{background:#3563e9;color:#fff}
+.primary:hover{background:#244dc5}
+.secondary{background:#edf2ff;color:#2d57c7}
+.secondary:hover{background:#e0e9ff}
+.outline{background:#fff;border:1px solid #dce3ed;color:#344158}
+.danger{background:#fff0f0;color:#c43d3d}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:19px}
+.actions .primary{grid-column:1/-1;padding:14px}
+button:disabled{opacity:.5;cursor:not-allowed}
+.preview-panel{padding:22px;min-height:590px}
+.preview-top{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:17px}
+.preview-top p{font-size:12px;color:#7a879c}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:17px}
+.stat{background:#f6f8fc;border:1px solid #e9edf3;border-radius:9px;padding:11px}
+.stat small{display:block;color:#7b8799;font-size:11px}
+.stat strong{font-size:17px}
+.empty{min-height:350px;border:1px dashed #d5deeb;border-radius:12px;display:flex;align-items:center;justify-content:center;text-align:center;color:#8591a5;padding:25px}
+.empty .big{font-size:40px;margin-bottom:8px}
+.empty strong{display:block;color:#4a5870}
+.empty p{font-size:13px;max-width:330px;margin:6px auto}
+.file-list{display:grid;gap:12px}
+.file-card{border:1px solid #e7ebf2;border-radius:11px;padding:13px;display:grid;grid-template-columns:92px minmax(0,1fr);gap:14px;align-items:center}
+.thumb{height:78px;background:#f2f5fa;border-radius:7px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.thumb img{max-width:100%;max-height:100%;object-fit:contain}
+.file-info{min-width:0}
+.file-name{font-size:13px;font-weight:700;overflow-wrap:anywhere}
+.file-meta{font-size:11px;color:#7a879b;margin-top:4px}
+.file-result{font-size:12px;color:#21834f;margin-top:5px;font-weight:700}
+.file-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}
+.file-actions button{font-size:11px;padding:6px 9px}
+.progress{height:7px;background:#e9edf5;border-radius:20px;overflow:hidden;margin-top:15px;display:none}
+.progress span{height:100%;width:0;background:#3563e9;display:block;transition:width .2s}
+.status{font-size:12px;color:#64728a;margin-top:9px;min-height:18px}
+.notice{background:#f0f6ff;border:1px solid #dce8ff;border-radius:9px;padding:12px;font-size:12px;color:#526580;margin-top:17px}
+.section{max-width:1000px;margin:0 auto;padding:15px 20px 60px}
+.section h2{text-align:center;font-size:26px;margin-bottom:22px}
+.features{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
+.feature{background:#fff;border:1px solid #e6ebf2;border-radius:12px;padding:20px}
+.feature b{display:block;margin:7px 0}
+.feature p{font-size:13px;color:#738097}
+footer{background:#172033;color:#fff;padding:28px 20px;text-align:center;font-size:13px}
+footer p{color:#bdc7d7;margin-top:5px}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.panel{order:1}.preview-panel{order:2}}
+@media(max-width:600px){
+.nav{flex-direction:column}.navlinks{justify-content:center;gap:14px}
+.hero{padding:40px 17px}.wrap{padding:0 13px 45px;margin-top:20px}
+.panel,.preview-panel{padding:16px}.preview-panel{min-height:400px}
+.stats{gap:6px}.stat{padding:8px}.stat strong{font-size:14px}
+.features{grid-template-columns:1fr}.file-card{grid-template-columns:70px minmax(0,1fr);gap:10px}
+.thumb{height:65px}.actions{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+<nav class="nav">
+<a href="index.html" class="logo">CV <span>Tools</span></a>
+<div class="navlinks">
+<a href="index.html">Home</a>
+<a href="index.html#tools">Our Tools</a>
+<a href="portfolio-maker.html">Portfolio Maker</a>
+<a href="pdf-tools.html">PDF Tools</a>
+</div>
+</nav>
+</header>
+
+<section class="hero">
+<div class="tag">FREE ONLINE IMAGE PROCESSING</div>
+<h1>Advanced Image Studio</h1>
+<p>Resize, compress and convert your images with precision. Process multiple files together and download optimized results without uploading your images to a server.</p>
+</section>
+
+<main class="wrap">
+<div class="workspace">
+
+<aside class="panel">
+<h2>Image Settings</h2>
+<p class="sub">Choose your files and configure processing options.</p>
+
+<div class="field">
+<label>Select Images</label>
+<label class="upload" id="dropZone" for="imageInput">
+<div class="big">📤</div>
+<strong>Click or drag images here</strong>
+<small>JPG, JPEG, PNG and WebP · Up to 20 MB per image</small>
+</label>
+<input id="imageInput" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+<div class="hint" id="selectionHint">No images selected</div>
+</div>
+
+<div class="field">
+<label for="format">Output Format</label>
+<select id="format">
+<option value="image/jpeg">JPG</option>
+<option value="image/webp">WebP</option>
+<option value="image/png">PNG</option>
+</select>
+<div class="hint">PNG does not use lossy quality compression.</div>
+</div>
+
+<div class="field">
+<label>Resize Dimensions (pixels)</label>
+<div class="two">
+<div><input class="control" id="width" type="number" min="1" max="12000" placeholder="Width"></div>
+<div><input class="control" id="height" type="number" min="1" max="12000" placeholder="Height"></div>
+</div>
+<label class="checkrow"><input type="checkbox" id="lockRatio" checked> Maintain original aspect ratio</label>
+<div class="hint">Leave both fields empty to keep original dimensions.</div>
+</div>
+
+<div class="field">
+<label for="preset">Quick Resize Presets</label>
+<select id="preset">
+<option value="">Custom dimensions</option>
+<option value="1920x1080">Full HD · 1920 × 1080</option>
+<option value="1280x720">HD · 1280 × 720</option>
+<option value="1080x1080">Square · 1080 × 1080</option>
+<option value="1080x1350">Portrait · 1080 × 1350</option>
+<option value="1200x628">Social preview · 1200 × 628</option>
+<option value="800x800">Web image · 800 × 800</option>
+<option value="512x512">Small image · 512 × 512</option>
+</select>
+<div class="hint">Presets fit the complete image inside the selected dimensions without cropping.</div>
+</div>
+
+<div class="field">
+<div class="range-row"><label for="quality">Output Quality</label><strong id="qualityValue">85%</strong></div>
+<input id="quality" type="range" min="10" max="100" value="85">
+<div class="hint">Applies to JPG and WebP exports. Higher quality generally means larger files.</div>
+</div>
+
+<div class="field">
+<label>Output Filename</label>
+<select id="suffix">
+<option value="-optimized">Add -optimized suffix</option>
+<option value="-resized">Add -resized suffix</option>
+<option value="-converted">Add -converted suffix</option>
+<option value="">Keep original filename</option>
+</select>
+</div>
+
+<div class="actions">
+<button class="btn primary" id="processBtn" disabled>Process Images</button>
+<button class="btn secondary" id="downloadAllBtn" disabled>Download All ZIP</button>
+<button class="btn outline" id="clearBtn">Clear All</button>
+</div>
+<div class="progress" id="progress"><span id="progressBar"></span></div>
+<div class="status" id="status" aria-live="polite"></div>
+<div class="notice">🔒 Privacy: image processing happens locally in your browser. Your selected images are not sent to our server.</div>
+</aside>
+
+<section class="preview-panel">
+<div class="preview-top">
+<div><h2>Your Images</h2><p id="resultSummary">Add images to begin processing.</p></div>
+<button class="btn outline" id="downloadAllTop" disabled>Download ZIP ↓</button>
+</div>
+
+<div class="stats">
+<div class="stat"><small>Selected Images</small><strong id="countStat">0</strong></div>
+<div class="stat"><small>Original Size</small><strong id="originalStat">0 KB</strong></div>
+<div class="stat"><small>Processed</small><strong id="processedStat">0</strong></div>
+</div>
+
+<div class="empty" id="emptyState">
+<div><div class="big">🖼️</div><strong>Your workspace is ready</strong><p>Upload one or more images. Your previews and processing results will appear here.</p></div>
+</div>
+<div class="file-list" id="fileList"></div>
+</section>
+
+</div>
+</main>
+
+<section class="section">
+<h2>Professional Image Processing Features</h2>
+<div class="features">
+<div class="feature"><div>📐</div><b>Precise Resizing</b><p>Set custom image dimensions or use popular presets while preserving the original aspect ratio.</p></div>
+<div class="feature"><div>⚡</div><b>Image Compression</b><p>Control output quality to balance image clarity and file size.</p></div>
+<div class="feature"><div>🔄</div><b>Format Conversion</b><p>Export compatible images in JPG, PNG and WebP formats.</p></div>
+<div class="feature"><div>📚</div><b>Batch Processing</b><p>Process multiple selected images with the same settings.</p></div>
+<div class="feature"><div>📊</div><b>File Size Comparison</b><p>Compare original and processed file sizes for each image.</p></div>
+<div class="feature"><div>🔐</div><b>Private Processing</b><p>Images are processed on your device using your browser's canvas features.</p></div>
+</div>
+</section>
+
+<footer>
+<strong>CV Tools</strong>
+<p>Free online tools for documents, images and productivity.</p>
+<p><a href="privacy-policy.html">Privacy Policy</a> · <a href="contact.html">Contact</a> · <a href="index.html">Home</a></p>
+</footer>
+
+<script>
+const $ = id => document.getElementById(id);
+const input = $('imageInput');
+const dropZone = $('dropZone');
+let files = [];
+let results = [];
+
+function formatBytes(bytes){
+ if(!bytes) return '0 KB';
+ const units=['B','KB','MB','GB'];
+ const i=Math.min(Math.floor(Math.log(bytes)/Math.log(1024)),3);
+ return (bytes/Math.pow(1024,i)).toFixed(i===0?0:2)+' '+units[i];
+}
+function safeName(name){
+ return name.replace(/\.[^.]+$/,'').replace(/[^\w-]+/g,'-').replace(/-+/g,'-');
+}
+function setStatus(message){$('status').textContent=message}
+function updateStats(){
+ $('countStat').textContent=files.length;
+ $('originalStat').textContent=formatBytes(files.reduce((s,f)=>s+f.size,0));
+ $('processedStat').textContent=results.length;
+ $('selectionHint').textContent=files.length+' image(s) selected';
+ $('resultSummary').textContent=files.length+' selected · '+results.length+' processed';
+ $('processBtn').disabled=!files.length;
+ $('downloadAllBtn').disabled=!results.length;
+ $('downloadAllTop').disabled=!results.length;
+ $('emptyState').style.display=files.length?'none':'flex';
+}
+function renderFiles(){
+ const list=$('fileList');
+ list.innerHTML='';
+ files.forEach((file,index)=>{
+  const result=results.find(r=>r.index===index);
+  const card=document.createElement('article');
+  card.className='file-card';
+  const thumb=document.createElement('div');
+  thumb.className='thumb';
+  const img=document.createElement('img');
+  img.alt='Image preview';
+  img.src=URL.createObjectURL(file);
+  thumb.appendChild(img);
+  const info=document.createElement('div');
+  info.className='file-info';
+  const name=document.createElement('div');
+  name.className='file-name';
+  name.textContent=file.name;
+  const meta=document.createElement('div');
+  meta.className='file-meta';
+  meta.textContent=formatBytes(file.size)+' · '+(file.type||'Image file');
+  info.append(name,meta);
+  if(result){
+   const details=document.createElement('div');
+   details.className='file-result';
+   const saved=file.size-result.blob.size;
+   const percent=file.size?Math.round(saved/file.size*100):0;
+   details.textContent=result.width+' × '+result.height+' · '+formatBytes(result.blob.size)+' · '+(saved>=0?percent+'% smaller':Math.abs(percent)+'% larger');
+   info.appendChild(details);
+   const actions=document.createElement('div');
+   actions.className='file-actions';
+   const download=document.createElement('button');
+   download.className='btn secondary';
+   download.textContent='Download';
+   download.onclick=()=>downloadResult(result);
+   actions.appendChild(download);
+   info.appendChild(actions);
+  }
+  card.append(thumb,info);
+  list.appendChild(card);
+ });
+ updateStats();
+}
+function addFiles(incoming){
+ const valid=[];
+ const rejected=[];
+ for(const file of incoming){
+  if(!['image/jpeg','image/png','image/webp'].includes(file.type)){
+   rejected.push(file.name+' (unsupported format)');continue;
+  }
+  if(file.size>20*1024*1024){
+   rejected.push(file.name+' (over 20 MB)');continue;
+  }
+  valid.push(file);
+ }
+ files=[...files,...valid];
+ results=[];
+ renderFiles();
+ if(rejected.length)setStatus('Skipped: '+rejected.join(', '));
+ else setStatus(valid.length+' image(s) added successfully.');
+}
+input.addEventListener('change',e=>{addFiles([...e.target.files]);input.value=''});
+['dragenter','dragover'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.add('drag')}));
+['dragleave','drop'].forEach(ev=>dropZone.addEventListener(ev,e=>{e.preventDefault();dropZone.classList.remove('drag')}));
+dropZone.addEventListener('drop',e=>addFiles([...e.dataTransfer.files]));
+$('quality').addEventListener('input',e=>$('qualityValue').textContent=e.target.value+'%');
+$('preset').addEventListener('change',()=>{
+ const value=$('preset').value;
+ if(!value)return;
+ const [w,h]=value.split('x');
+ $('width').value=w;$('height').value=h;
+});
+$('lockRatio').addEventListener('change',()=>{if(!$('lockRatio').checked)setStatus('Aspect ratio is unlocked. Images may be stretched to the exact dimensions.')});
+
+function loadImage(file){
+ return new Promise((resolve,reject)=>{
+  const url=URL.createObjectURL(file);
+  const img=new Image();
+  img.onload=()=>{URL.revokeObjectURL(url);resolve(img)};
+  img.onerror=()=>{URL.revokeObjectURL(url);reject(new Error('Could not read '+file.name))};
+  img.src=url;
+ });
+}
+function getDimensions(img){
+ let w=Number($('width').value)||img.naturalWidth;
+ let h=Number($('height').value)||img.naturalHeight;
+ const lock=$('lockRatio').checked;
+ if(lock){
+  const ratio=img.naturalWidth/img.naturalHeight;
+  if($('width').value && $('height').value){
+   const scale=Math.min(w/img.naturalWidth,h/img.naturalHeight);
+   w=Math.round(img.naturalWidth*scale);
+   h=Math.round(img.naturalHeight*scale);
+  }else if($('width').value){h=Math.round(w/ratio)}
+  else if($('height').value){w=Math.round(h*ratio)}
+ }
+ w=Math.max(1,Math.min(12000,Math.round(w)));
+ h=Math.max(1,Math.min(12000,Math.round(h)));
+ return {w,h};
+}
+function canvasBlob(canvas,type,quality){
+ return new Promise((resolve,reject)=>{
+  canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Image export failed. Try another format.')),type,quality);
+ });
+}
+async function processOne(file,index){
+ const img=await loadImage(file);
+ const {w,h}=getDimensions(img);
+ const canvas=document.createElement('canvas');
+ canvas.width=w;canvas.height=h;
+ const ctx=canvas.getContext('2d',{alpha:true});
+ if(!ctx)throw new Error('Canvas is not supported by this browser.');
+ const format=$('format').value;
+ if(format==='image/jpeg'){
+  ctx.fillStyle='#ffffff';ctx.fillRect(0,0,w,h);
+ }
+ ctx.imageSmoothingEnabled=true;
+ ctx.imageSmoothingQuality='high';
+ ctx.drawImage(img,0,0,w,h);
+ const quality=Number($('quality').value)/100;
+ const blob=await canvasBlob(canvas,format,quality);
+ const ext=format==='image/jpeg'?'jpg':format==='image/png'?'png':'webp';
+ const suffix=$('suffix').value;
+ const filename=safeName(file.name)+suffix+'.'+ext;
+ return {index,blob,filename,width:w,height:h};
+}
+async function processAll(){
+ if(!files.length)return;
+ results=[];
+ $('processBtn').disabled=true;
+ $('progress').style.display='block';
+ $('progressBar').style.width='0%';
+ setStatus('Processing images...');
+ renderFiles();
+ let success=0,failed=0;
+ for(let i=0;i<files.length;i++){
+  try{
+   const result=await processOne(files[i],i);
+   results.push(result);success++;
+  }catch(err){
+   failed++;setStatus('Issue with '+files[i].name+': '+err.message);
+  }
+  $('progressBar').style.width=Math.round((i+1)/files.length*100)+'%';
+  $('processedStat').textContent=results.length;
+  renderFiles();
+ }
+ $('processBtn').disabled=false;
+ setStatus('Finished: '+success+' processed, '+failed+' failed.');
+ $('resultSummary').textContent=success+' images processed successfully';
+}
+function downloadResult(result){
+ const url=URL.createObjectURL(result.blob);
+ const a=document.createElement('a');
+ a.href=url;a.download=result.filename;
+ document.body.appendChild(a);a.click();a.remove();
+ setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+async function downloadZip(){
+ if(!results.length)return;
+ if(typeof JSZip==='undefined'){
+  results.forEach((r,i)=>setTimeout(()=>downloadResult(r),i*300));
+  setStatus('ZIP library unavailable. Downloading files individually.');
+  return;
+ }
+ const zip=new JSZip();
+ results.forEach(r=>zip.file(r.filename,r.blob));
+ setStatus('Preparing ZIP archive...');
+ try{
+  const blob=await zip.generateAsync({type:'blob',compression:'DEFLATE',compressionOptions:{level:5}});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download='cv-tools-optimized-images.zip';
+  document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),2000);
+  setStatus('Your ZIP archive is ready.');
+ }catch(e){setStatus('Could not create ZIP. Please download images individually.')}
+}
+$('processBtn').addEventListener('click',processAll);
+$('downloadAllBtn').addEventListener('click',downloadZip);
+$('downloadAllTop').addEventListener('click',downloadZip);
+$('clearBtn').addEventListener('click',()=>{
+ files=[];results=[];
+ $('progress').style.display='none';
+ $('progressBar').style.width='0%';
+ $('width').value='';$('height').value='';
+ $('preset').value='';
+ $('imageInput').value='';
+ setStatus('Workspace cleared.');
+ renderFiles();
+});
+renderFiles();
+</script>
+</body>
+</html>
