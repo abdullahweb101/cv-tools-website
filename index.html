@@ -13,6 +13,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link rel="canonical" href="https://cv-tools-website.pages.dev/">
+  <link rel="icon" type="image/png" href="/cv-tools-logo.png">
 
   <!-- Google AdSense verification code -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8663161313640657"
@@ -455,6 +456,25 @@
         flex-direction: column;
       }
     }
+    .brand-logo {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand-logo img {
+  width: 180px;
+  height: auto;
+  max-height: 65px;
+  object-fit: contain;
+  display: block;
+}
+
+@media (max-width: 600px) {
+  .brand-logo img {
+    width: 140px;
+  }
+}
   </style>
 </head>
 
@@ -464,6 +484,9 @@
   <header>
     <nav class="navbar">
       <a href="index.html" class="logo">CV <span>Tools</span></a>
+      <a href="/" class="brand-logo">
+  <img src="/cv-tools-logo.png" alt="CV Tools">
+</a>
 
       <div class="nav-links">
         <a href="index.html">Home</a>
