@@ -62,15 +62,22 @@
       gap: 20px;
     }
 
-    .logo {
-      font-size: 23px;
-      font-weight: 800;
-      color: #172033;
-      letter-spacing: -0.7px;
+    /* Website Image Logo */
+    .brand-logo {
+      display: inline-flex;
+      align-items: center;
+      flex-shrink: 0;
+      text-decoration: none;
+      line-height: 0;
     }
 
-    .logo span {
-      color: #3563e9;
+    .brand-logo img {
+      display: block;
+      width: 180px;
+      height: 60px;
+      object-fit: contain;
+      object-position: left center;
+      max-width: 100%;
     }
 
     .nav-links {
@@ -410,6 +417,11 @@
         gap: 12px;
       }
 
+      .brand-logo img {
+        width: 145px;
+        height: 50px;
+      }
+
       .nav-links {
         gap: 19px;
         flex-wrap: wrap;
@@ -456,25 +468,6 @@
         flex-direction: column;
       }
     }
-    .brand-logo {
-  display: inline-flex;
-  align-items: center;
-  text-decoration: none;
-}
-
-.brand-logo img {
-  width: 180px;
-  height: auto;
-  max-height: 65px;
-  object-fit: contain;
-  display: block;
-}
-
-@media (max-width: 600px) {
-  .brand-logo img {
-    width: 140px;
-  }
-}
   </style>
 </head>
 
@@ -483,19 +476,26 @@
   <!-- Website navigation -->
   <header>
     <nav class="navbar">
-      <a href="index.html" class="logo">CV <span>Tools</span></a>
+
+      <!-- Website Image Logo -->
       <a href="/" class="brand-logo">
-  <img src="/cv-tools-logo.png" alt="CV Tools">
-</a>
+        <img
+          src="/cv-tools-logo.png"
+          alt="CV Tools - Free Online Tools"
+          width="180"
+          height="60"
+        >
+      </a>
 
       <div class="nav-links">
-        <a href="index.html">Home</a>
+        <a href="/">Home</a>
         <a href="#tools">Our Tools</a>
         <a href="portfolio-maker.html">Portfolio Maker</a>
         <a href="#how-it-works">How It Works</a>
         <a href="#faq">FAQs</a>
         <a href="blog.html">Blog</a>
       </div>
+
     </nav>
   </header>
 
